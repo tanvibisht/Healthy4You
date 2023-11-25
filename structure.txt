@@ -1,0 +1,78 @@
+Anything4GPAProject/
+│
+├── src/
+│   ├── entities/
+│   │   ├── User.java
+│   │   ├── Social.java
+│   │   ├── Activity.java
+│   │   ├── Criteria.java
+│   │   └── Reminders.java
+│   │
+│   ├── services/
+│   │   ├── UserService.java
+│   │   ├── SocialService.java
+│   │   ├── ActivityService.java
+│   │   └── ReminderService.java
+│   │
+│   ├── exceptions/
+│   │   ├── UserNotFoundException.java
+│   │   └── InvalidActivityException.java
+│   │
+│   ├── usecases/
+│   │   ├── ActivityTracker.java
+│   │   ├── ReminderManager.java
+│   │   └── UserAccountManager.java
+│   │
+│   ├── controllers/
+│   │   ├── UserController.java
+│   │   └── ActivityController.java
+│   │
+│   ├── repositories/
+│   │   ├── UserRepository.java
+│   │   └── ActivityRepository.java
+│   │
+│   ├── adapters/
+│   │   ├── WeatherServiceAdapter.java
+│   │   └── HealthServiceAdapter.java
+│   │
+│   ├── config/
+│   │   ├── DatabaseConfig.java
+│   │   └── SecurityConfig.java
+│   │
+│   ├── security/
+│   │   ├── PasswordEncoder.java
+│   │   └── AuthenticationManager.java
+│   │
+│   ├── Main.java
+│   │
+│   ├── resources/
+│   │   ├── application.properties
+│   │   └── logback.xml
+│   │
+│   ├── tests/
+│   │   ├── entities/
+│   │   │   └── UserTest.java
+│   │   ├── services/
+│   │   │   └── UserServiceTest.java
+│   │   ├── usecases/
+│   │   │   └── UserAccountManagerTest.java
+│   │   ├── controllers/
+│   │   │   └── UserControllerTest.java
+│   │   ├── repositories/
+│   │   │   └── UserRepositoryTest.java
+│   │   ├── config/
+│   │   │   └── DatabaseConfigTest.java
+│   │   └── security/
+│   │       └── PasswordEncoderTest.java
+│   │
+│   └── resources_test/
+│       └── test.properties
+│
+├── lib/
+│   └── [external libraries]
+│
+├── docs/
+│   ├── Architecture.md
+│   └── API_Documentation.md
+│
+└── README.md
