@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.RoundRectangle2D;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -38,8 +39,8 @@ public class DashboardUI implements ActionListener {
     JFrame frame;
     private JPanel panel;
     private RoundedButton addActivityButton;
-    private final Color backgroundColor = new Color(32, 32, 32); // Dark grey theme
-    private final Color themeColor = new Color(0, 76, 239); // Blue theme color for buttons and panels
+    private final Color backgroundColor = new Color(245, 245, 245); // Dark grey theme
+    private final Color themeColor = new Color(84, 121, 247); // Blue theme color for buttons and panels
 
     private WeatherService weatherService;
     private GeoLocationService geoLocationService;
@@ -78,15 +79,14 @@ public class DashboardUI implements ActionListener {
         buttonPanel.setBackground(backgroundColor);
         buttonPanel.add(addActivityButton);
 
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel topPanel = new JPanel(new BorderLayout()); // Use BorderLayout
         weatherService = new WeatherService();
         geoLocationService = new GeoLocationService();
-        weatherLabel = new JLabel("Loading weather...");
+        weatherLabel = new JLabel("Loading weather...", SwingConstants.CENTER); // Set text alignment to center
         weatherLabel.setForeground(Color.WHITE);
-        weatherLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         topPanel.setPreferredSize(new Dimension(600, 80));
         topPanel.setBackground(themeColor);
-        topPanel.add(weatherLabel);
+        topPanel.add(weatherLabel, BorderLayout.CENTER); // Add weatherLabel to the center of topPanel
 
         displayWeatherInfo();
 
@@ -165,7 +165,6 @@ public class DashboardUI implements ActionListener {
 
         frame.repaint();
     }
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
