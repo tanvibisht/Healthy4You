@@ -1,22 +1,15 @@
-import javax.swing.*;
-import entities.User;
+import service.UserService;
+import ui.DashboardUI;
+import service.WeatherService;
+import ui.HomePageUI;
+
+import javax.swing.SwingUtilities;
 
 public class Main {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> createAndShowGUI());
-    }
 
-    private static void createAndShowGUI() {
-        // Example user creation - this will later be replaced with more dynamic logic
-        User user = new User("John Doe");
+        HomePageUI homepage = new HomePageUI();
 
-        // Setup the main application window
-        JFrame frame = new JFrame("Healthy4You Application");
-        JLabel nameLabel = new JLabel("User Name: " + user.getName());
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(nameLabel);
-        frame.pack();
-        frame.setVisible(true);
     }
 }
+
