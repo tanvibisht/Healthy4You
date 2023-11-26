@@ -1,158 +1,127 @@
 package ui;
 
-import service.UserService;
 import service.WeatherService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class DashboardUI {
-    private final UserService userService;
-    private final WeatherService weatherService;
-    private JFrame frame;
-    private JTextField usernameField, cityField;
-    private JPasswordField passwordField;
-    private JButton submitButton, weatherButton;
-    private JTextArea weatherArea;
+public class DashboardUI implements ActionListener {
+    JFrame frame;
+    private JPanel panel;
+    private JButton addActivityButton;
+    private final Color backgroundColor = new Color(32, 32, 32); // Dark grey theme
+    private final Color themeColor = new Color(0, 76, 239); // Blue theme color for buttons and panels
 
-    public DashboardUI(UserService userService, WeatherService weatherService) {
-        this.userService = userService;
-        this.weatherService = weatherService;
-        initializeUI();
-    }
+//    private WeatherService weatherService;
+//    private JLabel weatherLabel;
 
-    private void initializeUI() {
-        frame = new JFrame("Healthy4You");
+    public DashboardUI() {
+        ImageIcon originalImage = new ImageIcon("/Users/cristianoafonsodasilva/Desktop/University of Toronto/2023 Fall/CSC207/src/resource/plus.png");
+        Image image = originalImage.getImage(); // Transform it
+        Image newimg = image.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // Scale it the smooth way
+        ImageIcon imageIcon = new ImageIcon(newimg);  // Transform it back
+
+        frame = new JFrame("Healthy4You Dashboard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout(10, 10));
+        frame.setSize(600, 1050);
+        frame.setResizable(false);
+        frame.getContentPane().setBackground(backgroundColor);
 
-        // Set the blue theme color
-        Color blueTheme = Color.decode("#3A9BDC"); // Royal Blue color
-        frame.getContentPane().setBackground(blueTheme);
-
-        // User input panel
-        JPanel userInputPanel = new JPanel();
-        userInputPanel.setLayout(new GridLayout(0, 2, 10, 10));
-        userInputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        userInputPanel.setOpaque(false); // Use the frame's background color
-
-        userInputPanel.add(new JLabel("Username:"));
-        usernameField = new JTextField();
-        userInputPanel.add(usernameField);
-
-        userInputPanel.add(new JLabel("Password:"));
-        passwordField = new JPasswordField();
-        userInputPanel.add(passwordField);
-
-        submitButton = new JButton("Create User");
-        styleButton(submitButton, blueTheme);
-        userInputPanel.add(submitButton);
-        userInputPanel.add(new JLabel()); // Placeholder
-
-        // Weather input panel
-        JPanel weatherInputPanel = new JPanel();
-        weatherInputPanel.setLayout(new GridLayout(0, 2, 10, 10));
-        weatherInputPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-        weatherInputPanel.setOpaque(false);
-
-        weatherInputPanel.add(new JLabel("Enter city for weather:"));
-        cityField = new JTextField();
-        weatherInputPanel.add(cityField);
-
-        weatherButton = new JButton("Get Weather");
-        styleButton(weatherButton, blueTheme);
-        weatherInputPanel.add(weatherButton);
-        weatherInputPanel.add(new JLabel()); // Placeholder
-
-        // Combine panels
-        JPanel combinedPanel = new JPanel(new BorderLayout());
-        combinedPanel.add(userInputPanel, BorderLayout.NORTH);
-        combinedPanel.add(weatherInputPanel, BorderLayout.SOUTH);
-        combinedPanel.setOpaque(false);
-
-        frame.add(combinedPanel, BorderLayout.NORTH);
-
-        // Weather display area
-        weatherArea = new JTextArea(5, 20);
-        weatherArea.setWrapStyleWord(true);
-        weatherArea.setLineWrap(true);
-        weatherArea.setEnabled(false);
-        weatherArea.setDisabledTextColor(Color.BLACK);
-        JScrollPane scrollPane = new JScrollPane(weatherArea);
+        // Main panel with FlowLayout to allow for fixed size panels
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(backgroundColor);
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Only vertical scrolling
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
         frame.add(scrollPane, BorderLayout.CENTER);
 
-        frame.pack();
-        frame.setSize(600, 400); // Set a larger initial size
-        frame.setLocationRelativeTo(null); // Center the window
 
-        submitButton.addActionListener(e -> createUser());
-        weatherButton.addActionListener(e -> showWeather());
-    }
+        addActivityButton = new JButton();
+        addActivityButton.setPreferredSize(new Dimension(500, 60)); // Make the button longer
+        addActivityButton.setBackground(themeColor);
+        addActivityButton.setIcon(imageIcon);
+        addActivityButton.setFocusPainted(false);
+        addActivityButton.setOpaque(true);
+        addActivityButton.setBorderPainted(false);
+        addActivityButton.addActionListener(this);
 
-    private void styleButton(JButton button, Color themeColor) {
-        button.setBackground(themeColor);
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setFont(new Font("Arial", Font.BOLD, 12));
-    }
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
+        buttonPanel.setBackground(backgroundColor);
+        buttonPanel.add(addActivityButton);
 
-    public void display() {
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+//        weatherService = new WeatherService();
+//        weatherLabel = new JLabel("Loading weather...");
+//        weatherLabel.setForeground(Color.WHITE);
+//        weatherLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        topPanel.setPreferredSize(new Dimension(600, 80));
+        topPanel.setBackground(themeColor);
+//        topPanel.add(weatherLabel);
+
+//        displayWeatherInfo();
+
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+        frame.add(topPanel, BorderLayout.NORTH);
+
         frame.setVisible(true);
     }
 
-    private void createUser() {
-        String username = usernameField.getText();
-        String password = new String(passwordField.getPassword());
-        userService.createUser(username, password);
-        JOptionPane.showMessageDialog(frame, "User created successfully.", "User Creation", JOptionPane.INFORMATION_MESSAGE);
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == addActivityButton) {
+            new ActivityUI(this);
+        }
     }
 
-    private void showWeather() {
-        String city = cityField.getText();
-        String weather = weatherService.getWeather(city);
-        weatherArea.setText(weather);
+    // Method to add a new activity panel with a fixed size and blue theme
+    public void addActivityPanel(String name, String description) {
+        JPanel activityPanel = new JPanel();
+        activityPanel.setPreferredSize(new Dimension(550, 60)); // Fixed size for activity panels
+        activityPanel.setBackground(themeColor);
+        activityPanel.setLayout(new BorderLayout());
+
+        JLabel nameLabel = new JLabel(name);
+        nameLabel.setForeground(Color.white);
+        nameLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+        JTextArea descriptionArea = new JTextArea(description);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setForeground(Color.white);
+        descriptionArea.setBackground(themeColor);
+        descriptionArea.setEditable(false);
+
+        activityPanel.add(nameLabel, BorderLayout.NORTH);
+        activityPanel.add(descriptionArea, BorderLayout.CENTER);
+
+        // Wrap the activity panel in another panel to maintain its size
+        JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 30));
+        wrapperPanel.setBackground(backgroundColor);
+        wrapperPanel.add(activityPanel);
+
+        panel.add(wrapperPanel);
+        panel.revalidate();
+        panel.repaint();
+    }
+
+//    private void displayWeatherInfo() {
+//        // You can specify the city or make it dynamic as per your requirement
+//        String city = "Toronto"; // Example city
+//        String weatherData = weatherService.getWeather(city);
+//
+//        // Parse the weatherData to extract relevant information
+//        // For simplicity, let's just display the raw JSON response
+//        // You should parse this JSON to extract and format temperature, condition, etc.
+//        weatherLabel.setText("Weather in " + city + ": " + weatherData);
+//
+//        // Repaint or revalidate if needed
+//        frame.repaint();
+//    }
+
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new DashboardUI());
     }
 }
-
-// import Projects.Project_1_Heathly4You_demo.domain.User;
-// import Projects.Project_1_Heathly4You_demo.service.WeatherService;
-// import javax.swing.*;
-// import java.awt.event.ActionEvent;
-
-// public class DashboardUI {
-//     private User loggedInUser;
-//     private WeatherService weatherService;
-//     private JFrame frame;
-
-//     public DashboardUI(User user, WeatherService weatherService) {
-//         this.loggedInUser = user;
-//         this.weatherService = weatherService;
-//         initializeUI();
-//     }
-
-//     private void initializeUI() {
-//         frame = new JFrame("Healthy4You - Dashboard");
-//         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//         frame.setSize(400, 300);
-//         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
-
-//         JLabel welcomeLabel = new JLabel("Welcome, " + loggedInUser.getUsername());
-//         JButton checkWeatherButton = new JButton("Check Weather");
-
-//         checkWeatherButton.addActionListener(this::checkWeatherAction);
-
-//         frame.add(welcomeLabel);
-//         frame.add(checkWeatherButton);
-
-//         // Additional UI components for user activities
-
-//         frame.setVisible(true);
-//     }
-
-//     private void checkWeatherAction(ActionEvent e) {
-//         // Call weatherService to get weather data
-//         // Display the weather information
-//     }
-
-//     // Additional methods as needed
-// }
