@@ -1,23 +1,51 @@
 package ui;
 
 import service.WeatherService;
+import service.GeoLocationService;
+
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+class RoundedButton extends JButton {
+
+    public RoundedButton() {
+        super();
+        setOpaque(false);
+        setContentAreaFilled(false);
+        setBorderPainted(false);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(getBackground());
+        // corner radius
+        int cornerRadius = 25;
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius);
+        super.paintComponent(g);
+        g2.dispose();
+    }
+}
 
 public class DashboardUI implements ActionListener {
     JFrame frame;
     private JPanel panel;
-    private JButton addActivityButton;
+    private RoundedButton addActivityButton;
     private final Color backgroundColor = new Color(32, 32, 32); // Dark grey theme
     private final Color themeColor = new Color(0, 76, 239); // Blue theme color for buttons and panels
 
-//    private WeatherService weatherService;
-//    private JLabel weatherLabel;
+    private WeatherService weatherService;
+    private GeoLocationService geoLocationService;
+    private JLabel weatherLabel;
 
-    public DashboardUI() {
+    public DashboardUI() throws MalformedURLException {
         ImageIcon originalImage = new ImageIcon("/Users/cristianoafonsodasilva/Desktop/University of Toronto/2023 Fall/CSC207/src/resource/plus.png");
         Image image = originalImage.getImage(); // Transform it
         Image newimg = image.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // Scale it the smooth way
@@ -38,13 +66,11 @@ public class DashboardUI implements ActionListener {
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         frame.add(scrollPane, BorderLayout.CENTER);
 
-
-        addActivityButton = new JButton();
+        addActivityButton = new RoundedButton();
         addActivityButton.setPreferredSize(new Dimension(500, 60)); // Make the button longer
         addActivityButton.setBackground(themeColor);
         addActivityButton.setIcon(imageIcon);
         addActivityButton.setFocusPainted(false);
-        addActivityButton.setOpaque(true);
         addActivityButton.setBorderPainted(false);
         addActivityButton.addActionListener(this);
 
@@ -53,15 +79,16 @@ public class DashboardUI implements ActionListener {
         buttonPanel.add(addActivityButton);
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-//        weatherService = new WeatherService();
-//        weatherLabel = new JLabel("Loading weather...");
-//        weatherLabel.setForeground(Color.WHITE);
-//        weatherLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        weatherService = new WeatherService();
+        geoLocationService = new GeoLocationService();
+        weatherLabel = new JLabel("Loading weather...");
+        weatherLabel.setForeground(Color.WHITE);
+        weatherLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         topPanel.setPreferredSize(new Dimension(600, 80));
         topPanel.setBackground(themeColor);
-//        topPanel.add(weatherLabel);
+        topPanel.add(weatherLabel);
 
-//        displayWeatherInfo();
+        displayWeatherInfo();
 
         frame.add(buttonPanel, BorderLayout.SOUTH);
         frame.add(topPanel, BorderLayout.NORTH);
@@ -106,22 +133,47 @@ public class DashboardUI implements ActionListener {
         panel.repaint();
     }
 
-//    private void displayWeatherInfo() {
-//        // You can specify the city or make it dynamic as per your requirement
-//        String city = "Toronto"; // Example city
-//        String weatherData = weatherService.getWeather(city);
-//
-//        // Parse the weatherData to extract relevant information
-//        // For simplicity, let's just display the raw JSON response
-//        // You should parse this JSON to extract and format temperature, condition, etc.
-//        weatherLabel.setText("Weather in " + city + ": " + weatherData);
-//
-//        // Repaint or revalidate if needed
-//        frame.repaint();
-//    }
+    private void displayWeatherInfo() throws MalformedURLException {
+
+        String location = geoLocationService.getCity();
+
+        if (!location.equals("Error fetching location")) {
+            String city = location;
+            String weatherData = weatherService.getWeather(city);
+            JSONObject jsonObj = new JSONObject(weatherData);
+
+            // Extracting the icon code
+            String iconCode = jsonObj.getJSONArray("weather").getJSONObject(0).getString("icon");
+            String iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
+
+            // Download and set the icon to a JLabel
+            ImageIcon weatherIcon = new ImageIcon(new URL(iconUrl));
+            weatherLabel.setIcon(weatherIcon);
+
+            // Extracting temperature (assuming it's provided in Kelvin)
+            double temperatureKelvin = jsonObj.getJSONObject("main").getDouble("temp");
+            double temperatureCelsius = temperatureKelvin - 273.15; // Convert to Celsius
+
+            // Extracting main weather condition
+            String weatherCondition = jsonObj.getJSONArray("weather").getJSONObject(0).getString("main");
+
+            weatherLabel.setText("Temp in " + city + ": " + String.format("%.2f", temperatureCelsius) + " °C, " + weatherCondition);
+
+        } else {
+            weatherLabel.setText("Unable to fetch location and weather data");
+        }
+
+        frame.repaint();
+    }
 
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new DashboardUI());
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new DashboardUI();
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }
