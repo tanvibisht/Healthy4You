@@ -11,6 +11,5 @@ public class Activity {
         this.isCompletedToday = false;
     }
 
-    // Getters and setters for description, isCompletedToday, and duration
-    // Add any other relevant methods as needed
+   
 }
