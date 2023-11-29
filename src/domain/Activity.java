@@ -11,5 +11,15 @@ public class Activity {
         this.isCompletedToday = false;
     }
 
-   
+    public void complete(){
+        isCompletedToday = false;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
 }
