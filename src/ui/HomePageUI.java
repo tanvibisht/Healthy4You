@@ -1,5 +1,7 @@
 package ui;
 
+import org.json.JSONException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -99,6 +101,8 @@ public class HomePageUI implements ActionListener {
             try {
                 DashboardUI dashboardUI = new DashboardUI();
             } catch (MalformedURLException ex) {
+                throw new RuntimeException(ex);
+            } catch (JSONException ex) {
                 throw new RuntimeException(ex);
             }
         }
