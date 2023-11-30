@@ -102,8 +102,6 @@ public class HomePageUI implements ActionListener {
                 DashboardUI dashboardUI = new DashboardUI();
             } catch (MalformedURLException ex) {
                 throw new RuntimeException(ex);
-            } catch (JSONException ex) {
-                throw new RuntimeException(ex);
             }
         }
     }
