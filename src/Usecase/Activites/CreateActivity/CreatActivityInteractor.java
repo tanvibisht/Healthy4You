@@ -2,6 +2,7 @@ package Usecase.Activites.CreateActivity;
 
 import Usecase.Activites.CompleteActivity.OutputData;
 import domain.Activity;
+import domain.LoggedUser;
 import domain.User;
 
 public class CreatActivityInteractor implements CreatActivityInput{
@@ -12,7 +13,7 @@ public class CreatActivityInteractor implements CreatActivityInput{
     }
 
     public void excute(CreatActivityInputData userData){
-        User user = userData.getUser();
+        User user = LoggedUser.getUser();
         String description = userData.getDescription();
         int duration = userData.getDuration();
         Activity activity = new Activity(description, duration);

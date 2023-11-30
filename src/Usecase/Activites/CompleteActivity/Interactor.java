@@ -1,6 +1,7 @@
 package Usecase.Activites.CompleteActivity;
 
 import domain.Activity;
+import domain.LoggedUser;
 import domain.User;
 
 
@@ -11,7 +12,7 @@ public class Interactor implements Input{
         output = out;
     }
     public void excute(InputData userData) {
-        User user = userData.getUser();
+        User user = LoggedUser.getUser();
         int index = userData.getActivity();
         if (user == null) {
             output.prepareFailView("User not Found");

@@ -1,6 +1,8 @@
 package domain;
 
-public class Activity {
+import java.util.Objects;
+
+public class Activity{
     private String description;
     private boolean isCompletedToday;
     private int duration; // Duration in minutes
@@ -9,6 +11,14 @@ public class Activity {
         this.description = description;
         this.duration = duration;
         this.isCompletedToday = false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Activity activity = (Activity) o;
+        return Objects.equals(description, activity.description);
     }
 
     public void complete(){
@@ -21,5 +31,9 @@ public class Activity {
 
     public int getDuration() {
         return duration;
+    }
+
+    public boolean isCompletedToday() {
+        return isCompletedToday;
     }
 }
