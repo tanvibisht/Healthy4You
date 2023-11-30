@@ -1,4 +1,3 @@
-import service.UserService;
 import ui.DashboardUI;
 import service.WeatherService;
 import ui.HomePageUI;
