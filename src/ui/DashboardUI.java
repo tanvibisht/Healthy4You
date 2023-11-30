@@ -170,6 +170,8 @@ public class DashboardUI implements ActionListener {
                 new DashboardUI();
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             }
         });
     }
