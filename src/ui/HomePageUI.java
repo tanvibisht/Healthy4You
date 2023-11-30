@@ -100,9 +100,10 @@ public class HomePageUI implements ActionListener {
             frame.dispose();
             try {
                 DashboardUI dashboardUI = new DashboardUI();
-            } catch (MalformedURLException ex) {
+            } catch (MalformedURLException | JSONException ex) {
                 throw new RuntimeException(ex);
+            }
             }
         }
     }
-}
+
