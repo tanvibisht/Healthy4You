@@ -1,39 +1,43 @@
 package service;
 
-import domain.User;
-import java.util.HashMap;
-import java.util.Map;
-
-// public class UserService {
-//     public User createUser(String username, String password) {
-//         // Logic to create a new user
-//         return new User(username, password);
-//     }
-//     // Add other service methods as needed
-// }
-// import Projects.Project_1_Heathly4You_demo.domain.User;
-// import java.util.HashMap;
-// import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 public class UserService {
-    private Map<String, User> users = new HashMap<>();
 
-    public User createUser(String username, String password) {
-        if (users.containsKey(username)) {
-            return null; // User already exists
+    private static final String USERS_FILE = "users.txt";
+
+    // Load users from the file
+    private Map<String, String> loadUsers() throws IOException {
+        Map<String, String> users = new HashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 2) {
+                    users.put(parts[0], parts[1]);
+                }
+            }
         }
-        User newUser = new User(username, password);
-        users.put(username, newUser);
-        return newUser;
+        return users;
     }
 
-    public User loginUser(String username, String password) {
-        User user = users.get(username);
-        if (user != null && user.getPassword().equals(password)) {
-            return user; // Successful login
+    // Save user to the file
+    public void saveUser(String username, String password) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE, true))) {
+            writer.write(username + "," + password + "\n");
         }
-        return null; // Login failed
     }
 
-    // Additional methods as needed
+    // Validate login credentials
+    public boolean validateLogin(String username, String password) throws IOException {
+        Map<String, String> users = loadUsers();
+        return users.containsKey(username) && users.get(username).equals(password);
+    }
+
+    // Check if username already exists
+    public boolean userExists(String username) throws IOException {
+        Map<String, String> users = loadUsers();
+        return users.containsKey(username);
+    }
 }
