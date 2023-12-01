@@ -3,9 +3,12 @@ public class User {
     private String username;
     private String password;
 
-    public User(String username, String password) {
+    private String location;
+
+    public User(String username, String password, String location) {
         this.username = username;
         this.password = password;
+        this.location = location;
     }
 
     // Getters and setters
@@ -23,5 +26,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

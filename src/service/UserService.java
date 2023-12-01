@@ -6,6 +6,7 @@ import java.util.*;
 public class UserService {
 
     private static final String USERS_FILE = "src/users.txt";
+    private static final String USER_DATA_FILE = "src/usersdata.txt";
 
     // Load users from the file
     private Map<String, String> loadUsers() throws IOException {
@@ -45,4 +46,29 @@ public class UserService {
         Map<String, String> users = loadUsers();
         return users.containsKey(username);
     }
+    public String getUserLocation(String username){
+        try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 2 && parts[0].equals(username)) {
+                    return parts[1];
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+        }
+        return "";
+    }
+    public void saveUserLocation(String username, String location) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, true))) {
+            writer.write(username + "," + location + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+        }
+
+    }
 }
+

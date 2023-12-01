@@ -2,13 +2,14 @@ package ui;
 
 import org.json.JSONException;
 import service.UserService;
+import service.WeatherService;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
@@ -212,12 +213,26 @@ public class LoginUI {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
         UserService userService = new UserService();
-
         try {
             if (userService.validateLogin(username, password)) {
-                // Login successful, open Dashboard
+                // Login successful, load user location data
+                String location = userService.getUserLocation(username);
+                if (location.isEmpty()) {
+                    // Location not provided, prompt the user for location
+                    location = promptForLocation();
+                    if (!location.isEmpty()) {
+                        userService.saveUserLocation(username, location);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Location not provided.", "Weather Data Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+                // Now you have the user's location, you can use it for weather data retrieval
+                String weatherData = getWeatherData(location);
+                // Do something with weatherData...
+
                 new DashboardUI();
-                frame.dispose(); // Close the login window
+                 // Close the login window
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
             }
@@ -227,4 +242,13 @@ public class LoginUI {
             throw new RuntimeException(e);
         }
     }
+
+    private String promptForLocation() {
+        return JOptionPane.showInputDialog(frame, "Please enter your location:", "Location Input", JOptionPane.PLAIN_MESSAGE);
+    }
+    private String getWeatherData(String location) {
+        WeatherService weatherService = new WeatherService();
+        return weatherService.getWeather(location);
+    }
+
 }

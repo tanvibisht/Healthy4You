@@ -6,7 +6,8 @@ import java.util.Map;
 
 public class UserService {
 
-    private static final String USERS_FILE = "src/Users.txt";
+    private static final String USERS_FILE = "src/users.txt";
+    private static final String USERDATA_FILE = "src/user.data.txt";
 
     // Load users from the file
     private Map<String, String> loadUsers() {
@@ -47,4 +48,15 @@ public class UserService {
         Map<String, String> users = loadUsers();
         return users.getOrDefault(username, "").equals(password);
     }
+
+    public void saveUser(String username, String password, String location) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE, true))) {
+            writer.write(username + "," + password + "\n");
+        }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERDATA_FILE, true))) {
+            writer.write(username + "," + location + "\n");
+        }
+    }
+
+
 }

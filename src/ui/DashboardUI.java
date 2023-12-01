@@ -3,6 +3,7 @@ package ui;
 import org.json.JSONException;
 import org.json.JSONObject;
 import service.GeoLocationService;
+import service.UserService;
 import service.WeatherService;
 import javax.swing.*;
 import java.awt.*;
