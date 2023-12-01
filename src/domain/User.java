@@ -31,6 +31,18 @@ public class User {
         activities.add(activity);
     }
 
+    public Activity compeleteActivity(int index){
+        Activity activity = activities.get(index);
+        activity.complete();
+        return activity;
+    }
+
+    public Activity deleteActivity(int index){
+        Activity activity = activities.get(index);
+        activities.remove(index);
+        return activity;
+    }
+
     // Additional methods as needed
 }
 
