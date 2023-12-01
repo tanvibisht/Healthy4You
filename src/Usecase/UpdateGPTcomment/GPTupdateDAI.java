@@ -1,5 +1,7 @@
 package Usecase.UpdateGPTcomment;
 
+import domain.User;
+
 public interface GPTupdateDAI {
-    String getComment();
+    String getComment(User user, String weather);
 }

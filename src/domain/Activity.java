@@ -1,13 +1,15 @@
 package domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Activity{
     private String description;
     private boolean isCompletedToday;
     private int duration; // Duration in minutes
+    private LocalDateTime time;
 
-    public Activity(String description, int duration) {
+    public Activity(String description, int duration, LocalDateTime time) {
         this.description = description;
         this.duration = duration;
         this.isCompletedToday = false;
@@ -31,6 +33,10 @@ public class Activity{
 
     public int getDuration() {
         return duration;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
     }
 
     public boolean isCompletedToday() {

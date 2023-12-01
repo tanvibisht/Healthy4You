@@ -2,12 +2,16 @@ package Usecase.Activites.CreateActivity;
 
 import domain.User;
 
+import java.time.LocalDateTime;
+
 public class CreatActivityInputData {
     private final String description;
     private final int duration;
-    CreatActivityInputData(String des, int du){
+    private final LocalDateTime time;
+    CreatActivityInputData(String des, int du, LocalDateTime t){
         description = des;
         duration = du;
+        time = t;
     }
 
 
@@ -17,5 +21,9 @@ public class CreatActivityInputData {
 
     public int getDuration(){
         return duration;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
     }
 }
