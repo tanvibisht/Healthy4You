@@ -1,14 +1,16 @@
 package ui;
 
+import Recipe.RecipeGenerator;
+import Recipe.RecipeUI;
 import org.json.JSONException;
 import org.json.JSONObject;
 import service.GeoLocationService;
-import service.UserService;
 import service.WeatherService;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -38,6 +40,8 @@ public class DashboardUI implements ActionListener {
     JFrame frame;
     private JPanel panel;
     private RoundedButton addActivityButton;
+
+    private RoundedButton getRecipeButton;
     private Color bgcolor = new Color(41, 41, 41);
     private Color themecolor = new Color(143, 88, 178);
     private Color headingcolor = new Color(255, 255, 255);
@@ -74,11 +78,19 @@ public class DashboardUI implements ActionListener {
         addActivityButton.setFocusPainted(false);
         addActivityButton.setBorderPainted(false);
         addActivityButton.addActionListener(this);
+        getRecipeButton = new RoundedButton();
+        getRecipeButton.setPreferredSize(new Dimension(500, 500));
+        getRecipeButton.setText("Recipes");
+        getRecipeButton.setBackground(themecolor);
+        getRecipeButton.setFocusPainted(false);
+        getRecipeButton.setBorderPainted(false);
+        getRecipeButton.addActionListener(this);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
         buttonPanel.setBackground(bgcolor);
         buttonPanel.add(addActivityButton);
 
+        buttonPanel.add(getRecipeButton);
         JPanel topPanel = new JPanel(new BorderLayout()); // Use BorderLayout
         weatherService = new WeatherService();
         geoLocationService = new GeoLocationService();
@@ -89,17 +101,27 @@ public class DashboardUI implements ActionListener {
         topPanel.add(weatherLabel, BorderLayout.CENTER); // Add weatherLabel to the center of topPanel
 
         displayWeatherInfo();
-
         frame.add(buttonPanel, BorderLayout.SOUTH);
         frame.add(topPanel, BorderLayout.NORTH);
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+        frame.revalidate();
+        frame.repaint();
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addActivityButton) {
             new ActivityUI(this);
+        } else if (e.getSource() == getRecipeButton) { // Handle recipe button click
+            // Generate a new recipe here using the RecipeGenerator
+            RecipeGenerator recipeGenerator = new RecipeGenerator();
+            String newRecipe = null;
+            newRecipe = recipeGenerator.generateRandomRecipe();
+
+            // Display the new recipe in a dialog or on the UI
+            new RecipeUI(newRecipe);
         }
     }
 
