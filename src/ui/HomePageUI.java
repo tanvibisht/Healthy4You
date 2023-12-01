@@ -4,127 +4,157 @@ import org.json.JSONException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
-import java.awt.Color;
 
-// RoundedLabelButton extends from JButton for creating a JButton with Rounded corner
-class RoundedLabelButton extends JButton {
-
-    public RoundedLabelButton(String label, Color bgColor) {
-        super(label);
-        setOpaque(false);
-        setContentAreaFilled(false);
-        setBorderPainted(false);
-        setBackground(bgColor);
-    }
-
-    protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(getBackground());
-        g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 25, 25);
-        super.paintComponent(g2);
-        g2.dispose();
-    }
-}
-
-public class HomePageUI implements ActionListener {
+public class HomePageUI {
 
     private JFrame frame;
-    private JButton startButton;
-    private JPanel mainPanel;
-    private JLabel logoLabel;
-    private JLabel greetingLabel;
-    private JLabel sloganLabel;
-    private JButton loginButton;
-    private JButton signupButton;
+    private JPanel mainpanel;
+    private JPanel toppanel;
+    private JPanel centerpanel;
+    private JLabel applicationnamelabel;
+    private JLabel applicationsloganlabel;
+    private JPanel bottompanel;
+    private JButton loginbutton;
+    private JButton signupbutton;
+    private JLabel authorlabel;
+    private Font headingfont = new Font("Monospaced", Font.BOLD, 30);
+    private Font buttonfont = new Font("SansSerif", Font.BOLD, 14);
+    private Font textfont = new Font("SansSerif", Font.PLAIN, 12);
+    private Color bgcolor = new Color(41, 41, 41);
+    private Color themecolor = new Color(143, 88, 178);
+    private Color headingcolor = new Color(255, 255, 255);
+    private Color textcolor = new Color(156, 156, 156);
 
     public HomePageUI() {
-        initializeUI();
-    }
-
-    private void initializeUI() {
-        frame = new JFrame("Healthy4You Homepage");
+        //frame setup
+        frame = new JFrame();
+        frame.setTitle("Healthy4You HomePage");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 1050);
-        frame.setResizable(false);
+        frame.setSize(530, 1100);
+        frame.setBackground(bgcolor);
 
-        Color themeColor = new Color(84, 121, 247); // Color #5479f7
+        //-----------------------------main panel-----------------------------
+        //mainpanel setup
+        mainpanel = new JPanel();
+        mainpanel.setBackground(bgcolor);
+        mainpanel.setLayout(new BoxLayout(mainpanel, BoxLayout.Y_AXIS));
 
-        greetingLabel = new JLabel("Hello!");
-        greetingLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
-        greetingLabel.setForeground(themeColor);
-        greetingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //-----------------------------top panel-----------------------------
+        //toppanel setup
+        toppanel = new JPanel();
+        toppanel.setPreferredSize(new Dimension(530, 600));
+        toppanel.setBackground(bgcolor);
 
-        sloganLabel = new JLabel("It's time to make your life better");
-        sloganLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        sloganLabel.setForeground(Color.GRAY);
-        sloganLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //-----------------------------center panel-----------------------------
+        //applicationnamelabel setup
+        applicationnamelabel = new JLabel("Healthy4You");
+        applicationnamelabel.setFont(headingfont);
+        applicationnamelabel.setForeground(headingcolor);
+        applicationnamelabel.setHorizontalAlignment(SwingConstants.CENTER);
+        applicationnamelabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        mainPanel = new JPanel();
-        mainPanel.setBackground(new Color(245, 245, 245));
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        //applicationsloganlabel setup
+        applicationsloganlabel = new JLabel("Your Health Companion");
+        applicationsloganlabel.setFont(textfont);
+        applicationsloganlabel.setForeground(textcolor);
+        applicationsloganlabel.setHorizontalAlignment(SwingConstants.CENTER);
+        applicationsloganlabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        ImageIcon originalImage = new ImageIcon("/Users/cristianoafonsodasilva/Desktop/University of Toronto/2023 Fall/CSC207/src/resource/HomePage.png"); // Adjust the path
-        Image image = originalImage.getImage();
-        Image newimg = image.getScaledInstance(380, 380, Image.SCALE_SMOOTH);
-        ImageIcon imageIcon = new ImageIcon(newimg);
+        //centerpanel setup
+        centerpanel = new JPanel();
+        centerpanel.setPreferredSize(new Dimension(530, 100));
+        centerpanel.setBackground(bgcolor);
+        centerpanel.setLayout(new BoxLayout(centerpanel, BoxLayout.Y_AXIS));
 
-        logoLabel = new JLabel(imageIcon);
-        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //centerpanel components
+        centerpanel.add(Box.createVerticalGlue());
+        centerpanel.add(applicationnamelabel);
+        centerpanel.add(Box.createVerticalStrut(10));
+        centerpanel.add(applicationsloganlabel);
+        centerpanel.add(Box.createVerticalGlue());
 
-        startButton = new RoundedLabelButton("Let's start", themeColor);
-        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        startButton.setMaximumSize(new Dimension(340, 80));
-        startButton.setFont(new Font("Arial", Font.PLAIN, 26));
-        startButton.setForeground(Color.WHITE);
-        startButton.setFocusPainted(false);
-        startButton.addActionListener(this);
+        //-----------------------------bottom panel-----------------------------
+        //loginbutton setup
+        loginbutton = new JButton("Login");
+        loginbutton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loginbutton.setHorizontalAlignment(SwingConstants.CENTER);
+        loginbutton.setMaximumSize(new Dimension(400, 60));
+        loginbutton.setFont(buttonfont);
+        loginbutton.setForeground(headingcolor);
+        loginbutton.setBackground(themecolor);
+        loginbutton.setOpaque(true);
+        loginbutton.setBorderPainted(false);
+        loginbutton.setFocusPainted(false);
 
-        loginButton = new RoundedLabelButton("Login", themeColor);
-        signupButton = new RoundedLabelButton("Signup", themeColor);
+        loginbutton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                LoginUI loginUI = new LoginUI();
+            }
+        });
 
-        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        signupButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //signupbutton setup
+        signupbutton = new JButton("Sign Up");
+        signupbutton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        signupbutton.setHorizontalAlignment(SwingConstants.CENTER);
+        signupbutton.setMaximumSize(new Dimension(400, 60));
+        signupbutton.setFont(buttonfont);
+        signupbutton.setForeground(headingcolor);
+        signupbutton.setBackground(bgcolor);
+        signupbutton.setBorder(BorderFactory.createLineBorder(textcolor));
+        signupbutton.setFocusPainted(true);
+        signupbutton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                SignUpUI signUpUI = new SignUpUI();
+            }
+        });
 
-        loginButton.addActionListener(this);
-        signupButton.addActionListener(this);
+        //authorlabel setup
+        authorlabel = new JLabel("created by Anything4GPA");
+        authorlabel.setFont(textfont);
+        authorlabel.setForeground(textcolor);
+        authorlabel.setHorizontalAlignment(SwingConstants.CENTER);
+        authorlabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        mainPanel.add(loginButton);
-        mainPanel.add(signupButton);
+        //bottompanel setup
+        bottompanel = new JPanel();
+        bottompanel.setPreferredSize(new Dimension(530, 400));
+        bottompanel.setBackground(bgcolor);
+        bottompanel.setLayout(new BoxLayout(bottompanel, BoxLayout.Y_AXIS));
 
-        mainPanel.add(Box.createVerticalStrut(200));
-        mainPanel.add(greetingLabel);
-        mainPanel.add(Box.createVerticalStrut(10));
-        mainPanel.add(sloganLabel);
-        mainPanel.add(Box.createVerticalStrut(40));
-        mainPanel.add(logoLabel);
-        mainPanel.add(Box.createVerticalStrut(40));
-        mainPanel.add(startButton);
-        mainPanel.add(Box.createVerticalGlue());
+        //bottompanel component
+        bottompanel.add(Box.createVerticalStrut(30));
+        bottompanel.add(loginbutton);
+        bottompanel.add(Box.createVerticalStrut(20));
+        bottompanel.add(signupbutton);
+        bottompanel.add(Box.createVerticalStrut(130));
+        bottompanel.add(authorlabel);
 
-        frame.add(mainPanel);
+        //mainpanel component
+        mainpanel.add(toppanel);
+        mainpanel.add(centerpanel);
+        mainpanel.add(bottompanel);
+
+        //frame component and display
+        frame.setContentPane(mainpanel);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == startButton) {
-            frame.dispose();
-            try {
-                DashboardUI dashboardUI = new DashboardUI();
-            } catch (MalformedURLException | JSONException ex) {
-                throw new RuntimeException(ex);
+    public static void main(String[] args) {
+        // Set Nimbus Look and Feel
+        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
             }
-        }
-        if (e.getSource() == loginButton) {
-            new LoginUI(); // Open the Login UI
-            frame.dispose(); // Close the Home Page
-        } else if (e.getSource() == signupButton) {
-            new SignupUI(); // Open the Signup UI
-            frame.dispose(); // Close the Home Page
+        } catch (Exception e) {
         }
     }
-
 }

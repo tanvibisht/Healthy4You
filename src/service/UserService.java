@@ -5,10 +5,15 @@ import java.util.*;
 
 public class UserService {
 
-    private static final String USERS_FILE = "users.txt";
+    private static final String USERS_FILE = "src/users.txt";
 
     // Load users from the file
     private Map<String, String> loadUsers() throws IOException {
+        File file = new File(USERS_FILE);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
         Map<String, String> users = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;

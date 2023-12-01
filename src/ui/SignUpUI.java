@@ -8,11 +8,11 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class LoginUI {
+public class SignUpUI {
     private JFrame frame;
     private JPanel mainpanel;
     private JPanel toppanel;
@@ -24,7 +24,6 @@ public class LoginUI {
     private JLabel headinglabel;
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private JButton loginbutton;
     private JButton signupbutton;
     private Font headingfont = new Font("Monospaced", Font.BOLD, 30);
     private Font buttonfont = new Font("SansSerif", Font.BOLD, 14);
@@ -36,10 +35,10 @@ public class LoginUI {
     private Border line = BorderFactory.createLineBorder(textcolor);
     private Border margin = new EmptyBorder(5, 10, 5, 5);
 
-    public LoginUI() {
+    public SignUpUI() {
         //frame setup
         frame = new JFrame();
-        frame.setTitle("Healthy4You Login");
+        frame.setTitle("Healthy4You Sign Up");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(530, 1100);
         frame.setBackground(bgcolor);
@@ -77,8 +76,8 @@ public class LoginUI {
             }
         });
 
-        //loginlabel setup
-        headinglabel = new JLabel("Login");
+        //signuplabel setup
+        headinglabel = new JLabel("Sign Up");
         headinglabel.setFont(headingfont);
         headinglabel.setForeground(headingcolor);
         headinglabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -156,21 +155,6 @@ public class LoginUI {
         passwordpanel.add(passwordField);
         passwordpanel.add(Box.createVerticalGlue());
 
-        //-----------------------------login button-----------------------------
-
-        //loginbutton setup
-        loginbutton = new JButton("Login");
-        loginbutton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        loginbutton.setHorizontalAlignment(SwingConstants.CENTER);
-        loginbutton.setMaximumSize(new Dimension(400, 60));
-        loginbutton.setFont(buttonfont);
-        loginbutton.setForeground(headingcolor);
-        loginbutton.setBackground(themecolor);
-        loginbutton.setOpaque(true);
-        loginbutton.setBorderPainted(false);
-        loginbutton.setFocusPainted(false);
-        loginbutton.addActionListener(e -> performLogin());
-
         //-----------------------------signup button-----------------------------
 
         //signupbutton setup
@@ -180,15 +164,11 @@ public class LoginUI {
         signupbutton.setMaximumSize(new Dimension(400, 60));
         signupbutton.setFont(buttonfont);
         signupbutton.setForeground(headingcolor);
-        signupbutton.setBackground(bgcolor);
-        signupbutton.setBorder(BorderFactory.createLineBorder(textcolor));
-        signupbutton.setFocusPainted(true);
-        signupbutton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-                SignUpUI signUpUI = new SignUpUI();
-            }
-        });
+        signupbutton.setBackground(themecolor);
+        signupbutton.setOpaque(true);
+        signupbutton.setBorderPainted(false);
+        signupbutton.setFocusPainted(false);
+        signupbutton.addActionListener(e -> createAccount());
 
         //mainpanel component
         mainpanel.add(Box.createVerticalStrut(30));
@@ -198,8 +178,6 @@ public class LoginUI {
         mainpanel.add(Box.createVerticalStrut(20));
         mainpanel.add(passwordpanel);
         mainpanel.add(Box.createVerticalStrut(50));
-        mainpanel.add(loginbutton);
-        mainpanel.add(Box.createVerticalStrut(20));
         mainpanel.add(signupbutton);
 
         //frame component and display
@@ -208,18 +186,19 @@ public class LoginUI {
         frame.setVisible(true);
     }
 
-    private void performLogin() {
+    private void createAccount() {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
-        UserService userService = new UserService();
 
+        UserService userService = new UserService();
         try {
-            if (userService.validateLogin(username, password)) {
-                // Login successful, open Dashboard
-                new DashboardUI();
-                frame.dispose(); // Close the login window
+            if (!userService.userExists(username)) {
+                userService.saveUser(username, password);
+                // Account created successfully, you can either open Dashboard or redirect to login
+                new HomePageUI();
+                frame.dispose(); // Close the signup window
             } else {
-                JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Username already exists.", "Signup Failed", JOptionPane.ERROR_MESSAGE);
             }
         } catch (IOException ex) {
             ex.printStackTrace(); // Handle exceptions properly in production code
@@ -227,4 +206,5 @@ public class LoginUI {
             throw new RuntimeException(e);
         }
     }
+
 }

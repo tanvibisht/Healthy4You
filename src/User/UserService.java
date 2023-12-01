@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class UserService {
 
-    private static final String USERS_FILE = "users.txt";
+    private static final String USERS_FILE = "src/Users.txt";
 
     // Load users from the file
     private Map<String, String> loadUsers() {

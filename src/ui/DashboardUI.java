@@ -37,8 +37,10 @@ public class DashboardUI implements ActionListener {
     JFrame frame;
     private JPanel panel;
     private RoundedButton addActivityButton;
-    private final Color backgroundColor = new Color(245, 245, 245); // Dark grey theme
-    private final Color themeColor = new Color(84, 121, 247); // Blue theme color for buttons and panels
+    private Color bgcolor = new Color(41, 41, 41);
+    private Color themecolor = new Color(143, 88, 178);
+    private Color headingcolor = new Color(255, 255, 255);
+    private Color textcolor = new Color(156, 156, 156);
 
     private WeatherService weatherService;
     private GeoLocationService geoLocationService;
@@ -52,14 +54,13 @@ public class DashboardUI implements ActionListener {
 
         frame = new JFrame("Healthy4You Dashboard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 1050);
-        frame.setResizable(false);
-        frame.getContentPane().setBackground(backgroundColor);
+        frame.setSize(530, 1100);
+        frame.getContentPane().setBackground(bgcolor);
 
         // Main panel with FlowLayout to allow for fixed size panels
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(backgroundColor);
+        panel.setBackground(bgcolor);
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Only vertical scrolling
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
@@ -67,14 +68,14 @@ public class DashboardUI implements ActionListener {
 
         addActivityButton = new RoundedButton();
         addActivityButton.setPreferredSize(new Dimension(500, 60)); // Make the button longer
-        addActivityButton.setBackground(themeColor);
+        addActivityButton.setBackground(themecolor);
         addActivityButton.setIcon(imageIcon);
         addActivityButton.setFocusPainted(false);
         addActivityButton.setBorderPainted(false);
         addActivityButton.addActionListener(this);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
-        buttonPanel.setBackground(backgroundColor);
+        buttonPanel.setBackground(bgcolor);
         buttonPanel.add(addActivityButton);
 
         JPanel topPanel = new JPanel(new BorderLayout()); // Use BorderLayout
@@ -83,7 +84,7 @@ public class DashboardUI implements ActionListener {
         weatherLabel = new JLabel("Loading weather...", SwingConstants.CENTER); // Set text alignment to center
         weatherLabel.setForeground(Color.WHITE);
         topPanel.setPreferredSize(new Dimension(600, 80));
-        topPanel.setBackground(themeColor);
+        topPanel.setBackground(themecolor);
         topPanel.add(weatherLabel, BorderLayout.CENTER); // Add weatherLabel to the center of topPanel
 
         displayWeatherInfo();
@@ -91,6 +92,7 @@ public class DashboardUI implements ActionListener {
         frame.add(buttonPanel, BorderLayout.SOUTH);
         frame.add(topPanel, BorderLayout.NORTH);
 
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
@@ -103,8 +105,9 @@ public class DashboardUI implements ActionListener {
     // Method to add a new activity panel with a fixed size and blue theme
     public void addActivityPanel(String name, String description) {
         JPanel activityPanel = new JPanel();
-        activityPanel.setPreferredSize(new Dimension(550, 60)); // Fixed size for activity panels
-        activityPanel.setBackground(themeColor);
+        activityPanel.setPreferredSize(new Dimension(400, 60)); // Fixed size for activity panels
+        activityPanel.setMaximumSize(new Dimension(400,60));
+        activityPanel.setBackground(themecolor);
         activityPanel.setLayout(new BorderLayout());
 
         JLabel nameLabel = new JLabel(name);
@@ -115,18 +118,14 @@ public class DashboardUI implements ActionListener {
         descriptionArea.setWrapStyleWord(true);
         descriptionArea.setLineWrap(true);
         descriptionArea.setForeground(Color.white);
-        descriptionArea.setBackground(themeColor);
+        descriptionArea.setBackground(themecolor);
         descriptionArea.setEditable(false);
 
         activityPanel.add(nameLabel, BorderLayout.NORTH);
         activityPanel.add(descriptionArea, BorderLayout.CENTER);
 
-        // Wrap the activity panel in another panel to maintain its size
-        JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 30));
-        wrapperPanel.setBackground(backgroundColor);
-        wrapperPanel.add(activityPanel);
-
-        panel.add(wrapperPanel);
+        panel.add(Box.createVerticalStrut(20));
+        panel.add(activityPanel);
         panel.revalidate();
         panel.repaint();
     }
