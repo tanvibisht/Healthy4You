@@ -1,15 +1,13 @@
 package ui;
 
-import service.WeatherService;
-import service.GeoLocationService;
-
+import org.json.JSONException;
 import org.json.JSONObject;
-
+import service.GeoLocationService;
+import service.WeatherService;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.RoundRectangle2D;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -46,7 +44,7 @@ public class DashboardUI implements ActionListener {
     private GeoLocationService geoLocationService;
     private JLabel weatherLabel;
 
-    public DashboardUI() throws MalformedURLException {
+    public DashboardUI() throws MalformedURLException, JSONException {
         ImageIcon originalImage = new ImageIcon("/Users/cristianoafonsodasilva/Desktop/University of Toronto/2023 Fall/CSC207/src/resource/plus.png");
         Image image = originalImage.getImage(); // Transform it
         Image newimg = image.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // Scale it the smooth way
@@ -133,7 +131,7 @@ public class DashboardUI implements ActionListener {
         panel.repaint();
     }
 
-    private void displayWeatherInfo() throws MalformedURLException {
+    private void displayWeatherInfo() throws MalformedURLException, JSONException {
 
         String location = geoLocationService.getCity();
 
@@ -171,6 +169,8 @@ public class DashboardUI implements ActionListener {
             try {
                 new DashboardUI();
             } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
         });

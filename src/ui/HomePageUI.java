@@ -1,5 +1,7 @@
 package ui;
 
+import org.json.JSONException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -36,6 +38,8 @@ public class HomePageUI implements ActionListener {
     private JLabel logoLabel;
     private JLabel greetingLabel;
     private JLabel sloganLabel;
+    private JButton loginButton;
+    private JButton signupButton;
 
     public HomePageUI() {
         initializeUI();
@@ -79,6 +83,18 @@ public class HomePageUI implements ActionListener {
         startButton.setFocusPainted(false);
         startButton.addActionListener(this);
 
+        loginButton = new RoundedLabelButton("Login", themeColor);
+        signupButton = new RoundedLabelButton("Signup", themeColor);
+
+        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        signupButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        loginButton.addActionListener(this);
+        signupButton.addActionListener(this);
+
+        mainPanel.add(loginButton);
+        mainPanel.add(signupButton);
+
         mainPanel.add(Box.createVerticalStrut(200));
         mainPanel.add(greetingLabel);
         mainPanel.add(Box.createVerticalStrut(10));
@@ -98,9 +114,17 @@ public class HomePageUI implements ActionListener {
             frame.dispose();
             try {
                 DashboardUI dashboardUI = new DashboardUI();
-            } catch (MalformedURLException ex) {
+            } catch (MalformedURLException | JSONException ex) {
                 throw new RuntimeException(ex);
             }
         }
+        if (e.getSource() == loginButton) {
+            new LoginUI(); // Open the Login UI
+            frame.dispose(); // Close the Home Page
+        } else if (e.getSource() == signupButton) {
+            new SignupUI(); // Open the Signup UI
+            frame.dispose(); // Close the Home Page
+        }
     }
+
 }

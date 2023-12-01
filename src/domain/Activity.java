@@ -42,4 +42,5 @@ public class Activity{
     public boolean isCompletedToday() {
         return isCompletedToday;
     }
+
 }
