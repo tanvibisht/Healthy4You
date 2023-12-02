@@ -40,7 +40,7 @@ public class DashboardUI implements ActionListener {
     JFrame frame;
     private JPanel panel;
     private RoundedButton addActivityButton;
-
+    private RoundedButton deleteButton;
     private RoundedButton getRecipeButton;
     private Color bgcolor = new Color(41, 41, 41);
     private Color themecolor = new Color(143, 88, 178);
@@ -72,12 +72,20 @@ public class DashboardUI implements ActionListener {
         frame.add(scrollPane, BorderLayout.CENTER);
 
         addActivityButton = new RoundedButton();
-        addActivityButton.setPreferredSize(new Dimension(500, 60)); // Make the button longer
+        addActivityButton.setText("Add");
+        addActivityButton.setPreferredSize(new Dimension(250, 60)); // Make the button longer
         addActivityButton.setBackground(themecolor);
         addActivityButton.setIcon(imageIcon);
         addActivityButton.setFocusPainted(false);
         addActivityButton.setBorderPainted(false);
         addActivityButton.addActionListener(this);
+        deleteButton = new RoundedButton();
+        deleteButton.setText("Delete"); // Set text for the delete button
+        deleteButton.setPreferredSize(new Dimension(250, 60)); // Set preferred size, similar to add button
+        deleteButton.setBackground(themecolor); // Set background color, can be same or different
+        deleteButton.setFocusPainted(false);
+        deleteButton.setBorderPainted(false);
+        deleteButton.addActionListener(this); // Add action listener for delete functionality
         getRecipeButton = new RoundedButton();
         getRecipeButton.setPreferredSize(new Dimension(500, 500));
         getRecipeButton.setText("Recipes");
@@ -88,7 +96,8 @@ public class DashboardUI implements ActionListener {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
         buttonPanel.setBackground(bgcolor);
-        buttonPanel.add(addActivityButton);
+        buttonPanel.add(addActivityButton, BorderLayout.WEST); // Add button to the left
+        buttonPanel.add(deleteButton, BorderLayout.EAST);
 
         buttonPanel.add(getRecipeButton);
         JPanel topPanel = new JPanel(new BorderLayout()); // Use BorderLayout
@@ -122,6 +131,8 @@ public class DashboardUI implements ActionListener {
 
             // Display the new recipe in a dialog or on the UI
             new RecipeUI(newRecipe);
+        }   else if (e.getSource() == deleteButton) {
+            removeTopActivity();
         }
     }
 
@@ -153,6 +164,22 @@ public class DashboardUI implements ActionListener {
         panel.repaint();
     }
 
+    public void removeTopActivity() {
+        // Check if there are any activities in the panel
+        if (panel.getComponentCount() > 0) {
+            // Assuming each activity is preceded by a vertical strut, remove it first
+            panel.remove(0);
+
+            // Now remove the activity panel itself
+            panel.remove(0);
+
+            // Refresh the panel to update the UI
+            panel.revalidate();
+            panel.repaint();
+        } else {
+            JOptionPane.showMessageDialog(frame, "No activities to remove.");
+        }
+    }
     private void displayWeatherInfo() throws MalformedURLException, JSONException {
 
         String location = geoLocationService.getCity();
