@@ -23,12 +23,14 @@ public class Interactor implements Input{
             List<Activity> activities = LoggedUser.getUser().getActivities();
             for (Activity activity: activities){
                 String desctiption  = activity.getDescription();
-                Integer duration = activity.getDuration();
+                //Integer duration = activity.getDuration();
+                String duration = activity.getDurationInHours(); // hours instead of minutes
                 Boolean completion = activity.isCompletedToday();
                 LocalDateTime time = activity.getTime();
                 List<String> activityList = new ArrayList<>();
                 activityList.add(desctiption);
-                activityList.add(duration.toString());
+                //activityList.add(duration.toString());
+                activityList.add(duration); // hours instead of minutes
                 activityList.add(completion.toString());
                 activityList.add(time.toString());
                 activitiesList.add(activityList);

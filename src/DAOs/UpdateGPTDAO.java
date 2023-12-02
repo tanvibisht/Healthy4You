@@ -22,7 +22,7 @@ public class UpdateGPTDAO implements GPTupdateDAI{
         for (Activity activity: user.getActivities()) {
             if (activity.getTime().getDayOfYear() == LocalDateTime.now().getDayOfYear()) {
                 formattedActivity += ("Activity:" + activity.getDescription() + " Start time:" + activity.getTime() +
-                        " Duration:" + activity.getDuration() + "\n");
+                        " Duration:" + activity.getDurationInHours() + "\n"); // hours instead of minutes
             }
         }
         String message = "Please tell me how to improve my physical activity schedual for today, what may I adjust" +

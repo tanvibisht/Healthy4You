@@ -35,6 +35,11 @@ public class Activity{
         return duration;
     }
 
+    public String getDurationInHours(){
+        float rawHours = (float)duration / 60;
+        return String.format("%.1f", rawHours);
+    }
+
     public LocalDateTime getTime() {
         return time;
     }

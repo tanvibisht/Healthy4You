@@ -120,7 +120,7 @@ public class DashboardUI implements ActionListener {
         topPanel.setBackground(themecolor);
         topPanel.add(weatherLabel, BorderLayout.CENTER); // Add weatherLabel to the center of topPanel
 
-        displayWeatherInfo();
+        //displayWeatherInfo();
         buttonPanel.add(hydrationButton);
 
         displayWeatherInfo(username, userService);

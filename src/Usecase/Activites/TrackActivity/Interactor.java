@@ -25,12 +25,14 @@ public class Interactor implements Input{
             for (Activity activity: activities){
                 if (time.isAfter(activity.getTime().minusHours(1L)) && !activity.isCompletedToday()){
                     String desctiption  = activity.getDescription();
-                    Integer duration = activity.getDuration();
+                    //Integer duration = activity.getDuration();
+                    String duration = activity.getDurationInHours(); // hours instead of minutes
                     Boolean completion = activity.isCompletedToday();
                     LocalDateTime activityTime = activity.getTime();
                     List<String> activityList = new ArrayList<>();
                     activityList.add(desctiption);
-                    activityList.add(duration.toString());
+                    //activityList.add(duration.toString());
+                    activityList.add(duration); // hours instead of minutes
                     activityList.add(completion.toString());
                     activityList.add(activityTime.toString());
                     currentActivities.add(activityList);
