@@ -11,7 +11,7 @@ public class Interactor implements Input{
     Interactor(Output out){
         output = out;
     }
-    public void excute(InputData userData) {
+    public void execute(InputData userData) {
         User user = LoggedUser.getUser();
         int index = userData.getActivity();
         if (user == null) {

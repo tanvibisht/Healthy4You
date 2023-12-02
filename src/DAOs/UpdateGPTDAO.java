@@ -16,7 +16,7 @@ public class UpdateGPTDAO implements GPTupdateDAI{
     @Override
     public String getComment(User user, String weather) {
         String url = "https://api.openai.com/v1/chat/completions";
-        String apiKey = "YOUR API KEY HERE";
+        String apiKey = "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";
         String model = "gpt-3.5-turbo";
         String formattedActivity = null;
         for (Activity activity: user.getActivities()) {

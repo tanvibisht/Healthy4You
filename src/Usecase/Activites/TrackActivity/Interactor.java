@@ -15,7 +15,7 @@ public class Interactor implements Input{
         dai = da;
     }
 
-    public void excute(){
+    public void execute(){
         if (LoggedUser.getUser() == null){
             output.prepareFailView("User not found");
         } else {

@@ -1,5 +1,6 @@
 package ui;
-
+import Hydration.Hydration;
+import service.UserService;
 import Recipe.RecipeGenerator;
 import Recipe.RecipeUI;
 import org.json.JSONException;
@@ -41,13 +42,14 @@ public class DashboardUI implements ActionListener {
     JFrame frame;
     private JPanel panel;
     private RoundedButton addActivityButton;
-
+    private RoundedButton deleteButton;
     private RoundedButton getRecipeButton;
     private Color bgcolor = new Color(41, 41, 41);
     private Color themecolor = new Color(143, 88, 178);
     private Color headingcolor = new Color(255, 255, 255);
     private Color textcolor = new Color(156, 156, 156);
-
+    private RoundedButton hydrationButton;
+    private String username;
     private WeatherService weatherService;
     private GeoLocationService geoLocationService;
     private JLabel weatherLabel;
@@ -57,6 +59,7 @@ public class DashboardUI implements ActionListener {
         Image image = originalImage.getImage(); // Transform it
         Image newimg = image.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // Scale it the smooth way
         ImageIcon imageIcon = new ImageIcon(newimg);  // Transform it back
+        this.username = username;
 
         frame = new JFrame("Healthy4You Dashboard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,12 +76,20 @@ public class DashboardUI implements ActionListener {
         frame.add(scrollPane, BorderLayout.CENTER);
 
         addActivityButton = new RoundedButton();
-        addActivityButton.setPreferredSize(new Dimension(500, 60)); // Make the button longer
+        addActivityButton.setText("Add");
+        addActivityButton.setPreferredSize(new Dimension(250, 60)); // Make the button longer
         addActivityButton.setBackground(themecolor);
         addActivityButton.setIcon(imageIcon);
         addActivityButton.setFocusPainted(false);
         addActivityButton.setBorderPainted(false);
         addActivityButton.addActionListener(this);
+        deleteButton = new RoundedButton();
+        deleteButton.setText("Delete"); // Set text for the delete button
+        deleteButton.setPreferredSize(new Dimension(250, 60)); // Set preferred size, similar to add button
+        deleteButton.setBackground(themecolor); // Set background color, can be same or different
+        deleteButton.setFocusPainted(false);
+        deleteButton.setBorderPainted(false);
+        deleteButton.addActionListener(this); // Add action listener for delete functionality
         getRecipeButton = new RoundedButton();
         getRecipeButton.setPreferredSize(new Dimension(500, 500));
         getRecipeButton.setText("Recipes");
@@ -86,10 +97,18 @@ public class DashboardUI implements ActionListener {
         getRecipeButton.setFocusPainted(false);
         getRecipeButton.setBorderPainted(false);
         getRecipeButton.addActionListener(this);
+        hydrationButton = new RoundedButton();
+        hydrationButton.setText("Hydration");
+        hydrationButton.setPreferredSize(new Dimension(250, 60));
+        hydrationButton.setBackground(themecolor);
+        hydrationButton.setFocusPainted(false);
+        hydrationButton.setBorderPainted(false);
+        hydrationButton.addActionListener(this);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
         buttonPanel.setBackground(bgcolor);
-        buttonPanel.add(addActivityButton);
+        buttonPanel.add(addActivityButton, BorderLayout.WEST); // Add button to the left
+        buttonPanel.add(deleteButton, BorderLayout.EAST);
 
         buttonPanel.add(getRecipeButton);
         JPanel topPanel = new JPanel(new BorderLayout()); // Use BorderLayout
@@ -100,6 +119,7 @@ public class DashboardUI implements ActionListener {
         topPanel.setPreferredSize(new Dimension(600, 80));
         topPanel.setBackground(themecolor);
         topPanel.add(weatherLabel, BorderLayout.CENTER); // Add weatherLabel to the center of topPanel
+
 
         displayWeatherInfo(username, userService);
         frame.add(buttonPanel, BorderLayout.SOUTH);
@@ -123,9 +143,53 @@ public class DashboardUI implements ActionListener {
 
             // Display the new recipe in a dialog or on the UI
             new RecipeUI(newRecipe);
+
+        }
+        else if (e.getSource() == deleteButton) {
+            removeTopActivity();
+        }
+        else if (e.getSource() == hydrationButton) {
+            showHydrationWindow(username); // Show hydration window for the current user
+
+        }   else if (e.getSource() == deleteButton) {
+            removeTopActivity();
         }
     }
+    private void showHydrationWindow(String username) {
+        JDialog hydrationDialog = new JDialog(frame, "Hydration Tracker", true);
+        hydrationDialog.setLayout(new FlowLayout());
+        Hydration hydration = new Hydration();
 
+        JTextField waterInputField = new JTextField(5);
+        JButton addButton = new JButton("Add");
+        JButton clearButton = new JButton("Clear Data"); // Clear Data button
+        JLabel totalLabel = new JLabel("Total Liters: " + hydration.getTotalLiters(username));
+
+        addButton.addActionListener(e -> {
+            try {
+                double liters = Double.parseDouble(waterInputField.getText());
+                hydration.addWater(username, liters);
+                totalLabel.setText("Total Liters: " + hydration.getTotalLiters(username));
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(hydrationDialog, "Please enter a valid number.");
+            }
+        });
+
+        clearButton.addActionListener(e -> {
+            hydration.clearData(username); // Clear hydration data for the user
+            totalLabel.setText("Total Liters: 0.0");
+        });
+
+        hydrationDialog.add(new JLabel("Enter water amount (liters):"));
+        hydrationDialog.add(waterInputField);
+        hydrationDialog.add(addButton);
+        hydrationDialog.add(clearButton); // Add the Clear Data button
+        hydrationDialog.add(totalLabel);
+
+        hydrationDialog.pack();
+        hydrationDialog.setLocationRelativeTo(frame);
+        hydrationDialog.setVisible(true);
+    }
     // Method to add a new activity panel with a fixed size and blue theme
     public void addActivityPanel(String name, String description) {
         JPanel activityPanel = new JPanel();
@@ -155,6 +219,28 @@ public class DashboardUI implements ActionListener {
     }
 
     private void displayWeatherInfo(String username, UserService userService) throws MalformedURLException, JSONException {
+        try {
+            String location = userService.getUserLocation(username);
+            String weatherData = weatherService.getWeather(location);
+
+
+    public void removeTopActivity() {
+        // Check if there are any activities in the panel
+        if (panel.getComponentCount() > 0) {
+            // Assuming each activity is preceded by a vertical strut, remove it first
+            panel.remove(0);
+
+            // Now remove the activity panel itself
+            panel.remove(0);
+
+            // Refresh the panel to update the UI
+            panel.revalidate();
+            panel.repaint();
+        } else {
+            JOptionPane.showMessageDialog(frame, "No activities to remove.");
+        }
+    }
+    private void displayWeatherInfo(String username, UserService userService) throws JSONException {
         try {
             String location = userService.getUserLocation(username);
             String weatherData = weatherService.getWeather(location);

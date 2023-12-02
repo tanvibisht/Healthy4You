@@ -24,6 +24,9 @@ public class LoginUI {
     private JPanel locationpanel;
     private JLabel locationlabel;
     private JTextField locationField;
+
+    private JCheckBox locationcheckbox;
+
     private JButton backbutton;
     private JLabel headinglabel;
     private JTextField usernameField;
@@ -165,6 +168,7 @@ public class LoginUI {
         //locationpanel setup
         locationpanel = new JPanel();
         locationpanel.setMaximumSize(new Dimension(400, 100));
+        locationpanel.setMaximumSize(new Dimension(400, 130));
         locationpanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         locationpanel.setBackground(bgcolor);
         locationpanel.setLayout(new BoxLayout(locationpanel, BoxLayout.Y_AXIS));
@@ -186,11 +190,28 @@ public class LoginUI {
         locationField.setBackground(bgcolor);
         locationField.setBorder(new CompoundBorder(line, margin));
 
+        //locationcheckbox setup
+        locationcheckbox = new JCheckBox("Use previous location");
+        locationcheckbox.setFont(textfont);
+        locationcheckbox.setForeground(textcolor);
+        locationcheckbox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        locationcheckbox.addActionListener(e -> {
+            try {
+                addlocation();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         //locationpanel component
         locationpanel.add(Box.createVerticalGlue());
         locationpanel.add(locationlabel);
         locationpanel.add(Box.createVerticalStrut(10));
         locationpanel.add(locationField);
+
+        locationpanel.add(Box.createVerticalStrut(10));
+        locationpanel.add(locationcheckbox);
+
         locationpanel.add(Box.createVerticalGlue());
 
         //-----------------------------login button-----------------------------
@@ -274,9 +295,33 @@ public class LoginUI {
         }
     }
 
+
     private String getWeatherData(String location) {
         WeatherService weatherService = new WeatherService();
         return weatherService.getWeather(location);
-    }
 
+    private void addlocation() throws IOException {
+        String username = new String(usernameField.getText());
+        UserService userService = new UserService();
+        try {
+            if (locationcheckbox.isSelected()) {
+                // Set the locationtextfield to a default location when the checkbox is checked
+                if (userService.userExists(username)){
+                    String location = userService.getUserLocation(username);
+                    locationField.setText(location); // Replace with the actual location you want to set
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Invalid username", "Invalid username", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            } else {
+                // Optionally clear the textfield when the checkbox is unchecked
+                locationField.setText("");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace(); // Handle exceptions properly in production code
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

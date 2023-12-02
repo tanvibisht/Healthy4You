@@ -4,7 +4,7 @@ import domain.User;
 
 public class InputData {
     private final int activity;
-    InputData(int act){
+    public InputData(int act){
         activity = act;
     }
 
