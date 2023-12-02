@@ -9,19 +9,19 @@ import java.util.List;
 
 public class Interactor implements Input{
     final Output output;
-    final DAI dataAcess;
+    final DAI dataAccess;
 
     Interactor(Output out, DAI dai){
         output = out;
-        dataAcess = dai;
+        dataAccess = dai;
     }
 
-    public void excute(){
+    public void execute(){
         User user = LoggedUser.getUser();
         if (user == null){
             output.prepareFailView("User not found");
         } else{
-            List<Activity> activities = dataAcess.getActivities();
+            List<Activity> activities = dataAccess.getActivities();
             List<Activity> memoryActivities = new ArrayList<>(user.getActivities());
             for (Activity activity: activities){
                 if (!memoryActivities.contains(activity)){

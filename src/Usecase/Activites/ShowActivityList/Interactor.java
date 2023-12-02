@@ -14,7 +14,7 @@ public class Interactor implements Input{
     Interactor(Output out){
         output = out;
     }
-    public void excute(){
+    public void execute(){
         User user = LoggedUser.getUser();
         if (user == null){
             output.prepareFailView("user not found");

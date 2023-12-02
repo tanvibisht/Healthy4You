@@ -14,7 +14,7 @@ public class CreatActivityInteractor implements CreatActivityInput{
         output = out;
     }
 
-    public void excute(CreatActivityInputData userData){
+    public void execute(CreatActivityInputData userData){
         User user = LoggedUser.getUser();
         String description = userData.getDescription();
         LocalDateTime time = userData.getTime();

@@ -28,8 +28,12 @@ public class User {
         return activities;
     }
 
-    public void addActivity(Activity activity) {
-        activities.add(activity);
+    public void addActivity(Activity act) {
+        int i  = 0;
+        while (i < activities.size() && act.getTime().isBefore(activities.get(i).getTime())){
+            i += 1;
+        }
+        activities.add(i + 1, act);
     }
 
     public Activity compeleteActivity(int index){
