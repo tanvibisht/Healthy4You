@@ -1,4 +1,1 @@
-wow,Toronto
-now,Mumbai
-ha,toronto
-hello,Vancouver
+hello,bybyeojoie
