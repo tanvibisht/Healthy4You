@@ -45,7 +45,7 @@ public class HomePageUI {
 
         //-----------------------------top panel-----------------------------
         //imageIcon setup
-        ImageIcon originalImage = new ImageIcon("/Users/cristianoafonsodasilva/Desktop/University of Toronto/2023 Fall/Healthy4You/version_7/src/resource/Healthy4You.png");
+        ImageIcon originalImage = new ImageIcon("/Users/cristianoafonsodasilva/Desktop/University of Toronto/2023 Fall/Healthy4You/version_7/src/resource/logo.png");
         Image image = originalImage.getImage(); // Transform it
         Image newimg = image.getScaledInstance(530, 600,  java.awt.Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon(newimg);  // Transform it back

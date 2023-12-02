@@ -24,6 +24,9 @@ public class SignUpUI {
     private JLabel headinglabel;
     private JTextField usernameField;
     private JPasswordField passwordField;
+    private JPanel locationpanel;
+    private JLabel locationlabel;
+    private JTextField locationField;
     private JButton signupbutton;
     private Font headingfont = new Font("Monospaced", Font.BOLD, 30);
     private Font buttonfont = new Font("SansSerif", Font.BOLD, 14);
@@ -155,6 +158,39 @@ public class SignUpUI {
         passwordpanel.add(passwordField);
         passwordpanel.add(Box.createVerticalGlue());
 
+        //-----------------------------location panel-----------------------------
+
+        //locationpanel setup
+        locationpanel = new JPanel();
+        locationpanel.setMaximumSize(new Dimension(400, 100));
+        locationpanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        locationpanel.setBackground(bgcolor);
+        locationpanel.setLayout(new BoxLayout(locationpanel, BoxLayout.Y_AXIS));
+
+        //locationlabel setup
+        locationlabel = new JLabel("Location");
+        locationlabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        locationlabel.setFont(textfont);
+        locationlabel.setForeground(textcolor);
+
+        //locationField setup
+        locationField = new JTextField();
+        locationField.setAlignmentX(Component.LEFT_ALIGNMENT);
+        locationField.setMaximumSize(new Dimension(400, 60));
+        locationField.setPreferredSize(new Dimension(400, 60));
+        locationField.setFont(textfont);
+        locationField.setCaretColor(headingcolor);
+        locationField.setForeground(headingcolor);
+        locationField.setBackground(bgcolor);
+        locationField.setBorder(new CompoundBorder(line, margin));
+
+        //locationpanel component
+        locationpanel.add(Box.createVerticalGlue());
+        locationpanel.add(locationlabel);
+        locationpanel.add(Box.createVerticalStrut(10));
+        locationpanel.add(locationField);
+        locationpanel.add(Box.createVerticalGlue());
+
         //-----------------------------signup button-----------------------------
 
         //signupbutton setup
@@ -177,6 +213,8 @@ public class SignUpUI {
         mainpanel.add(usernamepanel);
         mainpanel.add(Box.createVerticalStrut(20));
         mainpanel.add(passwordpanel);
+        mainpanel.add(Box.createVerticalStrut(20));
+        mainpanel.add(locationpanel);
         mainpanel.add(Box.createVerticalStrut(50));
         mainpanel.add(signupbutton);
 
@@ -187,13 +225,20 @@ public class SignUpUI {
     }
 
     private void createAccount() {
-        String username = usernameField.getText();
+        String username = new String(usernameField.getText());
         String password = new String(passwordField.getPassword());
-
+        String location = new String(locationField.getText());
         UserService userService = new UserService();
+
         try {
             if (!userService.userExists(username)) {
                 userService.saveUser(username, password);
+                if (!location.isEmpty()) {
+                    userService.saveUserLocation(username, location);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Location not provided.", "Weather Data Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 // Account created successfully, you can either open Dashboard or redirect to login
                 new HomePageUI();
                 frame.dispose(); // Close the signup window
@@ -206,5 +251,4 @@ public class SignUpUI {
             throw new RuntimeException(e);
         }
     }
-
 }
