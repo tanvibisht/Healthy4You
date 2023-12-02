@@ -1,5 +1,7 @@
 package service;
 
+import domain.User;
+
 import java.io.*;
 import java.util.*;
 
@@ -32,6 +34,8 @@ public class UserService {
     public void saveUser(String username, String password) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE, true))) {
             writer.write(username + "," + password + "\n");
+        } catch (IOException e) {
+            // Handle exception
         }
     }
 
@@ -61,14 +65,41 @@ public class UserService {
         }
         return "";
     }
-    public void saveUserLocation(String username, String location) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, true))) {
-            writer.write(username + "," + location + "\n");
+
+    public void saveUserLocation(String username, String location) throws IOException {
+        Map<String, String> userData = loadUserData();
+
+        // Update the location for the user
+        userData.put(username, location);
+
+        // Rewrite the user data file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE))) {
+            for (Map.Entry<String, String> entry : userData.entrySet()) {
+                writer.write(entry.getKey() + "," + entry.getValue() + "\n");
+            }
         } catch (IOException e) {
             e.printStackTrace();
             // Handle the exception appropriately
         }
+    }
 
+    private Map<String, String> loadUserData() throws IOException {
+        File file = new File(USER_DATA_FILE);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
+        Map<String, String> userData = new HashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 2) {
+                    userData.put(parts[0], parts[1]);
+                }
+            }
+        }
+        return userData;
     }
 }
 

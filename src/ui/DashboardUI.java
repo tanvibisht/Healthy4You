@@ -6,6 +6,7 @@ import Recipe.RecipeUI;
 import org.json.JSONException;
 import org.json.JSONObject;
 import service.GeoLocationService;
+import service.UserService;
 import service.WeatherService;
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +42,7 @@ public class DashboardUI implements ActionListener {
     JFrame frame;
     private JPanel panel;
     private RoundedButton addActivityButton;
-
+    private RoundedButton deleteButton;
     private RoundedButton getRecipeButton;
     private Color bgcolor = new Color(41, 41, 41);
     private Color themecolor = new Color(143, 88, 178);
@@ -53,7 +54,7 @@ public class DashboardUI implements ActionListener {
     private GeoLocationService geoLocationService;
     private JLabel weatherLabel;
 
-    public DashboardUI() throws MalformedURLException, JSONException {
+    public DashboardUI(String username, UserService userService) throws MalformedURLException, JSONException {
         ImageIcon originalImage = new ImageIcon("/Users/cristianoafonsodasilva/Desktop/University of Toronto/2023 Fall/CSC207/src/resource/plus.png");
         Image image = originalImage.getImage(); // Transform it
         Image newimg = image.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // Scale it the smooth way
@@ -75,12 +76,20 @@ public class DashboardUI implements ActionListener {
         frame.add(scrollPane, BorderLayout.CENTER);
 
         addActivityButton = new RoundedButton();
-        addActivityButton.setPreferredSize(new Dimension(500, 60)); // Make the button longer
+        addActivityButton.setText("Add");
+        addActivityButton.setPreferredSize(new Dimension(250, 60)); // Make the button longer
         addActivityButton.setBackground(themecolor);
         addActivityButton.setIcon(imageIcon);
         addActivityButton.setFocusPainted(false);
         addActivityButton.setBorderPainted(false);
         addActivityButton.addActionListener(this);
+        deleteButton = new RoundedButton();
+        deleteButton.setText("Delete"); // Set text for the delete button
+        deleteButton.setPreferredSize(new Dimension(250, 60)); // Set preferred size, similar to add button
+        deleteButton.setBackground(themecolor); // Set background color, can be same or different
+        deleteButton.setFocusPainted(false);
+        deleteButton.setBorderPainted(false);
+        deleteButton.addActionListener(this); // Add action listener for delete functionality
         getRecipeButton = new RoundedButton();
         getRecipeButton.setPreferredSize(new Dimension(500, 500));
         getRecipeButton.setText("Recipes");
@@ -98,7 +107,8 @@ public class DashboardUI implements ActionListener {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
         buttonPanel.setBackground(bgcolor);
-        buttonPanel.add(addActivityButton);
+        buttonPanel.add(addActivityButton, BorderLayout.WEST); // Add button to the left
+        buttonPanel.add(deleteButton, BorderLayout.EAST);
 
         buttonPanel.add(getRecipeButton);
         JPanel topPanel = new JPanel(new BorderLayout()); // Use BorderLayout
@@ -112,6 +122,7 @@ public class DashboardUI implements ActionListener {
 
         displayWeatherInfo();
         buttonPanel.add(hydrationButton);
+
         displayWeatherInfo(username, userService);
         frame.add(buttonPanel, BorderLayout.SOUTH);
         frame.add(topPanel, BorderLayout.NORTH);
@@ -141,6 +152,9 @@ public class DashboardUI implements ActionListener {
         }
         else if (e.getSource() == hydrationButton) {
             showHydrationWindow(username); // Show hydration window for the current user
+
+        }   else if (e.getSource() == deleteButton) {
+            removeTopActivity();
         }
     }
     private void showHydrationWindow(String username) {
@@ -206,48 +220,69 @@ public class DashboardUI implements ActionListener {
         panel.repaint();
     }
 
-    private void displayWeatherInfo() throws MalformedURLException, JSONException {
+    public void removeTopActivity() {
+        // Check if there are any activities in the panel
+        if (panel.getComponentCount() > 0) {
+            // Assuming each activity is preceded by a vertical strut, remove it first
+            panel.remove(0);
 
-        String location = geoLocationService.getCity();
+            // Now remove the activity panel itself
+            panel.remove(0);
 
-        if (!location.equals("Error fetching location")) {
-            String city = location;
-            String weatherData = weatherService.getWeather(city);
-            JSONObject jsonObj = new JSONObject(weatherData);
-
-            // Extracting the icon code
-            String iconCode = jsonObj.getJSONArray("weather").getJSONObject(0).getString("icon");
-            String iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
-
-            // Download and set the icon to a JLabel
-            ImageIcon weatherIcon = new ImageIcon(new URL(iconUrl));
-            weatherLabel.setIcon(weatherIcon);
-
-            // Extracting temperature (assuming it's provided in Kelvin)
-            double temperatureKelvin = jsonObj.getJSONObject("main").getDouble("temp");
-            double temperatureCelsius = temperatureKelvin - 273.15; // Convert to Celsius
-
-            // Extracting main weather condition
-            String weatherCondition = jsonObj.getJSONArray("weather").getJSONObject(0).getString("main");
-
-            weatherLabel.setText("Temp in " + city + ": " + String.format("%.2f", temperatureCelsius) + " °C, " + weatherCondition);
-
+            // Refresh the panel to update the UI
+            panel.revalidate();
+            panel.repaint();
         } else {
-            weatherLabel.setText("Unable to fetch location and weather data");
+            JOptionPane.showMessageDialog(frame, "No activities to remove.");
         }
-
-        frame.repaint();
     }
+    private void displayWeatherInfo(String username, UserService userService) throws JSONException {
+        try {
+            String location = userService.getUserLocation(username);
+            String weatherData = weatherService.getWeather(location);
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                new DashboardUI();
-            } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
+            // Log the response for debugging
+            System.out.println("Weather data response: " + weatherData);
+
+            // Check if the response is not JSON (does not start with '{')
+            if (!weatherData.trim().startsWith("{")) {
+                JOptionPane.showMessageDialog(frame, "Invalid response received from the server", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        });
+
+            JSONObject jsonObj = new JSONObject(weatherData);
+            if (!location.equals("Error fetching location")) {
+
+                // Extracting the icon code
+                String iconCode = jsonObj.getJSONArray("weather").getJSONObject(0).getString("icon");
+                String iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
+
+                // Download and set the icon to a JLabel
+                ImageIcon weatherIcon = new ImageIcon(new URL(iconUrl));
+                weatherLabel.setIcon(weatherIcon);
+
+                // Extracting temperature (assuming it's provided in Kelvin)
+                double temperatureKelvin = jsonObj.getJSONObject("main").getDouble("temp");
+                double temperatureCelsius = temperatureKelvin - 273.15; // Convert to Celsius
+
+                // Extracting main weather condition
+                String weatherCondition = jsonObj.getJSONArray("weather").getJSONObject(0).getString("main");
+
+                weatherLabel.setText("Temp in " + location + ": " + String.format("%.2f", temperatureCelsius) + " °C, " + weatherCondition);
+
+            } else {
+                weatherLabel.setText("Unable to fetch location and weather data");
+            }
+
+            // Rest of your existing code for processing the JSON
+
+        } catch (JSONException e) {
+            JOptionPane.showMessageDialog(frame, "Invalid location or error parsing weather data", "JSON Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+        frame.repaint();
     }
 }

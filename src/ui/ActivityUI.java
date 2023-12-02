@@ -11,6 +11,8 @@ public class ActivityUI extends JFrame implements ActionListener {
     private JTextArea activityDescriptionArea;
     private JButton createButton;
 
+    private JButton deleteButton;
+
     public ActivityUI(DashboardUI dashboardUI) {
         super("Add New Activity");
         this.dashboardUI = dashboardUI;
@@ -40,7 +42,10 @@ public class ActivityUI extends JFrame implements ActionListener {
             if (!activityName.isEmpty() && !activityDescription.isEmpty()) {
                 dashboardUI.addActivityPanel(activityName, activityDescription);
                 dispose();
-            } else {
+            } else if (e.getSource() == deleteButton) {
+                dashboardUI.removeTopActivity();
+            }
+            else {
                 JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Incomplete Information", JOptionPane.WARNING_MESSAGE);
             }
         }
