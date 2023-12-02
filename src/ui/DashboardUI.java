@@ -120,8 +120,6 @@ public class DashboardUI implements ActionListener {
         topPanel.setBackground(themecolor);
         topPanel.add(weatherLabel, BorderLayout.CENTER); // Add weatherLabel to the center of topPanel
 
-        displayWeatherInfo();
-        buttonPanel.add(hydrationButton);
 
         displayWeatherInfo(username, userService);
         frame.add(buttonPanel, BorderLayout.SOUTH);
@@ -219,6 +217,12 @@ public class DashboardUI implements ActionListener {
         panel.revalidate();
         panel.repaint();
     }
+
+    private void displayWeatherInfo(String username, UserService userService) throws MalformedURLException, JSONException {
+        try {
+            String location = userService.getUserLocation(username);
+            String weatherData = weatherService.getWeather(location);
+
 
     public void removeTopActivity() {
         // Check if there are any activities in the panel

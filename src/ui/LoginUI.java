@@ -24,7 +24,9 @@ public class LoginUI {
     private JPanel locationpanel;
     private JLabel locationlabel;
     private JTextField locationField;
+
     private JCheckBox locationcheckbox;
+
     private JButton backbutton;
     private JLabel headinglabel;
     private JTextField usernameField;
@@ -165,6 +167,7 @@ public class LoginUI {
 
         //locationpanel setup
         locationpanel = new JPanel();
+        locationpanel.setMaximumSize(new Dimension(400, 100));
         locationpanel.setMaximumSize(new Dimension(400, 130));
         locationpanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         locationpanel.setBackground(bgcolor);
@@ -205,8 +208,10 @@ public class LoginUI {
         locationpanel.add(locationlabel);
         locationpanel.add(Box.createVerticalStrut(10));
         locationpanel.add(locationField);
+
         locationpanel.add(Box.createVerticalStrut(10));
         locationpanel.add(locationcheckbox);
+
         locationpanel.add(Box.createVerticalGlue());
 
         //-----------------------------login button-----------------------------
@@ -276,6 +281,7 @@ public class LoginUI {
                     JOptionPane.showMessageDialog(frame, "Location not provided.", "Weather Data Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+
                 frame.dispose();
                 new DashboardUI(username, userService);
                  // Close the login window
@@ -288,6 +294,11 @@ public class LoginUI {
             throw new RuntimeException(e);
         }
     }
+
+
+    private String getWeatherData(String location) {
+        WeatherService weatherService = new WeatherService();
+        return weatherService.getWeather(location);
 
     private void addlocation() throws IOException {
         String username = new String(usernameField.getText());
@@ -311,5 +322,6 @@ public class LoginUI {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
     }
 }
