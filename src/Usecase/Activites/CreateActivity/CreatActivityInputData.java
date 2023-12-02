@@ -8,7 +8,7 @@ public class CreatActivityInputData {
     private final String description;
     private final int duration;
     private final LocalDateTime time;
-    CreatActivityInputData(String des, int du, LocalDateTime t){
+    public CreatActivityInputData(String des, int du, LocalDateTime t){
         description = des;
         duration = du;
         time = t;
