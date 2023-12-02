@@ -1,3 +1,13 @@
+<<<<<<< Updated upstream
 wow,Toronto
 now,Mumbai
 ha,toronto
+=======
+Angelina,Macao
+testing,Toronto
+cristiano,hey
+baby,Toronto
+hello,Toronto
+wow,Lima
+angelina,Macao
+>>>>>>> Stashed changes

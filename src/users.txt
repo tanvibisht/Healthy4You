@@ -1,7 +1,17 @@
 hello,123
+<<<<<<< Updated upstream
 angelina,1013
 Nando,1016
 tanvi,bisht
 wow,wow
 now,now
 ha,ha
+=======
+Angelina,1013
+cristiano,123
+angelina,123
+brain,123
+baby,123
+testing,123
+wow,wow
+>>>>>>> Stashed changes
