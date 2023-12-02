@@ -21,6 +21,9 @@ public class LoginUI {
     private JLabel usernamelabel;
     private JPanel passwordpanel;
     private JLabel passwordlabel;
+    private JPanel locationpanel;
+    private JLabel locationlabel;
+    private JTextField locationField;
     private JButton backbutton;
     private JLabel headinglabel;
     private JTextField usernameField;
@@ -157,6 +160,39 @@ public class LoginUI {
         passwordpanel.add(passwordField);
         passwordpanel.add(Box.createVerticalGlue());
 
+        //-----------------------------location panel-----------------------------
+
+        //locationpanel setup
+        locationpanel = new JPanel();
+        locationpanel.setMaximumSize(new Dimension(400, 100));
+        locationpanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        locationpanel.setBackground(bgcolor);
+        locationpanel.setLayout(new BoxLayout(locationpanel, BoxLayout.Y_AXIS));
+
+        //locationlabel setup
+        locationlabel = new JLabel("Location");
+        locationlabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        locationlabel.setFont(textfont);
+        locationlabel.setForeground(textcolor);
+
+        //locationField setup
+        locationField = new JTextField();
+        locationField.setAlignmentX(Component.LEFT_ALIGNMENT);
+        locationField.setMaximumSize(new Dimension(400, 60));
+        locationField.setPreferredSize(new Dimension(400, 60));
+        locationField.setFont(textfont);
+        locationField.setCaretColor(headingcolor);
+        locationField.setForeground(headingcolor);
+        locationField.setBackground(bgcolor);
+        locationField.setBorder(new CompoundBorder(line, margin));
+
+        //locationpanel component
+        locationpanel.add(Box.createVerticalGlue());
+        locationpanel.add(locationlabel);
+        locationpanel.add(Box.createVerticalStrut(10));
+        locationpanel.add(locationField);
+        locationpanel.add(Box.createVerticalGlue());
+
         //-----------------------------login button-----------------------------
 
         //loginbutton setup
@@ -198,6 +234,8 @@ public class LoginUI {
         mainpanel.add(usernamepanel);
         mainpanel.add(Box.createVerticalStrut(20));
         mainpanel.add(passwordpanel);
+        mainpanel.add(Box.createVerticalStrut(20));
+        mainpanel.add(locationpanel);
         mainpanel.add(Box.createVerticalStrut(50));
         mainpanel.add(loginbutton);
         mainpanel.add(Box.createVerticalStrut(20));
@@ -210,28 +248,20 @@ public class LoginUI {
     }
 
     private void performLogin() {
-        String username = usernameField.getText();
+        String username = new String(usernameField.getText());
         String password = new String(passwordField.getPassword());
+        String location = new String(locationField.getText());
         UserService userService = new UserService();
         try {
             if (userService.validateLogin(username, password)) {
-                // Login successful, load user location data
-                String location = userService.getUserLocation(username);
-                if (location.isEmpty()) {
-                    // Location not provided, prompt the user for location
-                    location = promptForLocation();
-                    if (!location.isEmpty()) {
-                        userService.saveUserLocation(username, location);
-                    } else {
-                        JOptionPane.showMessageDialog(frame, "Location not provided.", "Weather Data Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
+                if (!location.isEmpty()) {
+                    userService.saveUserLocation(username, location);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Location not provided.", "Weather Data Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
-                // Now you have the user's location, you can use it for weather data retrieval
-                String weatherData = getWeatherData(location);
-                // Do something with weatherData...
-
-                new DashboardUI();
+                frame.dispose();
+                new DashboardUI(username, userService);
                  // Close the login window
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
@@ -242,13 +272,4 @@ public class LoginUI {
             throw new RuntimeException(e);
         }
     }
-
-    private String promptForLocation() {
-        return JOptionPane.showInputDialog(frame, "Please enter your location:", "Location Input", JOptionPane.PLAIN_MESSAGE);
-    }
-    private String getWeatherData(String location) {
-        WeatherService weatherService = new WeatherService();
-        return weatherService.getWeather(location);
-    }
-
 }

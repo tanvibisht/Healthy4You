@@ -5,6 +5,7 @@ import Recipe.RecipeUI;
 import org.json.JSONException;
 import org.json.JSONObject;
 import service.GeoLocationService;
+import service.UserService;
 import service.WeatherService;
 import javax.swing.*;
 import java.awt.*;
@@ -51,7 +52,7 @@ public class DashboardUI implements ActionListener {
     private GeoLocationService geoLocationService;
     private JLabel weatherLabel;
 
-    public DashboardUI() throws MalformedURLException, JSONException {
+    public DashboardUI(String username, UserService userService) throws MalformedURLException, JSONException {
         ImageIcon originalImage = new ImageIcon("/Users/cristianoafonsodasilva/Desktop/University of Toronto/2023 Fall/CSC207/src/resource/plus.png");
         Image image = originalImage.getImage(); // Transform it
         Image newimg = image.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // Scale it the smooth way
@@ -109,7 +110,7 @@ public class DashboardUI implements ActionListener {
         topPanel.setBackground(themecolor);
         topPanel.add(weatherLabel, BorderLayout.CENTER); // Add weatherLabel to the center of topPanel
 
-        displayWeatherInfo();
+        displayWeatherInfo(username, userService);
         frame.add(buttonPanel, BorderLayout.SOUTH);
         frame.add(topPanel, BorderLayout.NORTH);
 
@@ -180,48 +181,53 @@ public class DashboardUI implements ActionListener {
             JOptionPane.showMessageDialog(frame, "No activities to remove.");
         }
     }
-    private void displayWeatherInfo() throws MalformedURLException, JSONException {
+    private void displayWeatherInfo(String username, UserService userService) throws JSONException {
+        try {
+            String location = userService.getUserLocation(username);
+            String weatherData = weatherService.getWeather(location);
 
-        String location = geoLocationService.getCity();
+            // Log the response for debugging
+            System.out.println("Weather data response: " + weatherData);
 
-        if (!location.equals("Error fetching location")) {
-            String city = location;
-            String weatherData = weatherService.getWeather(city);
-            JSONObject jsonObj = new JSONObject(weatherData);
-
-            // Extracting the icon code
-            String iconCode = jsonObj.getJSONArray("weather").getJSONObject(0).getString("icon");
-            String iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
-
-            // Download and set the icon to a JLabel
-            ImageIcon weatherIcon = new ImageIcon(new URL(iconUrl));
-            weatherLabel.setIcon(weatherIcon);
-
-            // Extracting temperature (assuming it's provided in Kelvin)
-            double temperatureKelvin = jsonObj.getJSONObject("main").getDouble("temp");
-            double temperatureCelsius = temperatureKelvin - 273.15; // Convert to Celsius
-
-            // Extracting main weather condition
-            String weatherCondition = jsonObj.getJSONArray("weather").getJSONObject(0).getString("main");
-
-            weatherLabel.setText("Temp in " + city + ": " + String.format("%.2f", temperatureCelsius) + " °C, " + weatherCondition);
-
-        } else {
-            weatherLabel.setText("Unable to fetch location and weather data");
-        }
-
-        frame.repaint();
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                new DashboardUI();
-            } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
+            // Check if the response is not JSON (does not start with '{')
+            if (!weatherData.trim().startsWith("{")) {
+                JOptionPane.showMessageDialog(frame, "Invalid response received from the server", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        });
+
+            JSONObject jsonObj = new JSONObject(weatherData);
+            if (!location.equals("Error fetching location")) {
+
+                // Extracting the icon code
+                String iconCode = jsonObj.getJSONArray("weather").getJSONObject(0).getString("icon");
+                String iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
+
+                // Download and set the icon to a JLabel
+                ImageIcon weatherIcon = new ImageIcon(new URL(iconUrl));
+                weatherLabel.setIcon(weatherIcon);
+
+                // Extracting temperature (assuming it's provided in Kelvin)
+                double temperatureKelvin = jsonObj.getJSONObject("main").getDouble("temp");
+                double temperatureCelsius = temperatureKelvin - 273.15; // Convert to Celsius
+
+                // Extracting main weather condition
+                String weatherCondition = jsonObj.getJSONArray("weather").getJSONObject(0).getString("main");
+
+                weatherLabel.setText("Temp in " + location + ": " + String.format("%.2f", temperatureCelsius) + " °C, " + weatherCondition);
+
+            } else {
+                weatherLabel.setText("Unable to fetch location and weather data");
+            }
+
+            // Rest of your existing code for processing the JSON
+
+        } catch (JSONException e) {
+            JOptionPane.showMessageDialog(frame, "Invalid location or error parsing weather data", "JSON Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+        frame.repaint();
     }
 }
