@@ -1,5 +1,6 @@
 package ui;
 import Hydration.Hydration;
+import service.UserService;
 import Recipe.RecipeGenerator;
 import Recipe.RecipeUI;
 import org.json.JSONException;
@@ -108,13 +109,10 @@ public class DashboardUI implements ActionListener {
         topPanel.setPreferredSize(new Dimension(600, 80));
         topPanel.setBackground(themecolor);
         topPanel.add(weatherLabel, BorderLayout.CENTER); // Add weatherLabel to the center of topPanel
-<<<<<<< Updated upstream
 
         displayWeatherInfo();
-=======
         buttonPanel.add(hydrationButton);
         displayWeatherInfo(username, userService);
->>>>>>> Stashed changes
         frame.add(buttonPanel, BorderLayout.SOUTH);
         frame.add(topPanel, BorderLayout.NORTH);
 
@@ -136,12 +134,10 @@ public class DashboardUI implements ActionListener {
 
             // Display the new recipe in a dialog or on the UI
             new RecipeUI(newRecipe);
-<<<<<<< Updated upstream
-=======
+
         }
         else if (e.getSource() == deleteButton) {
             removeTopActivity();
->>>>>>> Stashed changes
         }
         else if (e.getSource() == hydrationButton) {
             showHydrationWindow(username); // Show hydration window for the current user
