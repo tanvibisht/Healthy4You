@@ -1,5 +1,6 @@
 package ui;
 import Hydration.Hydration;
+import domain.User;
 import service.UserService;
 import Recipe.RecipeGenerator;
 import Recipe.RecipeUI;
@@ -50,6 +51,7 @@ public class DashboardUI implements ActionListener {
     private Color textcolor = new Color(156, 156, 156);
     private RoundedButton hydrationButton;
     private String username;
+    private UserService userService;
     private WeatherService weatherService;
     private GeoLocationService geoLocationService;
     private JLabel weatherLabel;
@@ -155,6 +157,24 @@ public class DashboardUI implements ActionListener {
             removeTopActivity();
         }
     }
+
+    public void removeTopActivity() {
+        // Check if there are any activities in the panel
+        if (panel.getComponentCount() > 0) {
+            // Assuming each activity is preceded by a vertical strut, remove it first
+            panel.remove(0);
+
+            // Now remove the activity panel itself
+            panel.remove(0);
+
+            // Refresh the panel to update the UI
+            panel.revalidate();
+            panel.repaint();
+        } else {
+            JOptionPane.showMessageDialog(frame, "No activities to remove.");
+        }
+    }
+
     private void showHydrationWindow(String username) {
         JDialog hydrationDialog = new JDialog(frame, "Hydration Tracker", true);
         hydrationDialog.setLayout(new FlowLayout());
@@ -218,28 +238,7 @@ public class DashboardUI implements ActionListener {
         panel.repaint();
     }
 
-    private void displayWeatherInfo(String username, UserService userService) throws MalformedURLException, JSONException {
-        try {
-            String location = userService.getUserLocation(username);
-            String weatherData = weatherService.getWeather(location);
 
-
-    public void removeTopActivity() {
-        // Check if there are any activities in the panel
-        if (panel.getComponentCount() > 0) {
-            // Assuming each activity is preceded by a vertical strut, remove it first
-            panel.remove(0);
-
-            // Now remove the activity panel itself
-            panel.remove(0);
-
-            // Refresh the panel to update the UI
-            panel.revalidate();
-            panel.repaint();
-        } else {
-            JOptionPane.showMessageDialog(frame, "No activities to remove.");
-        }
-    }
     private void displayWeatherInfo(String username, UserService userService) throws JSONException {
         try {
             String location = userService.getUserLocation(username);

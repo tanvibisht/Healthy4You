@@ -24,9 +24,7 @@ public class LoginUI {
     private JPanel locationpanel;
     private JLabel locationlabel;
     private JTextField locationField;
-
     private JCheckBox locationcheckbox;
-
     private JButton backbutton;
     private JLabel headinglabel;
     private JTextField usernameField;
@@ -284,7 +282,7 @@ public class LoginUI {
 
                 frame.dispose();
                 new DashboardUI(username, userService);
-                 // Close the login window
+                // Close the login window
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
             }
@@ -299,14 +297,15 @@ public class LoginUI {
     private String getWeatherData(String location) {
         WeatherService weatherService = new WeatherService();
         return weatherService.getWeather(location);
+    }
 
-    private void addlocation() throws IOException {
+    private void addlocation () throws IOException {
         String username = new String(usernameField.getText());
         UserService userService = new UserService();
         try {
             if (locationcheckbox.isSelected()) {
                 // Set the locationtextfield to a default location when the checkbox is checked
-                if (userService.userExists(username)){
+                if (userService.userExists(username)) {
                     String location = userService.getUserLocation(username);
                     locationField.setText(location); // Replace with the actual location you want to set
                 } else {
@@ -322,6 +321,5 @@ public class LoginUI {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
