@@ -13,6 +13,7 @@ public class HomePageUI {
     private JFrame frame;
     private JPanel mainpanel;
     private JPanel toppanel;
+    private JLabel imagelabel;
     private JPanel centerpanel;
     private JLabel applicationnamelabel;
     private JLabel applicationsloganlabel;
@@ -43,9 +44,19 @@ public class HomePageUI {
         mainpanel.setLayout(new BoxLayout(mainpanel, BoxLayout.Y_AXIS));
 
         //-----------------------------top panel-----------------------------
+        //imageIcon setup
+        ImageIcon originalImage = new ImageIcon("/Users/cristianoafonsodasilva/Desktop/University of Toronto/2023 Fall/Healthy4You/version_7/src/resource/Healthy4You.png");
+        Image image = originalImage.getImage(); // Transform it
+        Image newimg = image.getScaledInstance(530, 600,  java.awt.Image.SCALE_SMOOTH);
+        ImageIcon imageIcon = new ImageIcon(newimg);  // Transform it back
+
+        //imagelabel setup
+        imagelabel = new JLabel(imageIcon);
+
         //toppanel setup
         toppanel = new JPanel();
         toppanel.setPreferredSize(new Dimension(530, 600));
+        toppanel.add(imagelabel);
         toppanel.setBackground(bgcolor);
 
         //-----------------------------center panel-----------------------------
