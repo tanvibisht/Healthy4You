@@ -70,7 +70,7 @@ public class LoginUI {
         backbutton.setHorizontalAlignment(SwingConstants.CENTER);
         backbutton.setPreferredSize(new Dimension(40, 40));
         backbutton.setMaximumSize(new Dimension(40, 40));
-        backbutton.setFont(smallfont);
+        backbutton.setFont(mediumfont);
         backbutton.setForeground(textcolor);
         backbutton.setBackground(bgcolor);
         backbutton.setBorder(BorderFactory.createLineBorder(textcolor));
@@ -107,7 +107,7 @@ public class LoginUI {
         //usernamelabel setup
         usernamelabel = new JLabel("Username");
         usernamelabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        usernamelabel.setFont(smallfont);
+        usernamelabel.setFont(mediumfont);
         usernamelabel.setForeground(textcolor);
 
         //usernameField setup
@@ -115,7 +115,7 @@ public class LoginUI {
         usernameField.setAlignmentX(Component.LEFT_ALIGNMENT);
         usernameField.setMaximumSize(new Dimension(400, 60));
         usernameField.setPreferredSize(new Dimension(400, 60));
-        usernameField.setFont(smallfont);
+        usernameField.setFont(mediumfont);
         usernameField.setCaretColor(headingcolor);
         usernameField.setForeground(headingcolor);
         usernameField.setBackground(bgcolor);
@@ -140,7 +140,7 @@ public class LoginUI {
         //passwordlabel setup
         passwordlabel = new JLabel("Password");
         passwordlabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        passwordlabel.setFont(smallfont);
+        passwordlabel.setFont(mediumfont);
         passwordlabel.setForeground(textcolor);
 
         //passwordField setup
@@ -148,7 +148,7 @@ public class LoginUI {
         passwordField.setAlignmentX(Component.LEFT_ALIGNMENT);
         passwordField.setMaximumSize(new Dimension(400, 60));
         passwordField.setPreferredSize(new Dimension(400, 60));
-        passwordField.setFont(smallfont);
+        passwordField.setFont(mediumfont);
         passwordField.setCaretColor(headingcolor);
         passwordField.setForeground(headingcolor);
         passwordField.setBackground(bgcolor);
@@ -174,7 +174,7 @@ public class LoginUI {
         //locationlabel setup
         locationlabel = new JLabel("Location");
         locationlabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        locationlabel.setFont(smallfont);
+        locationlabel.setFont(mediumfont);
         locationlabel.setForeground(textcolor);
 
         //locationField setup
@@ -182,7 +182,7 @@ public class LoginUI {
         locationField.setAlignmentX(Component.LEFT_ALIGNMENT);
         locationField.setMaximumSize(new Dimension(400, 60));
         locationField.setPreferredSize(new Dimension(400, 60));
-        locationField.setFont(smallfont);
+        locationField.setFont(mediumfont);
         locationField.setCaretColor(headingcolor);
         locationField.setForeground(headingcolor);
         locationField.setBackground(bgcolor);
