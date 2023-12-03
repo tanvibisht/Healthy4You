@@ -1,6 +1,7 @@
 package domain;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Activity{
@@ -13,6 +14,7 @@ public class Activity{
         this.description = description;
         this.duration = duration;
         this.isCompletedToday = false;
+        this.time = time;
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.List;
 public class Interactor implements Input{
     final Output output;
 
-    Interactor(Output out){
+    public Interactor(Output out){
         output = out;
     }
     public void execute(){
