@@ -14,7 +14,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -44,6 +47,9 @@ public class DashboardUI implements ActionListener {
     private Font largefont = new Font("Monospaced", Font.BOLD, 30);
     private Font mediumfont = new Font("Monospaced", Font.BOLD, 16);
     private Font smallfont = new Font("Monospaced", Font.BOLD, 12);
+    private JButton addSleepButton, clearSleepButton;
+    private JTextField hourField, minuteField;
+    private static final String SLEEP_FILE_PATH = "src/sleep.txt";
 
     public DashboardUI(String username, UserService userService) throws MalformedURLException, JSONException {
         //frame setup
@@ -80,6 +86,7 @@ public class DashboardUI implements ActionListener {
         //iconlabel setup
         iconlabel = new JLabel(imageIcon);
         iconlabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
         //welcomelabel setup
         welcomelabel = new JLabel("Welcome " + username);
@@ -140,6 +147,28 @@ public class DashboardUI implements ActionListener {
 
         buttonpanel.add(getRecipeButton);
         buttonpanel.add(hydrationButton);
+
+        JPanel sleepPanel = new JPanel();
+        sleepPanel.setLayout(new FlowLayout());
+        sleepPanel.setBackground(bgcolor);
+        hourField = new JTextField(2);
+        minuteField = new JTextField(2);
+        addSleepButton = new JButton("Add Sleep Data");
+        clearSleepButton = new JButton("Clear Sleep Data");
+
+        addSleepButton.addActionListener(this);
+        clearSleepButton.addActionListener(this);
+
+        sleepPanel.add(new JLabel("Hours:"));
+        sleepPanel.add(hourField);
+        sleepPanel.add(new JLabel("Minutes:"));
+        sleepPanel.add(minuteField);
+        sleepPanel.add(addSleepButton);
+        sleepPanel.add(clearSleepButton);
+
+        mainpanel.add(sleepPanel);
+
+
 
         //-----------------------------activity panel-----------------------------
 
@@ -221,6 +250,29 @@ public class DashboardUI implements ActionListener {
             new HydrationGraphUI(new Hydration(), username); // Show the hydration gr // Show hydration window for the current user
 
         }
+        else if (e.getSource() == addSleepButton) {
+            writeSleepData(username);
+        } else if (e.getSource() == clearSleepButton) {
+            clearSleepData();
+        }
+    }
+
+    private void writeSleepData(String username) {
+        String hours = hourField.getText();
+        String minutes = minuteField.getText();
+
+        try (FileWriter fw = new FileWriter(SLEEP_FILE_PATH, true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(username + ": " + hours + " hours " + minutes + " minutes");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(frame, "Error writing to file: " + ex.getMessage());
+        }
+    }
+
+    private void clearSleepData() {
+        hourField.setText("");
+        minuteField.setText("");
     }
 
     public void removeTopActivity() {
