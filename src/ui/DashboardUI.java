@@ -1,4 +1,5 @@
 package ui;
+import DAOs.UserDAO;
 import Hydration.Hydration;
 import Hydration.HydrationGraphUI;
 import domain.User;
@@ -54,8 +55,18 @@ public class DashboardUI implements ActionListener {
     private JTextField hourField, minuteField;
     private static final String SLEEP_FILE_PATH = "src/sleep.txt";
 
+    private UserService userService;
+    private UserDAO userDAO;
+    private Hydration hydration;
+
     public DashboardUI(String username, UserService userService) throws MalformedURLException, JSONException {
         //frame setup
+
+        this.username = username;
+        this.userService = userService;
+        this.userDAO = new UserDAO();
+        this.hydration = new Hydration();
+
         frame = new JFrame();
         frame.setTitle("Healthy4You Dashboard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -286,7 +297,7 @@ public class DashboardUI implements ActionListener {
 
         }
         else if (e.getSource() == hydrationButton) {
-            new HydrationGraphUI(new Hydration(), username); // Show the hydration gr // Show hydration window for the current user
+            new HydrationGraphUI(hydration); // Show the hydration gr // Show hydration window for the current user
 
         }
         else if (e.getSource() == addSleepButton) {
@@ -424,7 +435,7 @@ public class DashboardUI implements ActionListener {
         activitypanel.repaint();
     }
     private void showHydrationGraph() {
-        HydrationGraphUI hydrationGraphUI = new HydrationGraphUI(new Hydration(), username);
+        HydrationGraphUI hydrationGraphUI = new HydrationGraphUI(hydration);
     }
 
 

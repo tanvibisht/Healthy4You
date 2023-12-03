@@ -1,7 +1,0 @@
-guo,123
-Hello,Seoul
-Angelina,Macao
-testing,Hong Kong
-ha,tORONTO
-Cristiano,China
-wow,Vancouver
