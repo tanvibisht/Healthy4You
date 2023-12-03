@@ -33,7 +33,7 @@ public class User {
         while (i < activities.size() && act.getTime().isBefore(activities.get(i).getTime())){
             i += 1;
         }
-        activities.add(i + 1, act);
+        activities.add(i, act);
     }
 
     public Activity compeleteActivity(int index){
