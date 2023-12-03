@@ -22,6 +22,9 @@ public class DashboardUI implements ActionListener {
     private JPanel mainpanel;
     private JScrollPane scrollPane;
     private JPanel toppanel;
+    private JPanel headpanel;
+    private JPanel placeholder;
+    private JButton logoutbutton;
     private JLabel iconlabel;
     private JLabel welcomelabel;
     private WeatherService weatherService;
@@ -70,6 +73,46 @@ public class DashboardUI implements ActionListener {
         toppanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         toppanel.setLayout(new BoxLayout(toppanel, BoxLayout.Y_AXIS));
 
+        // Panel for logoutbutton and weatherLabel
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setPreferredSize(new Dimension(470, 40));
+        headerPanel.setMaximumSize(headerPanel.getPreferredSize());
+        headerPanel.setMinimumSize(headerPanel.getPreferredSize());
+        headerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headerPanel.setBackground(bgcolor);
+
+        // Configure logoutbutton
+        logoutbutton = new JButton("Logout");
+        logoutbutton.setFont(smallfont);
+        logoutbutton.setForeground(textcolor);
+        logoutbutton.setBackground(bgcolor);
+        logoutbutton.setBorder(BorderFactory.createLineBorder(textcolor));
+        logoutbutton.setFocusPainted(true);
+        logoutbutton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                new LoginUI();
+            }
+        });
+
+        // Configure weatherLabel
+        weatherService = new WeatherService();
+        weatherLabel = new JLabel("Loading weather data...", SwingConstants.CENTER);
+        displayWeatherInfo(username, userService);
+        weatherLabel.setFont(smallfont);
+        weatherLabel.setForeground(headingcolor);
+        weatherLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        weatherLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        placeholder = new JPanel();
+        placeholder.setPreferredSize(logoutbutton.getPreferredSize());
+        placeholder.setOpaque(false);
+
+        // Add components to headerPanel
+        headerPanel.add(logoutbutton, BorderLayout.WEST);
+        headerPanel.add(weatherLabel, BorderLayout.CENTER);
+        headerPanel.add(placeholder, BorderLayout.EAST);
+
         //imageIcon setup
         ImageIcon originalImage = new ImageIcon("/Users/cristianoafonsodasilva/Desktop/University of Toronto/2023 Fall/Healthy4You/version_8/src/resource/personicon.png");
         Image image = originalImage.getImage(); // Transform it
@@ -86,17 +129,9 @@ public class DashboardUI implements ActionListener {
         welcomelabel.setFont(largefont);
         welcomelabel.setForeground(headingcolor);
 
-        //weatherService and weatherlabel setup
-        weatherService = new WeatherService();
-        weatherLabel = new JLabel("Loading weather data...", SwingConstants.CENTER); // Set text alignment to center
-        weatherLabel.setFont(smallfont);
-        weatherLabel.setForeground(headingcolor);
-        weatherLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        displayWeatherInfo(username, userService);
-
         //toppanel component
         toppanel.add(Box.createVerticalStrut(20));
-        toppanel.add(weatherLabel);
+        toppanel.add(headerPanel);
         toppanel.add(Box.createVerticalGlue());
         toppanel.add(iconlabel);
         toppanel.add((Box.createVerticalStrut(5)));
@@ -107,7 +142,7 @@ public class DashboardUI implements ActionListener {
 
         //buttonpanel setup
         buttonpanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
-        buttonpanel.setPreferredSize(new Dimension(530, 100));
+        buttonpanel.setPreferredSize(new Dimension(530, 50));
         buttonpanel.setMaximumSize(buttonpanel.getPreferredSize());
         buttonpanel.setMinimumSize(buttonpanel.getPreferredSize());
         buttonpanel.setBackground(bgcolor);
@@ -150,7 +185,7 @@ public class DashboardUI implements ActionListener {
 
         // activity title panel setup
         activitytitlepanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        activitytitlepanel.setPreferredSize(new Dimension(470, 50));
+        activitytitlepanel.setPreferredSize(new Dimension(470, 30));
         activitytitlepanel.setMaximumSize(activitytitlepanel.getPreferredSize());
         activitytitlepanel.setMinimumSize(activitytitlepanel.getPreferredSize());
         activitytitlepanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -162,7 +197,9 @@ public class DashboardUI implements ActionListener {
         activitytitlelabel.setForeground(headingcolor);
 
         // activity title panel component
+        activitytitlepanel.add(Box.createVerticalGlue());
         activitytitlepanel.add(activitytitlelabel);
+        activitytitlepanel.add(Box.createVerticalGlue());
 
         //addActivityButton setup
         addActivityButton = new JButton("Add");
@@ -179,7 +216,9 @@ public class DashboardUI implements ActionListener {
         addActivityButton.addActionListener(this);
 
         //activitypanel setup
+        activitypanel.add(Box.createVerticalStrut(20));
         activitypanel.add(activitytitlepanel);
+        activitypanel.add(Box.createVerticalStrut(20));
         activitypanel.add(addActivityButton);
 
         //mainpanel component
@@ -370,7 +409,6 @@ public class DashboardUI implements ActionListener {
             } else {
                 weatherLabel.setText("Unable to fetch location and weather data");
             }
-            weatherLabel.setFont(smallfont);
 
             // Rest of your existing code for processing the JSON
 
