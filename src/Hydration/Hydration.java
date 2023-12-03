@@ -1,23 +1,28 @@
 package Hydration;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Hydration {
     private Map<String, Double> userHydrationData;
-    private static final String FILE_NAME = "src/hydration.txt"; // Adjusted file path
+    private static final String FILE_NAME = "src/hydration.txt";
 
     public Hydration() {
         userHydrationData = new HashMap<>();
+        String currentUsername = readCurrentUsername();
         loadHydrationData();
     }
-
     public void clearData(String username) {
         userHydrationData.put(username, 0.0);
         saveHydrationData();
+    }
+    String readCurrentUsername() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("currentusername.txt"))) {
+            return reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null; // Handle appropriately
+        }
     }
 
     public void addWater(String username, double liters) {
