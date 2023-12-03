@@ -28,9 +28,9 @@ public class SignUpUI {
     private JLabel locationlabel;
     private JTextField locationField;
     private JButton signupbutton;
-    private Font headingfont = new Font("Monospaced", Font.BOLD, 30);
-    private Font buttonfont = new Font("SansSerif", Font.BOLD, 14);
-    private Font textfont = new Font("SansSerif", Font.PLAIN, 16);
+    private Font largefont = new Font("Monospaced", Font.BOLD, 30);
+    private Font mediumfont = new Font("Monospaced", Font.BOLD, 16);
+    private Font smallfont = new Font("Monospaced", Font.BOLD, 12);
     private Color bgcolor = new Color(41, 41, 41);
     private Color themecolor = new Color(143, 88, 178);
     private Color headingcolor = new Color(255, 255, 255);
@@ -67,7 +67,7 @@ public class SignUpUI {
         backbutton.setHorizontalAlignment(SwingConstants.CENTER);
         backbutton.setPreferredSize(new Dimension(40, 40));
         backbutton.setMaximumSize(new Dimension(40, 40));
-        backbutton.setFont(textfont);
+        backbutton.setFont(smallfont);
         backbutton.setForeground(textcolor);
         backbutton.setBackground(bgcolor);
         backbutton.setBorder(BorderFactory.createLineBorder(textcolor));
@@ -81,7 +81,7 @@ public class SignUpUI {
 
         //signuplabel setup
         headinglabel = new JLabel("Sign Up");
-        headinglabel.setFont(headingfont);
+        headinglabel.setFont(largefont);
         headinglabel.setForeground(headingcolor);
         headinglabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -104,7 +104,7 @@ public class SignUpUI {
         //usernamelabel setup
         usernamelabel = new JLabel("Username");
         usernamelabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        usernamelabel.setFont(textfont);
+        usernamelabel.setFont(smallfont);
         usernamelabel.setForeground(textcolor);
 
         //usernameField setup
@@ -112,7 +112,7 @@ public class SignUpUI {
         usernameField.setAlignmentX(Component.LEFT_ALIGNMENT);
         usernameField.setMaximumSize(new Dimension(400, 60));
         usernameField.setPreferredSize(new Dimension(400, 60));
-        usernameField.setFont(textfont);
+        usernameField.setFont(smallfont);
         usernameField.setCaretColor(headingcolor);
         usernameField.setForeground(headingcolor);
         usernameField.setBackground(bgcolor);
@@ -137,7 +137,7 @@ public class SignUpUI {
         //passwordlabel setup
         passwordlabel = new JLabel("Password");
         passwordlabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        passwordlabel.setFont(textfont);
+        passwordlabel.setFont(smallfont);
         passwordlabel.setForeground(textcolor);
 
         //passwordField setup
@@ -145,7 +145,7 @@ public class SignUpUI {
         passwordField.setAlignmentX(Component.LEFT_ALIGNMENT);
         passwordField.setMaximumSize(new Dimension(400, 60));
         passwordField.setPreferredSize(new Dimension(400, 60));
-        passwordField.setFont(textfont);
+        passwordField.setFont(smallfont);
         passwordField.setCaretColor(headingcolor);
         passwordField.setForeground(headingcolor);
         passwordField.setBackground(bgcolor);
@@ -170,7 +170,7 @@ public class SignUpUI {
         //locationlabel setup
         locationlabel = new JLabel("Location");
         locationlabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        locationlabel.setFont(textfont);
+        locationlabel.setFont(smallfont);
         locationlabel.setForeground(textcolor);
 
         //locationField setup
@@ -178,7 +178,7 @@ public class SignUpUI {
         locationField.setAlignmentX(Component.LEFT_ALIGNMENT);
         locationField.setMaximumSize(new Dimension(400, 60));
         locationField.setPreferredSize(new Dimension(400, 60));
-        locationField.setFont(textfont);
+        locationField.setFont(smallfont);
         locationField.setCaretColor(headingcolor);
         locationField.setForeground(headingcolor);
         locationField.setBackground(bgcolor);
@@ -198,7 +198,7 @@ public class SignUpUI {
         signupbutton.setAlignmentX(Component.CENTER_ALIGNMENT);
         signupbutton.setHorizontalAlignment(SwingConstants.CENTER);
         signupbutton.setMaximumSize(new Dimension(400, 60));
-        signupbutton.setFont(buttonfont);
+        signupbutton.setFont(mediumfont);
         signupbutton.setForeground(headingcolor);
         signupbutton.setBackground(themecolor);
         signupbutton.setOpaque(true);
