@@ -21,7 +21,7 @@ public class Interactor implements Input{
         if (user == null){
             output.prepareFailView("User not found");
         } else{
-            List<Activity> activities = dataAccess.getActivities();
+            List<Activity> activities = dataAccess.getActivities(user);
             List<Activity> memoryActivities = new ArrayList<>(user.getActivities());
             for (Activity activity: activities){
                 if (!memoryActivities.contains(activity)){

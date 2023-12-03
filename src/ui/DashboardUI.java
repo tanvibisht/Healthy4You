@@ -1,5 +1,6 @@
 package ui;
 import Hydration.Hydration;
+import Hydration.HydrationGraphUI;
 import domain.User;
 import service.UserService;
 import Recipe.RecipeGenerator;
@@ -256,7 +257,7 @@ public class DashboardUI implements ActionListener {
 
         }
         else if (e.getSource() == hydrationButton) {
-            showHydrationWindow(username); // Show hydration window for the current user
+            new HydrationGraphUI(new Hydration(), username); // Show the hydration gr // Show hydration window for the current user
 
         }
     }
@@ -369,6 +370,9 @@ public class DashboardUI implements ActionListener {
         activitypanel.add(containerPanel);
         activitypanel.revalidate();
         activitypanel.repaint();
+    }
+    private void showHydrationGraph() {
+        HydrationGraphUI hydrationGraphUI = new HydrationGraphUI(new Hydration(), username);
     }
 
 
