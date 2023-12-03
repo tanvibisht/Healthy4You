@@ -1,10 +1,9 @@
 package service;
 
-import domain.User;
-
 import java.io.*;
 import java.util.*;
-
+import DAOs.UserDAO;
+import domain.User;
 public class UserService {
 
     private static final String USERS_FILE = "src/users.txt";
