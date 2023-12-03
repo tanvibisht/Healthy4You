@@ -1,5 +1,7 @@
 package ui;
 
+import domain.LoggedUser;
+import domain.User;
 import org.json.JSONException;
 import service.UserService;
 import service.WeatherService;
@@ -282,6 +284,7 @@ public class LoginUI {
 
                 frame.dispose();
                 new DashboardUI(username, userService);
+                LoggedUser.setUser(new User(username, password)); //Set for now, need more function
                 // Close the login window
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
