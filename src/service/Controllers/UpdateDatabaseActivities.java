@@ -9,7 +9,7 @@ public class UpdateDatabaseActivities {
         inputBound = updateDatabaseActivitiesInputBound;
     }
 
-    public void exexute(){
+    public void execute(){
         inputBound.execute();
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 public class Interactor implements Input{
     final Output output;
     final DAI dai;
-    Interactor(Output out, DAI da){
+    public Interactor(Output out, DAI da){
         output = out;
         dai = da;
     }

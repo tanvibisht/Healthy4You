@@ -3,8 +3,10 @@ package ui;
 import Usecase.Activites.CreateActivity.CreatActivityInteractor;
 import Usecase.Activites.ShowActivityList.Interactor;
 import service.Controllers.CreateActivity;
+import service.Controllers.DeleteActivity;
 import service.Controllers.ShowActivity;
 import ui.ActivityPresenter.AddActivityPresenter;
+import ui.ActivityPresenter.DeleteActivityPresenter;
 import ui.ActivityPresenter.ShowActivityListPresenter;
 
 import java.awt.*;
@@ -60,7 +62,11 @@ public class ActivityUI extends JFrame implements ActionListener {
                 showActivity.execute();
                 dispose();
             } else if (e.getSource() == deleteButton) {
-                dashboardUI.removeTopActivity();
+                DeleteActivityPresenter deleteActivityPresenter = new DeleteActivityPresenter(this);
+                Usecase.Activites.DeleteActivity.Interactor deleteActivityInteractor = (
+                        new Usecase.Activites.DeleteActivity.Interactor(deleteActivityPresenter));
+                DeleteActivity deleteActivity = new DeleteActivity(deleteActivityInteractor);
+                deleteActivity.execute(0);
             }
             else {
                 JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Incomplete Information", JOptionPane.WARNING_MESSAGE);

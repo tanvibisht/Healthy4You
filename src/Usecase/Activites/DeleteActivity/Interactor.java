@@ -1,13 +1,11 @@
-package Usecase.Activites.CompleteActivity;
-
+package Usecase.Activites.DeleteActivity;
 import domain.Activity;
 import domain.LoggedUser;
 import domain.User;
 
-
 public class Interactor implements Input{
     final Output output;
-    
+
     public Interactor(Output out){
         output = out;
     }
@@ -17,7 +15,7 @@ public class Interactor implements Input{
         if (user == null) {
             output.prepareFailView("User not Found");
         } else {
-            Activity activity = user.compeleteActivity(index);
+            Activity activity = user.deleteActivity(index);
             String description = activity.getDescription();
             output.prepareSuccessView(new OutputData("Completed" + description));
         }

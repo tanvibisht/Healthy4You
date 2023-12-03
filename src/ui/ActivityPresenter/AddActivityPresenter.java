@@ -2,9 +2,7 @@ package ui.ActivityPresenter;
 
 import Usecase.Activites.CreateActivity.CreatActivityOutput;
 import Usecase.Activites.CreateActivity.CreatActivityOutputData;
-import service.Controllers.ShowActivity;
 import ui.ActivityUI;
-import ui.DashboardUI;
 
 import javax.swing.*;
 
