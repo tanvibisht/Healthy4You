@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 
 public class HomePageUI {
-
     private JFrame frame;
     private JPanel mainpanel;
     private JPanel toppanel;
@@ -21,9 +20,9 @@ public class HomePageUI {
     private JButton loginbutton;
     private JButton signupbutton;
     private JLabel authorlabel;
-    private Font headingfont = new Font("Monospaced", Font.BOLD, 30);
-    private Font buttonfont = new Font("SansSerif", Font.BOLD, 14);
-    private Font textfont = new Font("SansSerif", Font.PLAIN, 12);
+    private Font largefont = new Font("Monospaced", Font.BOLD, 30);
+    private Font mediumfont = new Font("Monospaced", Font.BOLD, 16);
+    private Font smallfont = new Font("Monospaced", Font.BOLD, 12);
     private Color bgcolor = new Color(41, 41, 41);
     private Color themecolor = new Color(143, 88, 178);
     private Color headingcolor = new Color(255, 255, 255);
@@ -62,14 +61,14 @@ public class HomePageUI {
         //-----------------------------center panel-----------------------------
         //applicationnamelabel setup
         applicationnamelabel = new JLabel("Healthy4You");
-        applicationnamelabel.setFont(headingfont);
+        applicationnamelabel.setFont(largefont);
         applicationnamelabel.setForeground(headingcolor);
         applicationnamelabel.setHorizontalAlignment(SwingConstants.CENTER);
         applicationnamelabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //applicationsloganlabel setup
         applicationsloganlabel = new JLabel("Your Health Companion");
-        applicationsloganlabel.setFont(textfont);
+        applicationsloganlabel.setFont(smallfont);
         applicationsloganlabel.setForeground(textcolor);
         applicationsloganlabel.setHorizontalAlignment(SwingConstants.CENTER);
         applicationsloganlabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -93,7 +92,7 @@ public class HomePageUI {
         loginbutton.setAlignmentX(Component.CENTER_ALIGNMENT);
         loginbutton.setHorizontalAlignment(SwingConstants.CENTER);
         loginbutton.setMaximumSize(new Dimension(400, 60));
-        loginbutton.setFont(buttonfont);
+        loginbutton.setFont(mediumfont);
         loginbutton.setForeground(headingcolor);
         loginbutton.setBackground(themecolor);
         loginbutton.setOpaque(true);
@@ -112,10 +111,10 @@ public class HomePageUI {
         signupbutton.setAlignmentX(Component.CENTER_ALIGNMENT);
         signupbutton.setHorizontalAlignment(SwingConstants.CENTER);
         signupbutton.setMaximumSize(new Dimension(400, 60));
-        signupbutton.setFont(buttonfont);
-        signupbutton.setForeground(headingcolor);
+        signupbutton.setFont(mediumfont);
+        signupbutton.setForeground(themecolor);
         signupbutton.setBackground(bgcolor);
-        signupbutton.setBorder(BorderFactory.createLineBorder(textcolor));
+        signupbutton.setBorder(BorderFactory.createLineBorder(themecolor));
         signupbutton.setFocusPainted(true);
         signupbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -126,7 +125,7 @@ public class HomePageUI {
 
         //authorlabel setup
         authorlabel = new JLabel("created by Anything4GPA");
-        authorlabel.setFont(textfont);
+        authorlabel.setFont(smallfont);
         authorlabel.setForeground(textcolor);
         authorlabel.setHorizontalAlignment(SwingConstants.CENTER);
         authorlabel.setAlignmentX(Component.CENTER_ALIGNMENT);
