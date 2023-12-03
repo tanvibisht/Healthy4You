@@ -12,7 +12,7 @@ public class Interactor implements Input{
     final Output output;
     final DAI dataAccess;
 
-    Interactor(Output out, DAI dai){
+    public Interactor(Output out, DAI dai){
         output = out;
         dataAccess = dai;
     }

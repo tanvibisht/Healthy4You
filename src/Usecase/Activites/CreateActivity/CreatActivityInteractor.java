@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class CreatActivityInteractor implements CreatActivityInput{
     final CreatActivityOutput output;
 
-    CreatActivityInteractor(CreatActivityOutput out){
+    public CreatActivityInteractor(CreatActivityOutput out){
         output = out;
     }
 
