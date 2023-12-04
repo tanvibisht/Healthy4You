@@ -1,22 +1,11 @@
-package Recipe;
+package ui;
 
-import Hydration.Hydration;
-import org.knowm.xchart.XChartPanel;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.XYSeries;
-import org.knowm.xchart.style.Styler;
-import org.knowm.xchart.style.markers.SeriesMarkers;
-import service.UserService;
 import ui.DashboardUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class RecipeUI {
     private JFrame frame;

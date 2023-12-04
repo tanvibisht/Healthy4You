@@ -1,7 +1,7 @@
 package ui;
 
 import org.json.JSONException;
-import service.UserService;
+import DAOs.UserService;
 
 import javax.swing.*;
 import javax.swing.border.Border;

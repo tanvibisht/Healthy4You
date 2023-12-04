@@ -1,20 +1,10 @@
 package ui;
 
-import Hydration.Hydration;
 import Usecase.Activites.CreateActivity.CreatActivityInteractor;
 import Usecase.Activites.ShowActivityList.Interactor;
-import org.knowm.xchart.XChartPanel;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.XYSeries;
-import org.knowm.xchart.style.Styler;
-import org.knowm.xchart.style.markers.SeriesMarkers;
 import service.Controllers.CreateActivity;
-import service.Controllers.DeleteActivity;
 import service.Controllers.ShowActivity;
-import service.UserService;
 import ui.ActivityPresenter.AddActivityPresenter;
-import ui.ActivityPresenter.DeleteActivityPresenter;
 import ui.ActivityPresenter.ShowActivityListPresenter;
 
 import java.awt.*;
@@ -24,12 +14,6 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ActivityUI extends Component implements ActionListener {
     private JFrame frame;

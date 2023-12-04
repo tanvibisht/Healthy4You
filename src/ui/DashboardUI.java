@@ -1,20 +1,15 @@
 package ui;
 import DAOs.ActivitiesDAO.ActivitySaver;
 import DAOs.UserDAO;
-import Hydration.Hydration;
-import Sleep.Sleep;
-import Sleep.SleepUI;
-import Hydration.HydrationGraphUI;
+import Usecase.Hydration.Hydration;
+import Usecase.Sleep.Sleep;
 import Usecase.Activites.ShowActivityList.Interactor;
-import service.Controllers.DeleteActivity;
-import service.Controllers.SaveActivity;
-import service.Controllers.ShowActivity;
-import service.UserService;
-import Recipe.RecipeGenerator;
-import Recipe.RecipeUI;
+import service.Controllers.*;
+import DAOs.UserService;
+import DAOs.RecipeGenerator;
 import org.json.JSONException;
 import org.json.JSONObject;
-import service.WeatherService;
+import DAOs.WeatherService;
 import ui.ActivityPresenter.DeleteActivityPresenter;
 import ui.ActivityPresenter.SaveActivityPresenter;
 import ui.ActivityPresenter.ShowActivityListPresenter;
@@ -60,6 +55,7 @@ public class DashboardUI implements ActionListener {
     private Color headingcolor = new Color(255, 255, 255);
     private Color textcolor = new Color(156, 156, 156);
     private Color boxcolor = new Color(100, 80, 150);
+    private Color pressedboxcolor = new Color(50,40,75);
     private Font largefont = new Font("Monospaced", Font.BOLD, 30);
     private Font mediumfont = new Font("Monospaced", Font.BOLD, 16);
     private Font smallfont = new Font("Monospaced", Font.BOLD, 12);
@@ -72,6 +68,8 @@ public class DashboardUI implements ActionListener {
     private final ShowActivity showActivity;
 
     private final SaveActivity saveActivity;
+
+    private Boolean track = false;
 
     public DashboardUI(String username, UserService userService) throws MalformedURLException, JSONException {
         this.username = username;
@@ -339,10 +337,19 @@ public class DashboardUI implements ActionListener {
 
         } else if (e.getSource() == sleepButton) {
             frame.dispose();
-            Sleep sleepService = new Sleep(); // You need to implement the Sleep class
+            Sleep sleepService = new Sleep(); // You need to implement the Usecase.Sleep class
             new SleepUI(sleepService, this); // You need to implement the SleepGraphUI class
         } else if (e.getSource() == trackActivityButton){
-
+            if (!track) {
+                TrackActivity trackActivity = TrackActivityFactory.build(this);
+                trackActivity.execute();
+                trackActivityButton.setBackground(pressedboxcolor);
+                track = true;
+            }else{
+                showActivity.execute();
+                trackActivityButton.setBackground(boxcolor);
+                track = false;
+            }
         }
     }
 
@@ -402,9 +409,7 @@ public class DashboardUI implements ActionListener {
                     new Usecase.Activites.DeleteActivity.Interactor(deleteActivityPresenter));
             DeleteActivity deleteActivity = new DeleteActivity(deleteActivityInteractor);
             deleteActivity.execute(Integer.parseInt(i));
-            activitypanel.remove(containerPanel);
-            activitypanel.revalidate();
-            activitypanel.repaint();
+            showActivity.execute();
         });
 
         // Panel for the name label and delete button

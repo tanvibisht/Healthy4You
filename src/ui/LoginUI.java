@@ -7,8 +7,7 @@ import domain.LoggedUser;
 import domain.User;
 import org.json.JSONException;
 import service.Controllers.UpdateDatabaseActivities;
-import service.UserService;
-import service.WeatherService;
+import DAOs.UserService;
 import DAOs.UserDAO;
 import ui.ActivityPresenter.UpdateActivityPresenter;
 
