@@ -45,7 +45,7 @@ public class DashboardUI implements ActionListener {
     private JPanel activitytitlepanel;
     private JLabel activitytitlelabel;
     private JButton addActivityButton;
-    private UserService userService;
+
     private String username;
     private Color bgcolor = new Color(41, 41, 41);
     private Color themecolor = new Color(143, 88, 178);
@@ -63,9 +63,6 @@ public class DashboardUI implements ActionListener {
     private Hydration hydration;
 
     public DashboardUI(String username, UserService userService) throws MalformedURLException, JSONException {
-        this.username = username;
-        this.userService = userService;
-
         //frame setup
 
         this.username = username;
@@ -297,7 +294,6 @@ public class DashboardUI implements ActionListener {
 
         }
         else if (e.getSource() == hydrationButton) {
-            new HydrationGraphUI(new Hydration(), username, userService); // Show the hydration gr // Show hydration window for the current user
             new HydrationGraphUI(hydration); // Show the hydration gr // Show hydration window for the current user
 
         }
@@ -434,7 +430,6 @@ public class DashboardUI implements ActionListener {
         activitypanel.repaint();
     }
     private void showHydrationGraph() {
-        HydrationGraphUI hydrationGraphUI = new HydrationGraphUI(new Hydration(), username, userService);
         HydrationGraphUI hydrationGraphUI = new HydrationGraphUI(hydration);
     }
 
