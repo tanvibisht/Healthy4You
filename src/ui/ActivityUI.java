@@ -78,3 +78,4 @@ public class ActivityUI extends JFrame implements ActionListener {
         return dashboardUI;
     }
 }
+
