@@ -429,9 +429,7 @@ public class DashboardUI implements ActionListener {
                     new Usecase.Activites.DeleteActivity.Interactor(deleteActivityPresenter));
             DeleteActivity deleteActivity = new DeleteActivity(deleteActivityInteractor);
             deleteActivity.execute(Integer.parseInt(i));
-            activitypanel.remove(containerPanel);
-            activitypanel.revalidate();
-            activitypanel.repaint();
+            showActivity.execute();
         });
 
         // Panel for the name label and delete button
