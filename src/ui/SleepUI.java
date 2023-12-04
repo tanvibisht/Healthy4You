@@ -35,7 +35,7 @@ public class SleepUI {
         this.sleepService = sleepService;
         this.dashboardUI = dashboardUI;
 
-        frame = new JFrame("Usecase.Sleep Tracker");
+        frame = new JFrame("Sleep Tracker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(530, 1100);
         frame.setBackground(bgcolor);
@@ -54,7 +54,7 @@ public class SleepUI {
         toppanel.setLayout(new BoxLayout(toppanel, BoxLayout.Y_AXIS));
 
         //loginlabel setup
-        headinglabel = new JLabel("Usecase.Sleep Schedule");
+        headinglabel = new JLabel("Sleep Schedule");
         headinglabel.setFont(largefont);
         headinglabel.setForeground(headingcolor);
         headinglabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -107,7 +107,7 @@ public class SleepUI {
         subcontrolPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
         subcontrolPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
 
-        JButton addLitersButton = new JButton("Add Usecase.Sleep Hours");
+        JButton addLitersButton = new JButton("Add Sleep Hours");
         addLitersButton.setMaximumSize(new Dimension(220, 60));
         addLitersButton.setPreferredSize(new Dimension(220, 60));
         addLitersButton.setFont(mediumfont);
@@ -161,7 +161,7 @@ public class SleepUI {
     }
 
     private void addSleepHours() {
-        String hoursString = JOptionPane.showInputDialog(frame, "Enter sleep hours for Day 1:");
+        String hoursString = JOptionPane.showInputDialog(frame, "Enter additional sleeping hours:");
         if (hoursString != null && !hoursString.isEmpty()) {
             try {
                 double hours = Double.parseDouble(hoursString);

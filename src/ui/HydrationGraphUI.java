@@ -36,7 +36,7 @@ public class HydrationGraphUI {
         this.dashboardUI = dashboardUI;
         username = dashboardUI.getName();
 
-        frame = new JFrame("Healthy4You Usecase.Hydration Tracker");
+        frame = new JFrame("Healthy4You Hydration Tracker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(530, 1100);
         frame.setBackground(bgcolor);
@@ -55,7 +55,7 @@ public class HydrationGraphUI {
         toppanel.setLayout(new BoxLayout(toppanel, BoxLayout.Y_AXIS));
 
         //loginlabel setup
-        headinglabel = new JLabel("Usecase.Hydration Tracker");
+        headinglabel = new JLabel("Hydration Tracker");
         headinglabel.setFont(largefont);
         headinglabel.setForeground(headingcolor);
         headinglabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -192,7 +192,7 @@ public class HydrationGraphUI {
     }
 
     private XYChart createChart(List<Double> hydrationData) {
-        XYChart chart = new XYChartBuilder().width(470).height(350).title("Usecase.Hydration Data").xAxisTitle("Day").yAxisTitle("Liters").build();
+        XYChart chart = new XYChartBuilder().width(470).height(350).title("Hydration Data").xAxisTitle("Day").yAxisTitle("Liters").build();
 
         chart.getStyler().setYAxisMin(0.0);
         chart.getStyler().setXAxisMin(0.0);
@@ -209,10 +209,11 @@ public class HydrationGraphUI {
         chart.getStyler().setXAxisTitleColor(textcolor);
         chart.getStyler().setChartFontColor(textcolor);
 
-        // If hydrationData is empty, initialize it with default values to avoid IllegalArgumentException
-        if (hydrationData.isEmpty()) {
-            hydrationData.add(0.0); // default value
+        // If hydrationData has fewer than 10 values, initialize it with default values
+        while (hydrationData.size() < 10) {
+            hydrationData.add(0.0); // You can adjust the default value as needed
         }
+
         List<Integer> days = new ArrayList<>();
         for (int i = 1; i <= hydrationData.size(); i++) {
             days.add(i);
