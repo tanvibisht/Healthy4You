@@ -7,7 +7,6 @@ import service.Controllers.DeleteActivity;
 import service.Controllers.ShowActivity;
 import ui.ActivityPresenter.AddActivityPresenter;
 import ui.ActivityPresenter.DeleteActivityPresenter;
-import ui.ActivityPresenter.ShowActivityListPresenter;
 
 import java.awt.*;
 import javax.swing.*;
@@ -48,9 +47,6 @@ public class ActivityUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String activityName = activityNameField.getText().trim();
         String activityDescription = activityDescriptionArea.getText().trim();
-        ShowActivityListPresenter showActivityListPresenter = new ShowActivityListPresenter(this);
-        Interactor showActivityInteractor = new Interactor(showActivityListPresenter);
-        ShowActivity showActivity = new ShowActivity(showActivityInteractor);
         if (e.getSource() == createButton) {
 
             if (!activityName.isEmpty() && !activityDescription.isEmpty()) {
@@ -59,7 +55,6 @@ public class ActivityUI extends JFrame implements ActionListener {
                 CreateActivity createActivity = new CreateActivity(creatActivityInteractor);
                 createActivity.setTime(2001, 12, 5, 12, 30);
                 createActivity.execute(activityDescription, 1); //need a new slot for duration
-                showActivity.execute();
                 dispose();
             } else if (e.getSource() == deleteButton) {
                 DeleteActivityPresenter deleteActivityPresenter = new DeleteActivityPresenter(this);

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 
 public class DashboardUI implements ActionListener {
     JFrame frame;
@@ -45,7 +46,7 @@ public class DashboardUI implements ActionListener {
     private JPanel activitytitlepanel;
     private JLabel activitytitlelabel;
     private JButton addActivityButton;
-
+    private UserService userService;
     private String username;
     private Color bgcolor = new Color(41, 41, 41);
     private Color themecolor = new Color(143, 88, 178);
@@ -58,11 +59,13 @@ public class DashboardUI implements ActionListener {
     private JTextField hourField, minuteField;
     private static final String SLEEP_FILE_PATH = "src/sleep.txt";
 
-    private UserService userService;
     private UserDAO userDAO;
     private Hydration hydration;
 
     public DashboardUI(String username, UserService userService) throws MalformedURLException, JSONException {
+        this.username = username;
+        this.userService = userService;
+
         //frame setup
 
         this.username = username;
@@ -137,7 +140,7 @@ public class DashboardUI implements ActionListener {
         //imageIcon setup
         ImageIcon originalImage = new ImageIcon("/Users/cristianoafonsodasilva/Desktop/University of Toronto/2023 Fall/Healthy4You/version_8/src/resource/personicon.png");
         Image image = originalImage.getImage(); // Transform it
-        Image newimg = image.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH);
+        Image newimg = image.getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon(newimg);  // Transform it back
 
         //iconlabel setup
@@ -208,9 +211,6 @@ public class DashboardUI implements ActionListener {
         buttonpanel.add(sleepButton);
         buttonpanel.add(getRecipeButton);
         buttonpanel.add(hydrationButton);
-
-
-
 
 
         //-----------------------------activity panel-----------------------------
@@ -292,12 +292,10 @@ public class DashboardUI implements ActionListener {
             // Display the new recipe in a dialog or on the UI
             new RecipeUI(newRecipe);
 
-        }
-        else if (e.getSource() == hydrationButton) {
+        } else if (e.getSource() == hydrationButton) {
             new HydrationGraphUI(hydration); // Show the hydration gr // Show hydration window for the current user
 
-        }
-        else if (e.getSource() == sleepButton) {
+        } else if (e.getSource() == sleepButton) {
             showSleepGraph();
         }
     }
@@ -429,6 +427,7 @@ public class DashboardUI implements ActionListener {
         activitypanel.revalidate();
         activitypanel.repaint();
     }
+
     private void showHydrationGraph() {
         HydrationGraphUI hydrationGraphUI = new HydrationGraphUI(hydration);
     }
@@ -488,8 +487,7 @@ public class DashboardUI implements ActionListener {
         // Assuming SleepGraphUI takes a Sleep instance which reads data from sleep.txt
         Sleep sleepService = new Sleep(); // You need to implement the Sleep class
         SleepUI sleepGraphUI = new SleepUI(sleepService); // You need to implement the SleepGraphUI class
-
-    public JPanel getActivitypanel() {
-        return activitypanel;
     }
+
+
 }
