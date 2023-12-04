@@ -249,15 +249,13 @@ public class DashboardUI implements ActionListener {
         addActivityButton.setContentAreaFilled(true);
         addActivityButton.addActionListener(this);
 
-        //activitypanel setup
-        activitypanel.add(Box.createVerticalStrut(20));
-        activitypanel.add(activitytitlepanel);
-        activitypanel.add(Box.createVerticalStrut(20));
-        activitypanel.add(addActivityButton);
-
         //mainpanel component
         mainpanel.add(toppanel);
         mainpanel.add(buttonpanel);
+        mainpanel.add(Box.createVerticalStrut(20));
+        mainpanel.add(activitytitlepanel);
+        mainpanel.add(Box.createVerticalStrut(20));
+        mainpanel.add(addActivityButton);
         mainpanel.add(activitypanel);
         mainpanel.add(Box.createVerticalStrut(20));
 
