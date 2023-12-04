@@ -1,6 +1,5 @@
 package Sleep;
 
-import Hydration.Hydration;
 import org.knowm.xchart.*;
 import org.knowm.xchart.style.Styler;
 import org.knowm.xchart.style.markers.SeriesMarkers;
@@ -83,7 +82,7 @@ public class SleepUI {
         subcontrolPanel.setMinimumSize(subcontrolPanel.getPreferredSize());
         subcontrolPanel.setBackground(bgcolor);
         subcontrolPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        subcontrolPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30,0));
+        subcontrolPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
 
         JButton addLitersButton = new JButton("Add Sleep Hours");
         addLitersButton.setMaximumSize(new Dimension(220, 60));
@@ -126,7 +125,7 @@ public class SleepUI {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 try {
-                    new DashboardUI(username,userService);
+                    new DashboardUI(username, userService);
                 } catch (MalformedURLException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -143,11 +142,11 @@ public class SleepUI {
     }
 
     private void addSleepHours() {
-        String hoursString = JOptionPane.showInputDialog(frame, "Enter sleep hours:");
+        String hoursString = JOptionPane.showInputDialog(frame, "Enter sleep hours for Day 1:");
         if (hoursString != null && !hoursString.isEmpty()) {
             try {
                 double hours = Double.parseDouble(hoursString);
-                sleepService.addSleepData("Day X", hours); // Replace "Day X" with actual day identifier
+                sleepService.addSleepData(1, hours);  // Correctly adding to Day 1 as a string
                 updateChart();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(frame, "Please enter a valid number.");
@@ -162,20 +161,22 @@ public class SleepUI {
 
     private void updateChart() {
         Map<String, Double> sleepData = sleepService.getUserSleepData();
-        List<Integer> days = new ArrayList<>();
-        List<Double> hours = new ArrayList<>();
-        int day = 1;
-        for (Map.Entry<String, Double> entry : sleepData.entrySet()) {
-            days.add(day++);
-            hours.add(entry.getValue());
-        }
+        chart = createChart(sleepData);
 
-        if (chart != null) {
-            chart.updateXYSeries("Sleep", days, hours, null);
-            frame.revalidate(); // re-lay out the components
-            frame.repaint();    // repaint the frame and its components
-        }
+        // Remove the old chart panel and add the new one
+        mainpanel.removeAll();
+        XChartPanel<XYChart> chartPanel = new XChartPanel<>(chart);
+        mainpanel.add(chartPanel);
+
+        // Add back the control panel and any other components
+        addControlPanel();  // This adds the control panel back to mainpanel
+        mainpanel.add(Box.createVerticalGlue());  // Add other components as needed
+
+        // Refresh the frame
+        frame.revalidate();
+        frame.repaint();
     }
+
 
     private XYChart createChart(Map<String, Double> sleepData) {
         XYChart chart = new XYChartBuilder().width(470).height(350).title("Sleep Data").xAxisTitle("Day").yAxisTitle("Hours").build();
@@ -202,18 +203,13 @@ public class SleepUI {
         chart.getStyler().setAxisTitlesVisible(true);
         chart.getStyler().setPlotGridLinesVisible(true);
 
-        // Prepare the series data
-        List<Integer> days = new ArrayList<>();
+        List<Number> days = new ArrayList<>();
         List<Double> hours = new ArrayList<>();
-        int day = 1;
-        for (Map.Entry<String, Double> entry : sleepData.entrySet()) {
-            days.add(day++);
-            hours.add(entry.getValue());
-        }
-        // Ensure there is data for each day, even if it's zero
-        while (days.size() < 30) {
-            days.add(day++);
-            hours.add(0.0);
+
+        // Assuming we have 30 days of data
+        for (int i = 1; i <= 30; i++) {
+            days.add(i);
+            hours.add(sleepData.getOrDefault("Day " + i, 0.0));
         }
 
         // Add a series for a line graph
@@ -222,4 +218,5 @@ public class SleepUI {
 
         return chart;
     }
+
 }
