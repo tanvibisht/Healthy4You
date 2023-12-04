@@ -4,14 +4,11 @@ import Hydration.Hydration;
 import Sleep.Sleep;
 import Sleep.SleepUI;
 import Hydration.HydrationGraphUI;
-import domain.User;
 import service.UserService;
 import Recipe.RecipeGenerator;
 import Recipe.RecipeUI;
 import org.json.JSONException;
 import org.json.JSONObject;
-import service.GeoLocationService;
-import service.UserService;
 import service.WeatherService;
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +20,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collection;
 
 public class DashboardUI implements ActionListener {
     JFrame frame;
@@ -375,7 +371,7 @@ public class DashboardUI implements ActionListener {
     }
 
     // Method to add a new activity panel with a fixed size and blue theme
-    public void addActivityPanel(String name, String description) {
+    public void addActivityPanel(String name, String duration, String completion, String description) {
         // Container panel for the subactivity panel and the vertical strut
         JPanel containerPanel = new JPanel();
         containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
@@ -484,5 +480,9 @@ public class DashboardUI implements ActionListener {
             e.printStackTrace();
         }
         frame.repaint();
+    }
+
+    public JPanel getActivitypanel() {
+        return activitypanel;
     }
 }
