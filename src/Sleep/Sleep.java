@@ -1,9 +1,7 @@
 package Sleep;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-
 public class Sleep {
     private Map<String, Map<String, Double>> userSleepData; // Map of users to their sleep data map
     private static final String SLEEP_FILE_NAME = "src/sleep.txt";
@@ -15,15 +13,18 @@ public class Sleep {
         loadSleepData();
     }
 
-    public void addSleepData(String day, double hours) {
+    public void addSleepData(int dayNumber, double hours) {
+        String dayString = "Day " + dayNumber;
+
         Map<String, Double> sleepData = userSleepData.getOrDefault(currentUsername, new HashMap<>());
-        sleepData.put(day, hours);
+        double currentHours = sleepData.getOrDefault(dayString, 0.0);
+        sleepData.put(dayString, currentHours + hours);
         userSleepData.put(currentUsername, sleepData);
         saveSleepData();
     }
 
     public void clearSleepData() {
-        userSleepData.put(currentUsername, new HashMap<>()); // Clearing data for the current user
+        userSleepData.put(currentUsername, new HashMap<>());
         saveSleepData();
     }
 
@@ -62,7 +63,7 @@ public class Sleep {
             return reader.readLine();
         } catch (IOException e) {
             e.printStackTrace();
-            return null; // Handle appropriately
+            return null;
         }
     }
 

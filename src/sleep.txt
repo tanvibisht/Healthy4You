@@ -1,1 +1,2 @@
-wow,Day X,3.0
+wow,Day 1,14.0
+wow,Day 2,12.0
