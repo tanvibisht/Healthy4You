@@ -2,8 +2,8 @@ package Usecase.UpdateGPTcomment;
 
 import domain.LoggedUser;
 import domain.User;
-import service.GeoLocationService;
-import service.WeatherService;
+import DAOs.GeoLocationService;
+import DAOs.WeatherService;
 
 public class GPTUpdateInteractor implements GPTUpdateInput{
     final GPTUpdateOutput output;

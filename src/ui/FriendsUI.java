@@ -1,6 +1,6 @@
 package ui;
 
-import service.UserService;
+import DAOs.UserService;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

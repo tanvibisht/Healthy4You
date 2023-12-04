@@ -5,6 +5,7 @@ import Usecase.Activites.TrackActivity.OutputData;
 import ui.DashboardUI;
 
 import javax.swing.*;
+import java.util.List;
 
 public class TrackActivityPresenter implements Output {
     final DashboardUI ui;
@@ -19,5 +20,12 @@ public class TrackActivityPresenter implements Output {
 
     @Override
     public void prepareSuccessView(OutputData output) {
+        ui.getActivitypanel().removeAll();
+        int i = 0;
+        for (List<String> attributes: output.getActivities()){
+            ui.addActivityPanel(attributes.get(0), attributes.get(1),attributes.get(2),
+                    attributes.get(3), String.valueOf(i));
+            i += 1;
+        }
     }
 }

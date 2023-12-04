@@ -1,4 +1,4 @@
-package Hydration;
+package Usecase.Hydration;
 
 import java.io.*;
 import java.util.*;
@@ -41,7 +41,7 @@ public class Hydration {
             }
         } catch (FileNotFoundException e) {
             // If the file doesn't exist, a new one will be created on save.
-            System.err.println("Hydration data file not found. A new file will be created.");
+            System.err.println("Usecase.Hydration data file not found. A new file will be created.");
         } catch (IOException e) {
             System.err.println("Error reading hydration data: " + e.getMessage());
         }

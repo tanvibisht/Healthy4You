@@ -1,17 +1,15 @@
-package Hydration;
+package ui;
 
+import Usecase.Hydration.Hydration;
 import org.knowm.xchart.*;
 import org.knowm.xchart.style.Styler;
 import org.knowm.xchart.style.markers.SeriesMarkers;
-import service.UserService;
 import ui.DashboardUI;
-import ui.LoginUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +36,7 @@ public class HydrationGraphUI {
         this.dashboardUI = dashboardUI;
         username = dashboardUI.getName();
 
-        frame = new JFrame("Healthy4You Hydration Tracker");
+        frame = new JFrame("Healthy4You Usecase.Hydration Tracker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(530, 1100);
         frame.setBackground(bgcolor);
@@ -57,7 +55,7 @@ public class HydrationGraphUI {
         toppanel.setLayout(new BoxLayout(toppanel, BoxLayout.Y_AXIS));
 
         //loginlabel setup
-        headinglabel = new JLabel("Hydration Tracker");
+        headinglabel = new JLabel("Usecase.Hydration Tracker");
         headinglabel.setFont(largefont);
         headinglabel.setForeground(headingcolor);
         headinglabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -194,7 +192,7 @@ public class HydrationGraphUI {
     }
 
     private XYChart createChart(List<Double> hydrationData) {
-        XYChart chart = new XYChartBuilder().width(470).height(350).title("Hydration Data").xAxisTitle("Day").yAxisTitle("Liters").build();
+        XYChart chart = new XYChartBuilder().width(470).height(350).title("Usecase.Hydration Data").xAxisTitle("Day").yAxisTitle("Liters").build();
 
         chart.getStyler().setYAxisMin(0.0);
         chart.getStyler().setXAxisMin(0.0);
