@@ -1,6 +1,8 @@
 package ui;
 import DAOs.UserDAO;
 import Hydration.Hydration;
+import Sleep.Sleep;
+import Sleep.SleepUI;
 import Hydration.HydrationGraphUI;
 import domain.User;
 import service.UserService;
@@ -37,6 +39,8 @@ public class DashboardUI implements ActionListener {
     private JPanel buttonpanel;
     private JButton getRecipeButton;
     private JButton hydrationButton;
+
+    private JButton sleepButton;
     private JPanel activitypanel;
     private JPanel activitytitlepanel;
     private JLabel activitytitlelabel;
@@ -51,7 +55,6 @@ public class DashboardUI implements ActionListener {
     private Font largefont = new Font("Monospaced", Font.BOLD, 30);
     private Font mediumfont = new Font("Monospaced", Font.BOLD, 16);
     private Font smallfont = new Font("Monospaced", Font.BOLD, 12);
-    private JButton addSleepButton, clearSleepButton;
     private JTextField hourField, minuteField;
     private static final String SLEEP_FILE_PATH = "src/sleep.txt";
 
@@ -193,29 +196,23 @@ public class DashboardUI implements ActionListener {
         hydrationButton.setOpaque(true);
         hydrationButton.setContentAreaFilled(true);
         hydrationButton.addActionListener(this);
+        sleepButton = new JButton("Sleep");
+        sleepButton.setMaximumSize(new Dimension(220, 50));
+        sleepButton.setPreferredSize(new Dimension(220, 50));
 
+        sleepButton.setFont(smallfont);
+        sleepButton.setForeground(headingcolor);
+        sleepButton.setBackground(boxcolor);
+        sleepButton.setFocusPainted(false);
+        sleepButton.setBorderPainted(false);
+        sleepButton.setOpaque(true);
+        sleepButton.setContentAreaFilled(true);
+        sleepButton.addActionListener(this); // Register the current instance as the action listener
+        buttonpanel.add(sleepButton);
         buttonpanel.add(getRecipeButton);
         buttonpanel.add(hydrationButton);
 
-        JPanel sleepPanel = new JPanel();
-        sleepPanel.setLayout(new FlowLayout());
-        sleepPanel.setBackground(bgcolor);
-        hourField = new JTextField(2);
-        minuteField = new JTextField(2);
-        addSleepButton = new JButton("Add Sleep Data");
-        clearSleepButton = new JButton("Clear Sleep Data");
 
-        addSleepButton.addActionListener(this);
-        clearSleepButton.addActionListener(this);
-
-        sleepPanel.add(new JLabel("Hours:"));
-        sleepPanel.add(hourField);
-        sleepPanel.add(new JLabel("Minutes:"));
-        sleepPanel.add(minuteField);
-        sleepPanel.add(addSleepButton);
-        sleepPanel.add(clearSleepButton);
-
-        mainpanel.add(sleepPanel);
 
 
 
@@ -304,10 +301,8 @@ public class DashboardUI implements ActionListener {
             new HydrationGraphUI(hydration); // Show the hydration gr // Show hydration window for the current user
 
         }
-        else if (e.getSource() == addSleepButton) {
-            writeSleepData(username);
-        } else if (e.getSource() == clearSleepButton) {
-            clearSleepData();
+        else if (e.getSource() == sleepButton) {
+            showSleepGraph();
         }
     }
 
@@ -493,6 +488,11 @@ public class DashboardUI implements ActionListener {
         }
         frame.repaint();
     }
+
+    private void showSleepGraph() {
+        // Assuming SleepGraphUI takes a Sleep instance which reads data from sleep.txt
+        Sleep sleepService = new Sleep(); // You need to implement the Sleep class
+        SleepUI sleepGraphUI = new SleepUI(sleepService); // You need to implement the SleepGraphUI class
 
     public JPanel getActivitypanel() {
         return activitypanel;
