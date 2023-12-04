@@ -297,7 +297,9 @@ public class DashboardUI implements ActionListener {
             new HydrationGraphUI(hydration, username, userService); // Show the hydration gr // Show hydration window for the current user
 
         } else if (e.getSource() == sleepButton) {
-            showSleepGraph();
+            frame.dispose();
+            Sleep sleepService = new Sleep(); // You need to implement the Sleep class
+            new SleepUI(sleepService, username,userService); // You need to implement the SleepGraphUI class
         }
     }
 
@@ -483,12 +485,4 @@ public class DashboardUI implements ActionListener {
         }
         frame.repaint();
     }
-
-    private void showSleepGraph() {
-        // Assuming SleepGraphUI takes a Sleep instance which reads data from sleep.txt
-        Sleep sleepService = new Sleep(); // You need to implement the Sleep class
-        SleepUI sleepGraphUI = new SleepUI(sleepService); // You need to implement the SleepGraphUI class
-    }
-
-
 }
