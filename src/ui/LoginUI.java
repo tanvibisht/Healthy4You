@@ -1,11 +1,16 @@
 package ui;
 
+
+import DAOs.ActivitiesDAO.ActivityReader;
+import Usecase.Activites.UpdateDatabaseActivities.Interactor;
 import domain.LoggedUser;
 import domain.User;
 import org.json.JSONException;
+import service.Controllers.UpdateDatabaseActivities;
 import service.UserService;
 import service.WeatherService;
 import DAOs.UserDAO;
+import ui.ActivityPresenter.UpdateActivityPresenter;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -286,8 +291,15 @@ public class LoginUI {
                 }
 
                 frame.dispose();
-                new DashboardUI(username, userService);
+                DashboardUI ui = new DashboardUI(username, userService);
                 LoggedUser.setUser(new User(username, password)); //Set for now, need more function
+                UpdateActivityPresenter updateActivityPresenter = new UpdateActivityPresenter(ui);
+                ActivityReader activityReader = new ActivityReader();
+                Interactor updateActivityInteractor = new Interactor(updateActivityPresenter, activityReader);
+                UpdateDatabaseActivities updateDatabaseActivities = new UpdateDatabaseActivities(
+                        updateActivityInteractor);
+                updateDatabaseActivities.execute();
+                ui.showActivity();
                 // Close the login window
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);

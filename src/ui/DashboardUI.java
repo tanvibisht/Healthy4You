@@ -1,15 +1,24 @@
 package ui;
+import DAOs.ActivitiesDAO.ActivitySaver;
 import DAOs.UserDAO;
 import Hydration.Hydration;
 import Sleep.Sleep;
 import Sleep.SleepUI;
 import Hydration.HydrationGraphUI;
+import Usecase.Activites.ShowActivityList.Interactor;
+import service.Controllers.DeleteActivity;
+import service.Controllers.SaveActivity;
+import service.Controllers.ShowActivity;
 import service.UserService;
 import Recipe.RecipeGenerator;
 import Recipe.RecipeUI;
 import org.json.JSONException;
 import org.json.JSONObject;
 import service.WeatherService;
+import ui.ActivityPresenter.DeleteActivityPresenter;
+import ui.ActivityPresenter.SaveActivityPresenter;
+import ui.ActivityPresenter.ShowActivityListPresenter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -58,9 +67,18 @@ public class DashboardUI implements ActionListener {
     private UserDAO userDAO;
     private Hydration hydration;
 
+    private final ShowActivity showActivity;
+
+    private final SaveActivity saveActivity;
+
     public DashboardUI(String username, UserService userService) throws MalformedURLException, JSONException {
         this.username = username;
         this.userService = userService;
+        SaveActivityPresenter saveActivityPresenter = new SaveActivityPresenter(this);
+        ActivitySaver activitySaver = new ActivitySaver();
+        Usecase.Activites.SaveActivities.Interactor saveActivityInteractor = (
+                new Usecase.Activites.SaveActivities.Interactor(saveActivityPresenter, activitySaver));
+        saveActivity = new SaveActivity(saveActivityInteractor);
 
         //frame setup
 
@@ -110,6 +128,7 @@ public class DashboardUI implements ActionListener {
         logoutbutton.setFocusPainted(true);
         logoutbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                saveActivity.execute();
                 frame.dispose();
                 new LoginUI();
             }
@@ -272,6 +291,10 @@ public class DashboardUI implements ActionListener {
         frame.setVisible(true);
         frame.revalidate();
         frame.repaint();
+
+        ShowActivityListPresenter showActivityListPresenter = new ShowActivityListPresenter(this);
+        Interactor showActivityInteractor = new Interactor(showActivityListPresenter);
+        showActivity = new ShowActivity(showActivityInteractor);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -369,7 +392,7 @@ public class DashboardUI implements ActionListener {
     }
 
     // Method to add a new activity panel with a fixed size and blue theme
-    public void addActivityPanel(String name, String duration, String completion, String description) {
+    public void addActivityPanel(String name, String duration, String completion, String description, String index) {
         // Container panel for the subactivity panel and the vertical strut
         JPanel containerPanel = new JPanel();
         containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
@@ -400,6 +423,12 @@ public class DashboardUI implements ActionListener {
         // Delete button setup
         JButton deleteSubActivityButton = new JButton("X");
         deleteSubActivityButton.addActionListener(e -> {
+            String i  = index;
+            DeleteActivityPresenter deleteActivityPresenter = new DeleteActivityPresenter(this);
+            Usecase.Activites.DeleteActivity.Interactor deleteActivityInteractor = (
+                    new Usecase.Activites.DeleteActivity.Interactor(deleteActivityPresenter));
+            DeleteActivity deleteActivity = new DeleteActivity(deleteActivityInteractor);
+            deleteActivity.execute(Integer.parseInt(i));
             activitypanel.remove(containerPanel);
             activitypanel.revalidate();
             activitypanel.repaint();
@@ -482,5 +511,9 @@ public class DashboardUI implements ActionListener {
 
     public JPanel getActivitypanel() {
         return activitypanel;
+    }
+
+    public void showActivity(){
+        showActivity.execute();
     }
 }

@@ -9,24 +9,26 @@ import javax.swing.*;
 import java.util.List;
 
 public class ShowActivityListPresenter implements Output {
-    final ActivityUI view;
+    final DashboardUI view;
 
-    public ShowActivityListPresenter(ActivityUI ui){
+    public ShowActivityListPresenter(DashboardUI ui){
         view = ui;
     }
 
 
     @Override
     public void prepareFailView(String message) {
-        JOptionPane.showMessageDialog(view, "", message, JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(view.getActivitypanel(), "", message, JOptionPane.WARNING_MESSAGE);
     }
 
     @Override
     public void prepareSuccessView(OutputData outputData) {
-        view.getDashboardUI().getActivitypanel().removeAll();
+        view.getActivitypanel().removeAll();
+        int i = 0;
         for (List<String> attributes: outputData.getActivities()){
-            view.getDashboardUI().addActivityPanel(attributes.get(0), attributes.get(1),attributes.get(2),
-                    attributes.get(3));
+            view.addActivityPanel(attributes.get(0), attributes.get(1),attributes.get(2),
+                    attributes.get(3), String.valueOf(i));
+            i += 1;
         }
     }
 }

@@ -21,7 +21,7 @@ public class ActivityUI extends JFrame implements ActionListener {
     private JTextField activityNameField;
     private JTextArea activityDescriptionArea;
     private JButton createButton;
-
+    private  ShowActivity showActivity;
     private JButton deleteButton;
 
     public ActivityUI(DashboardUI dashboardUI) {
@@ -42,15 +42,16 @@ public class ActivityUI extends JFrame implements ActionListener {
         add(createButton, BorderLayout.SOUTH);
 
         setVisible(true);
+
+        ShowActivityListPresenter showActivityListPresenter = new ShowActivityListPresenter(this.getDashboardUI());
+        Interactor showActivityInteractor = new Interactor(showActivityListPresenter);
+        showActivity = new ShowActivity(showActivityInteractor);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String activityName = activityNameField.getText().trim();
         String activityDescription = activityDescriptionArea.getText().trim();
-        ShowActivityListPresenter showActivityListPresenter = new ShowActivityListPresenter(this);
-        Interactor showActivityInteractor = new Interactor(showActivityListPresenter);
-        ShowActivity showActivity = new ShowActivity(showActivityInteractor);
         if (e.getSource() == createButton) {
 
             if (!activityName.isEmpty() && !activityDescription.isEmpty()) {
@@ -61,12 +62,6 @@ public class ActivityUI extends JFrame implements ActionListener {
                 createActivity.execute(activityDescription, 1); //need a new slot for duration
                 showActivity.execute();
                 dispose();
-            } else if (e.getSource() == deleteButton) {
-                DeleteActivityPresenter deleteActivityPresenter = new DeleteActivityPresenter(this);
-                Usecase.Activites.DeleteActivity.Interactor deleteActivityInteractor = (
-                        new Usecase.Activites.DeleteActivity.Interactor(deleteActivityPresenter));
-                DeleteActivity deleteActivity = new DeleteActivity(deleteActivityInteractor);
-                deleteActivity.execute(0);
             }
             else {
                 JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Incomplete Information", JOptionPane.WARNING_MESSAGE);
@@ -77,5 +72,6 @@ public class ActivityUI extends JFrame implements ActionListener {
     public DashboardUI getDashboardUI() {
         return dashboardUI;
     }
+
 }
 
