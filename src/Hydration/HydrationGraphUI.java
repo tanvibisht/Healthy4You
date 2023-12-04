@@ -13,21 +13,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-
 import java.util.List;
 
 public class HydrationGraphUI {
     private JFrame frame;
     private JPanel mainpanel;
     private Hydration hydrationService;
-
     private UserService userService;
-    private String username;
     private XYChart chart;
+    private String username;
     private Color bgcolor = new Color(41, 41, 41);
     private Color themecolor = new Color(143, 88, 178);
     private Color headingcolor = new Color(255, 255, 255);
@@ -41,13 +35,6 @@ public class HydrationGraphUI {
         this.hydrationService = hydrationService;
         this.username = username;
         this.userService = userService;
-    private String currentUsername;
-    private XYChart chart;
-
-    public HydrationGraphUI(Hydration hydrationService) {
-        this.hydrationService = hydrationService;
-        this.currentUsername = hydrationService.readCurrentUsername();
-
 
         frame = new JFrame("Hydration Tracker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,7 +46,7 @@ public class HydrationGraphUI {
         mainpanel.setLayout(new BoxLayout(mainpanel, BoxLayout.Y_AXIS));
 
         // Initialize chart here, even if it might be empty initially
-        List<Double> hydrationData = hydrationService.getUserHydrationData(currentUsername);
+        List<Double> hydrationData = hydrationService.getUserHydrationData(username);
         chart = createChart(hydrationData);
         XChartPanel<XYChart> chartPanel = new XChartPanel<>(chart);
         chartPanel.setPreferredSize(new Dimension(470, 350)); // Update this line with the new size
@@ -89,7 +76,7 @@ public class HydrationGraphUI {
         controlPanel.setBackground(bgcolor);
         controlPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
-        
+
         JPanel subcontrolPanel = new JPanel();
         subcontrolPanel.setPreferredSize(new Dimension(530, 60));
         subcontrolPanel.setMaximumSize(subcontrolPanel.getPreferredSize());
@@ -160,7 +147,7 @@ public class HydrationGraphUI {
         if (litersString != null && !litersString.isEmpty()) {
             try {
                 double liters = Double.parseDouble(litersString);
-                hydrationService.addWater(currentUsername, liters);
+                hydrationService.addWater(username, liters);
                 updateChart();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(frame, "Please enter a valid number.");
@@ -169,12 +156,12 @@ public class HydrationGraphUI {
     }
 
     private void clearData() {
-        hydrationService.clearData(currentUsername);
+        hydrationService.clearData(username);
         updateChart();
     }
 
     private void updateChart() {
-        List<Double> hydrationData = hydrationService.getUserHydrationData(currentUsername);
+        List<Double> hydrationData = hydrationService.getUserHydrationData(username);
         List<Integer> days = new ArrayList<>();
         for (int i = 0; i < hydrationData.size(); i++) {
             days.add(i + 1);
@@ -190,15 +177,8 @@ public class HydrationGraphUI {
     private XYChart createChart(List<Double> hydrationData) {
         XYChart chart = new XYChartBuilder().width(470).height(350).title("Hydration Data").xAxisTitle("Day").yAxisTitle("Liters").build();
 
-        // Set a fixed range for the X-axis and Y-axis
         chart.getStyler().setYAxisMin(0.0);
-        chart.getStyler().setYAxisMax(10.0); // Assuming you want to show up to 10 liters
         chart.getStyler().setXAxisMin(0.0);
-        chart.getStyler().setXAxisMax(10.0); // To show at least 10 days
-
-        // Adjust X-axis interval to show every day up to 10 days
-        chart.getStyler().setXAxisTickMarkSpacingHint(1);
-
         chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNE);
         chart.getStyler().setAxisTitlesVisible(true);
         chart.getStyler().setPlotGridLinesVisible(true);
@@ -216,14 +196,9 @@ public class HydrationGraphUI {
         if (hydrationData.isEmpty()) {
             hydrationData.add(0.0); // default value
         }
-        // Prepare the series data
         List<Integer> days = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) { // Ensure there are at least 10 days
+        for (int i = 1; i <= hydrationData.size(); i++) {
             days.add(i);
-        }
-        // Ensure there is data for each day, even if it's zero
-        while (hydrationData.size() < 10) {
-            hydrationData.add(0.0);
         }
 
         // Add a series for a line graph
@@ -232,7 +207,5 @@ public class HydrationGraphUI {
 
         return chart;
     }
-
-
 
 }
