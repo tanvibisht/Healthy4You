@@ -50,7 +50,9 @@ public class DashboardUI implements ActionListener {
     private JPanel activitypanel;
     private JPanel activitytitlepanel;
     private JLabel activitytitlelabel;
+    private JPanel addActivityButtonpanel;
     private JButton addActivityButton;
+    private JButton trackActivityButton;
     private UserService userService;
     private String username;
     private Color bgcolor = new Color(41, 41, 41);
@@ -74,18 +76,14 @@ public class DashboardUI implements ActionListener {
     public DashboardUI(String username, UserService userService) throws MalformedURLException, JSONException {
         this.username = username;
         this.userService = userService;
+        this.userDAO = new UserDAO();
+        this.hydration = new Hydration();
+
         SaveActivityPresenter saveActivityPresenter = new SaveActivityPresenter(this);
         ActivitySaver activitySaver = new ActivitySaver();
         Usecase.Activites.SaveActivities.Interactor saveActivityInteractor = (
                 new Usecase.Activites.SaveActivities.Interactor(saveActivityPresenter, activitySaver));
         saveActivity = new SaveActivity(saveActivityInteractor);
-
-        //frame setup
-
-        this.username = username;
-        this.userService = userService;
-        this.userDAO = new UserDAO();
-        this.hydration = new Hydration();
 
         frame = new JFrame();
         frame.setTitle("Healthy4You Dashboard");
@@ -124,8 +122,8 @@ public class DashboardUI implements ActionListener {
         logoutbutton.setFont(smallfont);
         logoutbutton.setForeground(textcolor);
         logoutbutton.setBackground(bgcolor);
-        logoutbutton.setBorder(BorderFactory.createLineBorder(textcolor));
-        logoutbutton.setFocusPainted(true);
+        logoutbutton.setBorderPainted(false);
+        logoutbutton.setFocusPainted(false);
         logoutbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 saveActivity.execute();
@@ -181,16 +179,16 @@ public class DashboardUI implements ActionListener {
         //-----------------------------button panel-----------------------------
 
         //buttonpanel setup
-        buttonpanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
-        buttonpanel.setPreferredSize(new Dimension(530, 50));
+        buttonpanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 25, 0));
+        buttonpanel.setPreferredSize(new Dimension(520, 50));
         buttonpanel.setMaximumSize(buttonpanel.getPreferredSize());
         buttonpanel.setMinimumSize(buttonpanel.getPreferredSize());
         buttonpanel.setBackground(bgcolor);
         buttonpanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         getRecipeButton = new JButton("Recipe");
-        getRecipeButton.setMaximumSize(new Dimension(120, 50));
-        getRecipeButton.setPreferredSize(new Dimension(120, 50));
+        getRecipeButton.setMaximumSize(new Dimension(140, 50));
+        getRecipeButton.setPreferredSize(new Dimension(140, 50));
         getRecipeButton.setFont(smallfont);
         getRecipeButton.setForeground(headingcolor);
         getRecipeButton.setBackground(boxcolor);
@@ -201,8 +199,8 @@ public class DashboardUI implements ActionListener {
         getRecipeButton.addActionListener(this);
 
         hydrationButton = new JButton("Hydration");
-        hydrationButton.setMaximumSize(new Dimension(120, 50));
-        hydrationButton.setPreferredSize(new Dimension(120, 50));
+        hydrationButton.setMaximumSize(new Dimension(140, 50));
+        hydrationButton.setPreferredSize(new Dimension(140, 50));
         hydrationButton.setFont(smallfont);
         hydrationButton.setForeground(headingcolor);
         hydrationButton.setBackground(boxcolor);
@@ -213,8 +211,8 @@ public class DashboardUI implements ActionListener {
         hydrationButton.addActionListener(this);
 
         sleepButton = new JButton("Sleep");
-        sleepButton.setMaximumSize(new Dimension(120, 50));
-        sleepButton.setPreferredSize(new Dimension(120, 50));
+        sleepButton.setMaximumSize(new Dimension(140, 50));
+        sleepButton.setPreferredSize(new Dimension(140, 50));
         sleepButton.setFont(smallfont);
         sleepButton.setForeground(headingcolor);
         sleepButton.setBackground(boxcolor);
@@ -253,11 +251,19 @@ public class DashboardUI implements ActionListener {
         activitytitlepanel.add(Box.createVerticalGlue());
         activitytitlepanel.add(activitytitlelabel);
         activitytitlepanel.add(Box.createVerticalGlue());
+        
+        addActivityButtonpanel = new JPanel();
+        addActivityButtonpanel.setPreferredSize(new Dimension(530, 50));
+        addActivityButtonpanel.setMaximumSize(addActivityButtonpanel.getPreferredSize());
+        addActivityButtonpanel.setMinimumSize(addActivityButtonpanel.getPreferredSize());
+        addActivityButtonpanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addActivityButtonpanel.setBackground(bgcolor);
+        addActivityButtonpanel.setLayout(new FlowLayout(FlowLayout.CENTER,30,0));
 
         //addActivityButton setup
         addActivityButton = new JButton("Add");
-        addActivityButton.setMaximumSize(new Dimension(470, 50));
-        addActivityButton.setPreferredSize(new Dimension(470, 50));
+        addActivityButton.setMaximumSize(new Dimension(220, 50));
+        addActivityButton.setPreferredSize(new Dimension(220, 50));
         addActivityButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         addActivityButton.setFont(smallfont);
         addActivityButton.setForeground(headingcolor);
@@ -268,13 +274,30 @@ public class DashboardUI implements ActionListener {
         addActivityButton.setContentAreaFilled(true);
         addActivityButton.addActionListener(this);
 
+        //trackActivityButton setup
+        trackActivityButton = new JButton("Track Activity");
+        trackActivityButton.setMaximumSize(new Dimension(220, 50));
+        trackActivityButton.setPreferredSize(new Dimension(220, 50));
+        trackActivityButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        trackActivityButton.setFont(smallfont);
+        trackActivityButton.setForeground(headingcolor);
+        trackActivityButton.setBackground(boxcolor);
+        trackActivityButton.setFocusPainted(false);
+        trackActivityButton.setBorderPainted(false);
+        trackActivityButton.setOpaque(true);
+        trackActivityButton.setContentAreaFilled(true);
+        trackActivityButton.addActionListener(this);
+
+        addActivityButtonpanel.add(addActivityButton);
+        addActivityButtonpanel.add(trackActivityButton);
+
         //mainpanel component
         mainpanel.add(toppanel);
         mainpanel.add(buttonpanel);
         mainpanel.add(Box.createVerticalStrut(20));
         mainpanel.add(activitytitlepanel);
         mainpanel.add(Box.createVerticalStrut(20));
-        mainpanel.add(addActivityButton);
+        mainpanel.add(addActivityButtonpanel);
         mainpanel.add(activitypanel);
         mainpanel.add(Box.createVerticalStrut(20));
 
@@ -299,6 +322,7 @@ public class DashboardUI implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addActivityButton) {
+            frame.dispose();
             new ActivityUI(this);
         } else if (e.getSource() == getRecipeButton) { // Handle recipe button click
             // Generate a new recipe here using the RecipeGenerator
@@ -307,16 +331,18 @@ public class DashboardUI implements ActionListener {
             newRecipe = recipeGenerator.generateRandomRecipe();
 
             frame.dispose();
-            new RecipeUI(newRecipe,username,userService);
+            new RecipeUI(newRecipe,this);
 
         } else if (e.getSource() == hydrationButton) {
             frame.dispose();
-            new HydrationGraphUI(hydration, username, userService); // Show the hydration gr // Show hydration window for the current user
+            new HydrationGraphUI(hydration, this); // Show the hydration gr // Show hydration window for the current user
 
         } else if (e.getSource() == sleepButton) {
             frame.dispose();
             Sleep sleepService = new Sleep(); // You need to implement the Sleep class
-            new SleepUI(sleepService, username,userService); // You need to implement the SleepGraphUI class
+            new SleepUI(sleepService, this); // You need to implement the SleepGraphUI class
+        } else if (e.getSource() == trackActivityButton){
+
         }
     }
 
@@ -336,59 +362,6 @@ public class DashboardUI implements ActionListener {
     private void clearSleepData() {
         hourField.setText("");
         minuteField.setText("");
-    }
-
-    public void removeTopActivity() {
-        // Check if there are any activities in the panel
-        if (activitypanel.getComponentCount() > 0) {
-            // Assuming each activity is preceded by a vertical strut, remove it first
-            activitypanel.remove(0);
-
-            // Now remove the activity panel itself
-            activitypanel.remove(0);
-
-            // Refresh the panel to update the UI
-            activitypanel.revalidate();
-            activitypanel.repaint();
-        } else {
-            JOptionPane.showMessageDialog(frame, "No activities to remove.");
-        }
-    }
-
-    private void showHydrationWindow(String username) {
-        JDialog hydrationDialog = new JDialog(frame, "Hydration Tracker", true);
-        hydrationDialog.setLayout(new FlowLayout());
-        Hydration hydration = new Hydration();
-
-        JTextField waterInputField = new JTextField(5);
-        JButton addButton = new JButton("Add");
-        JButton clearButton = new JButton("Clear Data"); // Clear Data button
-        JLabel totalLabel = new JLabel("Total Liters: " + hydration.getTotalLiters(username));
-
-        addButton.addActionListener(e -> {
-            try {
-                double liters = Double.parseDouble(waterInputField.getText());
-                hydration.addWater(username, liters);
-                totalLabel.setText("Total Liters: " + hydration.getTotalLiters(username));
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(hydrationDialog, "Please enter a valid number.");
-            }
-        });
-
-        clearButton.addActionListener(e -> {
-            hydration.clearData(username); // Clear hydration data for the user
-            totalLabel.setText("Total Liters: 0.0");
-        });
-
-        hydrationDialog.add(new JLabel("Enter water amount (liters):"));
-        hydrationDialog.add(waterInputField);
-        hydrationDialog.add(addButton);
-        hydrationDialog.add(clearButton); // Add the Clear Data button
-        hydrationDialog.add(totalLabel);
-
-        hydrationDialog.pack();
-        hydrationDialog.setLocationRelativeTo(frame);
-        hydrationDialog.setVisible(true);
     }
 
     // Method to add a new activity panel with a fixed size and blue theme
@@ -454,11 +427,6 @@ public class DashboardUI implements ActionListener {
         activitypanel.repaint();
     }
 
-    private void showHydrationGraph() {
-        HydrationGraphUI hydrationGraphUI = new HydrationGraphUI(hydration, username,userService);
-    }
-
-
     private void displayWeatherInfo(String username, UserService userService) throws JSONException {
         try {
             String location = userService.getUserLocation(username);
@@ -515,5 +483,11 @@ public class DashboardUI implements ActionListener {
 
     public void showActivity(){
         showActivity.execute();
+    }
+    public void showFrame() {
+        frame.setVisible(true);
+    }
+    public String getName() {
+        return this.username;
     }
 }
