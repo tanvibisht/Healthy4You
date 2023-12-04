@@ -9,9 +9,9 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 
 public class ActivitiesDAO {
-    public static String fileName = "activity";
-    public static String splitter = ":";
-    public static String splitter2 = ","; //Handles
+    public static String fileName = "src/activity.txt";
+    public static String splitter = "&";
+    public static String splitter2 = ",";
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     public Map<String, List<String>> LoadAllActivities() throws IOException {
@@ -34,7 +34,7 @@ public class ActivitiesDAO {
             for (Map.Entry<String, List<String>> entry : users.entrySet()) {
                 String activitiesString = "";
                 for (String activities: entry.getValue()) {
-                    activitiesString += ':' + activities;
+                    activitiesString += splitter + activities;
                 }
                 writer.write(entry.getKey() + splitter + activitiesString + "\n");
             }
