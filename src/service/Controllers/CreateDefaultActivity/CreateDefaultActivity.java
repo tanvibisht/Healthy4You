@@ -1,16 +1,16 @@
-package service.Controllers.CreateDefultActivity;
+package service.Controllers.CreateDefaultActivity;
 
 import Usecase.Activites.CreateActivity.CreatActivityInput;
 import Usecase.Activites.CreateActivity.CreatActivityInputData;
 
 import java.time.LocalDateTime;
 
-public class CreateDefultActivity {
+public class CreateDefaultActivity {
     final CreatActivityInput inputBound;
     private LocalDateTime localDateTime = LocalDateTime.now();
     private final String activityType = "";
 
-    public CreateDefultActivity(CreatActivityInput creatActivityInput){
+    public CreateDefaultActivity(CreatActivityInput creatActivityInput){
         inputBound = creatActivityInput;
     }
 
