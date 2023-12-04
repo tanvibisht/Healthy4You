@@ -83,7 +83,7 @@ public class SleepUI {
         subcontrolPanel.setMinimumSize(subcontrolPanel.getPreferredSize());
         subcontrolPanel.setBackground(bgcolor);
         subcontrolPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        subcontrolPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30,0));
+        subcontrolPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
         subcontrolPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
 
         JButton addLitersButton = new JButton("Add Sleep Hours");
@@ -127,7 +127,7 @@ public class SleepUI {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
                 try {
-                    new DashboardUI(username,userService);
+                    new DashboardUI(username, userService);
                     new DashboardUI(username, userService);
                 } catch (MalformedURLException ex) {
                     throw new RuntimeException(ex);
@@ -221,3 +221,4 @@ public class SleepUI {
 
         return chart;
     }
+}
