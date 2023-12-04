@@ -174,8 +174,8 @@ public class DashboardUI implements ActionListener {
         buttonpanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         getRecipeButton = new JButton("Recipe");
-        getRecipeButton.setMaximumSize(new Dimension(220, 50));
-        getRecipeButton.setPreferredSize(new Dimension(220, 50));
+        getRecipeButton.setMaximumSize(new Dimension(120, 50));
+        getRecipeButton.setPreferredSize(new Dimension(120, 50));
         getRecipeButton.setFont(smallfont);
         getRecipeButton.setForeground(headingcolor);
         getRecipeButton.setBackground(boxcolor);
@@ -186,8 +186,8 @@ public class DashboardUI implements ActionListener {
         getRecipeButton.addActionListener(this);
 
         hydrationButton = new JButton("Hydration");
-        hydrationButton.setMaximumSize(new Dimension(220, 50));
-        hydrationButton.setPreferredSize(new Dimension(220, 50));
+        hydrationButton.setMaximumSize(new Dimension(120, 50));
+        hydrationButton.setPreferredSize(new Dimension(120, 50));
         hydrationButton.setFont(smallfont);
         hydrationButton.setForeground(headingcolor);
         hydrationButton.setBackground(boxcolor);
@@ -196,10 +196,10 @@ public class DashboardUI implements ActionListener {
         hydrationButton.setOpaque(true);
         hydrationButton.setContentAreaFilled(true);
         hydrationButton.addActionListener(this);
-        sleepButton = new JButton("Sleep");
-        sleepButton.setMaximumSize(new Dimension(220, 50));
-        sleepButton.setPreferredSize(new Dimension(220, 50));
 
+        sleepButton = new JButton("Sleep");
+        sleepButton.setMaximumSize(new Dimension(120, 50));
+        sleepButton.setPreferredSize(new Dimension(120, 50));
         sleepButton.setFont(smallfont);
         sleepButton.setForeground(headingcolor);
         sleepButton.setBackground(boxcolor);
@@ -208,10 +208,10 @@ public class DashboardUI implements ActionListener {
         sleepButton.setOpaque(true);
         sleepButton.setContentAreaFilled(true);
         sleepButton.addActionListener(this); // Register the current instance as the action listener
+
         buttonpanel.add(sleepButton);
         buttonpanel.add(getRecipeButton);
         buttonpanel.add(hydrationButton);
-
 
         //-----------------------------activity panel-----------------------------
 
@@ -293,7 +293,7 @@ public class DashboardUI implements ActionListener {
             new RecipeUI(newRecipe);
 
         } else if (e.getSource() == hydrationButton) {
-            new HydrationGraphUI(hydration); // Show the hydration gr // Show hydration window for the current user
+            new HydrationGraphUI(hydration, username, userService); // Show the hydration gr // Show hydration window for the current user
 
         } else if (e.getSource() == sleepButton) {
             showSleepGraph();
@@ -429,7 +429,7 @@ public class DashboardUI implements ActionListener {
     }
 
     private void showHydrationGraph() {
-        HydrationGraphUI hydrationGraphUI = new HydrationGraphUI(hydration);
+        HydrationGraphUI hydrationGraphUI = new HydrationGraphUI(hydration, username,userService);
     }
 
 

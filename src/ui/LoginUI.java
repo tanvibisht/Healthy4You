@@ -211,10 +211,8 @@ public class LoginUI {
         locationpanel.add(locationlabel);
         locationpanel.add(Box.createVerticalStrut(10));
         locationpanel.add(locationField);
-
         locationpanel.add(Box.createVerticalStrut(10));
         locationpanel.add(locationcheckbox);
-
         locationpanel.add(Box.createVerticalGlue());
 
         //-----------------------------login button-----------------------------
@@ -307,11 +305,6 @@ public class LoginUI {
             JOptionPane.showMessageDialog(frame, "Error saving username: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-    }
-
-    private String getWeatherData(String location) {
-        WeatherService weatherService = new WeatherService();
-        return weatherService.getWeather(location);
     }
 
     private void addlocation () throws IOException {
