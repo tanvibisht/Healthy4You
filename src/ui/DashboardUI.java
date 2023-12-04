@@ -293,6 +293,7 @@ public class DashboardUI implements ActionListener {
             new RecipeUI(newRecipe);
 
         } else if (e.getSource() == hydrationButton) {
+            frame.dispose();
             new HydrationGraphUI(hydration, username, userService); // Show the hydration gr // Show hydration window for the current user
 
         } else if (e.getSource() == sleepButton) {
@@ -372,7 +373,7 @@ public class DashboardUI implements ActionListener {
     }
 
     // Method to add a new activity panel with a fixed size and blue theme
-    public void addActivityPanel(String description, String duration, String Completion, String time) {
+    public void addActivityPanel(String name, String description) {
         // Container panel for the subactivity panel and the vertical strut
         JPanel containerPanel = new JPanel();
         containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
@@ -388,7 +389,7 @@ public class DashboardUI implements ActionListener {
         subactivitypanel.setLayout(new BorderLayout());
 
         // Name label setup
-        JLabel nameLabel = new JLabel(time);
+        JLabel nameLabel = new JLabel(name);
         nameLabel.setForeground(headingcolor);
         nameLabel.setFont(smallfont);
 
