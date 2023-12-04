@@ -289,8 +289,8 @@ public class DashboardUI implements ActionListener {
             String newRecipe = null;
             newRecipe = recipeGenerator.generateRandomRecipe();
 
-            // Display the new recipe in a dialog or on the UI
-            new RecipeUI(newRecipe);
+            frame.dispose();
+            new RecipeUI(newRecipe,username,userService);
 
         } else if (e.getSource() == hydrationButton) {
             frame.dispose();
