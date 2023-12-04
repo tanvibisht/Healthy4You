@@ -192,6 +192,11 @@ public class HydrationGraphUI {
     }
 
     private XYChart createChart(List<Double> hydrationData) {
+        // Ensure you have at least 10 values in hydrationData
+        while (hydrationData.size() < 10) {
+            hydrationData.add(0.0); // You can adjust the default value as needed
+        }
+
         XYChart chart = new XYChartBuilder().width(470).height(350).title("Hydration Data").xAxisTitle("Day").yAxisTitle("Liters").build();
 
         chart.getStyler().setYAxisMin(0.0);
@@ -208,11 +213,6 @@ public class HydrationGraphUI {
         chart.getStyler().setAxisTickLabelsColor(textcolor);
         chart.getStyler().setXAxisTitleColor(textcolor);
         chart.getStyler().setChartFontColor(textcolor);
-
-        // If hydrationData has fewer than 10 values, initialize it with default values
-        while (hydrationData.size() < 10) {
-            hydrationData.add(0.0); // You can adjust the default value as needed
-        }
 
         List<Integer> days = new ArrayList<>();
         for (int i = 1; i <= hydrationData.size(); i++) {
