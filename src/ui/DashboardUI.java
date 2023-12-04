@@ -1,5 +1,8 @@
 package ui;
+import DAOs.UserDAO;
 import Hydration.Hydration;
+import Sleep.Sleep;
+import Sleep.SleepUI;
 import Hydration.HydrationGraphUI;
 import domain.User;
 import service.UserService;
@@ -14,7 +17,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -33,6 +39,8 @@ public class DashboardUI implements ActionListener {
     private JPanel buttonpanel;
     private JButton getRecipeButton;
     private JButton hydrationButton;
+
+    private JButton sleepButton;
     private JPanel activitypanel;
     private JPanel activitytitlepanel;
     private JLabel activitytitlelabel;
@@ -47,12 +55,24 @@ public class DashboardUI implements ActionListener {
     private Font largefont = new Font("Monospaced", Font.BOLD, 30);
     private Font mediumfont = new Font("Monospaced", Font.BOLD, 16);
     private Font smallfont = new Font("Monospaced", Font.BOLD, 12);
+    private JTextField hourField, minuteField;
+    private static final String SLEEP_FILE_PATH = "src/sleep.txt";
+
+    private UserService userService;
+    private UserDAO userDAO;
+    private Hydration hydration;
 
     public DashboardUI(String username, UserService userService) throws MalformedURLException, JSONException {
         this.username = username;
         this.userService = userService;
 
         //frame setup
+
+        this.username = username;
+        this.userService = userService;
+        this.userDAO = new UserDAO();
+        this.hydration = new Hydration();
+
         frame = new JFrame();
         frame.setTitle("Healthy4You Dashboard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -127,6 +147,7 @@ public class DashboardUI implements ActionListener {
         iconlabel = new JLabel(imageIcon);
         iconlabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+
         //welcomelabel setup
         welcomelabel = new JLabel("Welcome " + username);
         welcomelabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -175,9 +196,25 @@ public class DashboardUI implements ActionListener {
         hydrationButton.setOpaque(true);
         hydrationButton.setContentAreaFilled(true);
         hydrationButton.addActionListener(this);
+        sleepButton = new JButton("Sleep");
+        sleepButton.setMaximumSize(new Dimension(220, 50));
+        sleepButton.setPreferredSize(new Dimension(220, 50));
 
+        sleepButton.setFont(smallfont);
+        sleepButton.setForeground(headingcolor);
+        sleepButton.setBackground(boxcolor);
+        sleepButton.setFocusPainted(false);
+        sleepButton.setBorderPainted(false);
+        sleepButton.setOpaque(true);
+        sleepButton.setContentAreaFilled(true);
+        sleepButton.addActionListener(this); // Register the current instance as the action listener
+        buttonpanel.add(sleepButton);
         buttonpanel.add(getRecipeButton);
         buttonpanel.add(hydrationButton);
+
+
+
+
 
         //-----------------------------activity panel-----------------------------
 
@@ -261,8 +298,30 @@ public class DashboardUI implements ActionListener {
         }
         else if (e.getSource() == hydrationButton) {
             new HydrationGraphUI(new Hydration(), username, userService); // Show the hydration gr // Show hydration window for the current user
+            new HydrationGraphUI(hydration); // Show the hydration gr // Show hydration window for the current user
 
         }
+        else if (e.getSource() == sleepButton) {
+            showSleepGraph();
+        }
+    }
+
+    private void writeSleepData(String username) {
+        String hours = hourField.getText();
+        String minutes = minuteField.getText();
+
+        try (FileWriter fw = new FileWriter(SLEEP_FILE_PATH, true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(username + ": " + hours + " hours " + minutes + " minutes");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(frame, "Error writing to file: " + ex.getMessage());
+        }
+    }
+
+    private void clearSleepData() {
+        hourField.setText("");
+        minuteField.setText("");
     }
 
     public void removeTopActivity() {
@@ -319,7 +378,7 @@ public class DashboardUI implements ActionListener {
     }
 
     // Method to add a new activity panel with a fixed size and blue theme
-    public void addActivityPanel(String name, String description) {
+    public void addActivityPanel(String description, String duration, String Completion, String time) {
         // Container panel for the subactivity panel and the vertical strut
         JPanel containerPanel = new JPanel();
         containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
@@ -335,7 +394,7 @@ public class DashboardUI implements ActionListener {
         subactivitypanel.setLayout(new BorderLayout());
 
         // Name label setup
-        JLabel nameLabel = new JLabel(name);
+        JLabel nameLabel = new JLabel(time);
         nameLabel.setForeground(headingcolor);
         nameLabel.setFont(smallfont);
 
@@ -376,6 +435,7 @@ public class DashboardUI implements ActionListener {
     }
     private void showHydrationGraph() {
         HydrationGraphUI hydrationGraphUI = new HydrationGraphUI(new Hydration(), username, userService);
+        HydrationGraphUI hydrationGraphUI = new HydrationGraphUI(hydration);
     }
 
 
@@ -427,5 +487,14 @@ public class DashboardUI implements ActionListener {
             e.printStackTrace();
         }
         frame.repaint();
+    }
+
+    private void showSleepGraph() {
+        // Assuming SleepGraphUI takes a Sleep instance which reads data from sleep.txt
+        Sleep sleepService = new Sleep(); // You need to implement the Sleep class
+        SleepUI sleepGraphUI = new SleepUI(sleepService); // You need to implement the SleepGraphUI class
+
+    public JPanel getActivitypanel() {
+        return activitypanel;
     }
 }

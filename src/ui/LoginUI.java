@@ -1,8 +1,11 @@
 package ui;
 
+import domain.LoggedUser;
+import domain.User;
 import org.json.JSONException;
 import service.UserService;
 import service.WeatherService;
+import DAOs.UserDAO;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -11,6 +14,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class LoginUI {
@@ -271,10 +276,12 @@ public class LoginUI {
         String password = new String(passwordField.getPassword());
         String location = new String(locationField.getText());
         UserService userService = new UserService();
+        UserDAO userDAO = new UserDAO();
         try {
             if (userService.validateLogin(username, password)) {
                 if (!location.isEmpty()) {
                     userService.saveUserLocation(username, location);
+                    saveCurrentUsername(username);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Location not provided.", "Weather Data Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -282,6 +289,7 @@ public class LoginUI {
 
                 frame.dispose();
                 new DashboardUI(username, userService);
+                LoggedUser.setUser(new User(username, password)); //Set for now, need more function
                 // Close the login window
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
@@ -292,7 +300,14 @@ public class LoginUI {
             throw new RuntimeException(e);
         }
     }
-
+    private void saveCurrentUsername(String username) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("currentusername.txt"))) {
+            writer.write(username);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(frame, "Error saving username: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
 
     private String getWeatherData(String location) {
         WeatherService weatherService = new WeatherService();
