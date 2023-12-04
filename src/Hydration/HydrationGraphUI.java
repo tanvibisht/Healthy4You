@@ -19,9 +19,10 @@ public class HydrationGraphUI {
     private JFrame frame;
     private JPanel mainpanel;
     private Hydration hydrationService;
-    private UserService userService;
+    private DashboardUI dashboardUI;
     private XYChart chart;
-    private String username;
+    private JPanel toppanel;
+    private JLabel headinglabel;
     private Color bgcolor = new Color(41, 41, 41);
     private Color themecolor = new Color(143, 88, 178);
     private Color headingcolor = new Color(255, 255, 255);
@@ -30,13 +31,14 @@ public class HydrationGraphUI {
     private Font largefont = new Font("Monospaced", Font.BOLD, 30);
     private Font mediumfont = new Font("Monospaced", Font.BOLD, 16);
     private Font smallfont = new Font("Monospaced", Font.BOLD, 12);
+    private String username;
 
-    public HydrationGraphUI(Hydration hydrationService, String username, UserService userService) {
+    public HydrationGraphUI(Hydration hydrationService, DashboardUI dashboardUI) {
         this.hydrationService = hydrationService;
-        this.username = username;
-        this.userService = userService;
+        this.dashboardUI = dashboardUI;
+        username = dashboardUI.getName();
 
-        frame = new JFrame("Hydration Tracker");
+        frame = new JFrame("Healthy4You Hydration Tracker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(530, 1100);
         frame.setBackground(bgcolor);
@@ -44,6 +46,25 @@ public class HydrationGraphUI {
         mainpanel = new JPanel();
         mainpanel.setBackground(bgcolor);
         mainpanel.setLayout(new BoxLayout(mainpanel, BoxLayout.Y_AXIS));
+
+        //-----------------------------top panel-----------------------------
+
+        // Panel for back button with left alignment
+        toppanel = new JPanel();
+        toppanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        toppanel.setMaximumSize(new Dimension(400, 100));
+        toppanel.setBackground(bgcolor);
+        toppanel.setLayout(new BoxLayout(toppanel, BoxLayout.Y_AXIS));
+
+        //loginlabel setup
+        headinglabel = new JLabel("Hydration Tracker");
+        headinglabel.setFont(largefont);
+        headinglabel.setForeground(headingcolor);
+        headinglabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        //toppanel component
+        toppanel.add(Box.createVerticalGlue());
+        toppanel.add(headinglabel);
 
         // Initialize chart here, even if it might be empty initially
         List<Double> hydrationData = hydrationService.getUserHydrationData(username);
@@ -56,6 +77,8 @@ public class HydrationGraphUI {
         chartPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //mainpanel component
+        mainpanel.add(Box.createVerticalStrut(80));
+        mainpanel.add(toppanel);
         mainpanel.add(Box.createVerticalGlue());
         mainpanel.add(chartPanel);
         mainpanel.add(Box.createVerticalGlue());
@@ -125,11 +148,7 @@ public class HydrationGraphUI {
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                try {
-                    new DashboardUI(username,userService);
-                } catch (MalformedURLException ex) {
-                    throw new RuntimeException(ex);
-                }
+                dashboardUI.showFrame();
             }
         });
 

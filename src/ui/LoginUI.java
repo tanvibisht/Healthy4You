@@ -27,6 +27,7 @@ public class LoginUI {
     private JFrame frame;
     private JPanel mainpanel;
     private JPanel toppanel;
+    private JLabel headinglabel;
     private JPanel usernamepanel;
     private JLabel usernamelabel;
     private JPanel passwordpanel;
@@ -36,7 +37,6 @@ public class LoginUI {
     private JTextField locationField;
     private JCheckBox locationcheckbox;
     private JButton backbutton;
-    private JLabel headinglabel;
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginbutton;

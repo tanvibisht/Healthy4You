@@ -21,8 +21,9 @@ import java.util.List;
 public class RecipeUI {
     private JFrame frame;
     private JPanel mainpanel;
-    private String username;
-    private UserService userService;
+    private JPanel toppanel;
+    private JLabel headinglabel;
+    private DashboardUI dashboardUI;
     private Color bgcolor = new Color(41, 41, 41);
     private Color themecolor = new Color(143, 88, 178);
     private Color headingcolor = new Color(255, 255, 255);
@@ -31,9 +32,8 @@ public class RecipeUI {
     private Font largefont = new Font("Monospaced", Font.BOLD, 30);
     private Font mediumfont = new Font("Monospaced", Font.BOLD, 16);
     private Font smallfont = new Font("Monospaced", Font.BOLD, 12);
-    public RecipeUI(String recipeText, String username, UserService userService) {
-        this.username = username;
-        this.userService = userService;
+    public RecipeUI(String recipeText, DashboardUI dashboardUI) {
+        this.dashboardUI = dashboardUI;
 
         if (recipeText == null || recipeText.isEmpty()) {
             recipeText = "No recipe found.";
@@ -48,6 +48,26 @@ public class RecipeUI {
         mainpanel.setBackground(bgcolor);
         mainpanel.setLayout(new BoxLayout(mainpanel, BoxLayout.Y_AXIS));
 
+        //-----------------------------top panel-----------------------------
+
+        // Panel for back button with left alignment
+        toppanel = new JPanel();
+        toppanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        toppanel.setMaximumSize(new Dimension(400, 100));
+        toppanel.setBackground(bgcolor);
+        toppanel.setLayout(new BoxLayout(toppanel, BoxLayout.Y_AXIS));
+
+        //loginlabel setup
+        headinglabel = new JLabel("Recipe");
+        headinglabel.setFont(largefont);
+        headinglabel.setForeground(headingcolor);
+        headinglabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        //toppanel component
+        toppanel.add(Box.createVerticalGlue());
+        toppanel.add(headinglabel);
+        toppanel.add(Box.createVerticalGlue());
+
         JTextArea recipeTextArea = new JTextArea(recipeText);
         recipeTextArea.setFont(smallfont);
         recipeTextArea.setBackground(bgcolor);
@@ -56,8 +76,15 @@ public class RecipeUI {
         recipeTextArea.setLineWrap(true);
         recipeTextArea.setEditable(false);
 
+        mainpanel.add(Box.createVerticalStrut(80));
+        mainpanel.add(toppanel);
+        mainpanel.add(Box.createVerticalGlue());
         JScrollPane scrollPane = new JScrollPane(recipeTextArea);
+        scrollPane.setPreferredSize(new Dimension(470,470));
+        scrollPane.setMaximumSize(scrollPane.getPreferredSize());
+        scrollPane.setMaximumSize(scrollPane.getPreferredSize());
         mainpanel.add(scrollPane);
+        mainpanel.add(Box.createVerticalGlue());
         addControlPanel();
         mainpanel.add(Box.createVerticalStrut(20));
 
@@ -97,11 +124,7 @@ public class RecipeUI {
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                try {
-                    new DashboardUI(username,userService);
-                } catch (MalformedURLException ex) {
-                    throw new RuntimeException(ex);
-                }
+                dashboardUI.showFrame();
             }
         });
 
