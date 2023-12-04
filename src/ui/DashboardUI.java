@@ -1,16 +1,16 @@
 package ui;
+import DAOs.*;
 import DAOs.ActivitiesDAO.ActivitySaver;
-import DAOs.UserDAO;
 import Usecase.Hydration.Hydration;
 import Usecase.Sleep.Sleep;
 import Usecase.Activites.ShowActivityList.Interactor;
+import Usecase.UpdateGPTcomment.GPTUpdateInteractor;
+import Usecase.UpdateGPTcomment.GPTupdateDAI;
 import service.Controllers.*;
-import DAOs.UserService;
-import DAOs.RecipeGenerator;
 import org.json.JSONException;
 import org.json.JSONObject;
-import DAOs.WeatherService;
 import ui.ActivityPresenter.DeleteActivityPresenter;
+import ui.ActivityPresenter.GPTCommentPresenter;
 import ui.ActivityPresenter.SaveActivityPresenter;
 import ui.ActivityPresenter.ShowActivityListPresenter;
 
