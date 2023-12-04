@@ -8,7 +8,6 @@ Healthy4You is an application designed to help users monitor their daily activit
 
 - **User Authentication**: Securely sign up and log in using a username and password.
 - **Personalized Tracking**: Choose activities that align with your health goals and interests.
-- **Activity Reminders**: Opt-in to receive notifications that motivate you to stay active.
 - **Comprehensive Dashboards**: Monitor your workouts, water intake, and sleep in one place.
 
 ## Getting Started
