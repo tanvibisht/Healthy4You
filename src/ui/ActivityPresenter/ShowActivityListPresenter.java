@@ -2,7 +2,6 @@ package ui.ActivityPresenter;
 
 import Usecase.Activites.ShowActivityList.Output;
 import Usecase.Activites.ShowActivityList.OutputData;
-import ui.ActivityUI;
 import ui.DashboardUI;
 
 import javax.swing.*;
