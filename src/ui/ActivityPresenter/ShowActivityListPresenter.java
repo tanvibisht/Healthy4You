@@ -24,6 +24,8 @@ public class ShowActivityListPresenter implements Output {
     @Override
     public void prepareSuccessView(OutputData outputData) {
         view.getActivitypanel().removeAll();
+        view.getActivitypanel().revalidate();
+        view.getActivitypanel().repaint();
         int i = 0;
         for (List<String> attributes: outputData.getActivities()){
             view.addActivityPanel(attributes.get(0), attributes.get(1),attributes.get(2),

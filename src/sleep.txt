@@ -1,2 +1,3 @@
-wow,Day 1,14.0
-wow,Day 2,12.0
+guo,Day 1,13.0
+wow,Day 1,6.0
+wow,Day 2,8.0
