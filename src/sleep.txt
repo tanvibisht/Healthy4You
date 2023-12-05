@@ -1,3 +1,5 @@
-guo,Day 1,13.0
-wow,Day 1,6.0
-wow,Day 2,8.0
+diego,Day 1,12.0
+diego,Day 2,9.0
+diego,Day 3,14.0
+wow,Day 1,22.0
+wow,Day 2,12.0
