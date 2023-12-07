@@ -9,7 +9,7 @@ public class GPTUpdateInteractor implements GPTUpdateInput{
     final GPTUpdateOutput output;
     final GPTupdateDAI dai;
 
-    GPTUpdateInteractor(GPTUpdateOutput out, GPTupdateDAI da){
+    public GPTUpdateInteractor(GPTUpdateOutput out, GPTupdateDAI da){
         output = out;
         dai = da;
     }

@@ -26,7 +26,7 @@ public class Activity{
     }
 
     public void complete(){
-        isCompletedToday = false;
+        isCompletedToday = true;
     }
 
     public String getDescription() {
