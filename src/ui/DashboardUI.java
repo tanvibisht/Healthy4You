@@ -1,18 +1,15 @@
 package ui;
+import DAOs.*;
 import DAOs.ActivitiesDAO.ActivitySaver;
-import DAOs.UserDAO;
 import Usecase.Hydration.Hydration;
 import Usecase.Sleep.Sleep;
 import Usecase.Activites.ShowActivityList.Interactor;
+import Usecase.UpdateGPTcomment.GPTUpdateInteractor;
+import Usecase.UpdateGPTcomment.GPTupdateDAI;
 import service.Controllers.*;
-import DAOs.UserService;
-import DAOs.RecipeGenerator;
 import org.json.JSONException;
 import org.json.JSONObject;
-import DAOs.WeatherService;
-import ui.ActivityPresenter.DeleteActivityPresenter;
-import ui.ActivityPresenter.SaveActivityPresenter;
-import ui.ActivityPresenter.ShowActivityListPresenter;
+import ui.ActivityPresenter.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -416,6 +413,19 @@ public class DashboardUI implements ActionListener {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.add(nameLabel, BorderLayout.CENTER);
         headerPanel.add(deleteSubActivityButton, BorderLayout.EAST);
+        if (!Boolean.valueOf(completion)){
+            JButton completeSubActivityButton = new JButton("complete");
+            completeSubActivityButton.addActionListener(e -> {
+                String i = index;
+                CompleteActivityPresenter completeActivityPresenter = new CompleteActivityPresenter(this);
+                Usecase.Activites.CompleteActivity.Interactor completeActivityInteractor = (
+                        new Usecase.Activites.CompleteActivity.Interactor(completeActivityPresenter));
+                CompleteActivity completeActivity = new CompleteActivity(completeActivityInteractor);
+                completeActivity.execute(Integer.parseInt(index));
+                showActivity.execute();
+            });
+            headerPanel.add(completeSubActivityButton, BorderLayout.NORTH);
+        }
         headerPanel.setOpaque(false); // Make the panel transparent
 
         // Adding components to the subactivity panel
