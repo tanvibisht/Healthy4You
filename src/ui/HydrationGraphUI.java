@@ -172,7 +172,7 @@ public class HydrationGraphUI {
         }
     }
 
-    private void clearData() {
+    public void clearData() {
         hydrationService.clearData(username);
         updateChart();
     }

@@ -6,7 +6,7 @@ import DAOs.UserDAO;
 import domain.User;
 public class UserService {
 
-    private static final String USERS_FILE = "src/users.txt";
+    public static final String USERS_FILE = "src/users.txt";
     private static final String USER_DATA_FILE = "src/usersdata.txt";
 
     // Load users from the file

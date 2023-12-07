@@ -1,7 +1,0 @@
-guo,Toronto
-Hello,hey
-Angelina,Macao
-g,Toronto
-diego,Lima
-Hey,Macao
-wow,Toronto
