@@ -23,7 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class DashboardUI implements ActionListener {
-    JFrame frame;
+    public JFrame frame;
     private JPanel mainpanel;
     private JScrollPane scrollPane;
     private JPanel toppanel;
@@ -35,7 +35,7 @@ public class DashboardUI implements ActionListener {
     private WeatherService weatherService;
     private JLabel weatherLabel;
     private JPanel buttonpanel;
-    private JButton getRecipeButton;
+    public JButton getRecipeButton;
     private JButton hydrationButton;
 
     private JButton sleepButton;
@@ -442,7 +442,7 @@ public class DashboardUI implements ActionListener {
         activitypanel.repaint();
     }
 
-    private void displayWeatherInfo(String username, UserService userService) throws JSONException {
+    public void displayWeatherInfo(String username, UserService userService) throws JSONException {
         try {
             String location = userService.getUserLocation(username);
             String weatherData = weatherService.getWeather(location);

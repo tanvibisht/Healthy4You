@@ -10,7 +10,7 @@ public class RecipeGenerator {
     private static final String API_KEY = "2e354241431542068b8478ce6b6f90fd";
     private static final String API_URL = "https://api.spoonacular.com/recipes/random";
 
-    public String generateRandomRecipe() {
+    public static String generateRandomRecipe() {
         try {
             URL url = new URL(API_URL + "?apiKey=" + API_KEY + "&number=1"); // Requesting a single recipe for simplicity
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -38,7 +38,7 @@ public class RecipeGenerator {
         }
     }
 
-    private String formatRecipe(JSONObject jsonObject) {
+    private static String formatRecipe(JSONObject jsonObject) {
         // Extract the recipes array
         JSONArray recipes = jsonObject.getJSONArray("recipes");
         // We requested only one recipe

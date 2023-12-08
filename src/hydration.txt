@@ -1,5 +1,6 @@
 guo,0.0
 Hello,0.0
 Angelina,0.0
+testuser,4.5
 diego,2.0
 wow,8.0

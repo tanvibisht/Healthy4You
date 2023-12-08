@@ -159,7 +159,7 @@ public class HydrationGraphUI {
         mainpanel.add(controlPanel);
     }
 
-    private void addLiters() {
+    public void addLiters() {
         String litersString = JOptionPane.showInputDialog(frame, "Enter water amount (liters):");
         if (litersString != null && !litersString.isEmpty()) {
             try {
