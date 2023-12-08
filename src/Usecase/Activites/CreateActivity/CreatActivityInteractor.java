@@ -14,6 +14,11 @@ public class CreatActivityInteractor implements CreatActivityInput{
         output = out;
     }
 
+    @Override
+    public void execute(String type, int duration) {
+
+    }
+
     public void execute(CreatActivityInputData userData){
         User user = LoggedUser.getUser();
         String description = userData.getDescription();
