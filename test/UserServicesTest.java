@@ -1,9 +1,11 @@
 import DAOs.FileIO;
 import DAOs.UserService;
 import DAOs.WeatherService;
-
-import org.junit.jupiter.api.BeforeEach;
+import Usecase.Activites.UpdateDatabaseActivities.Input;
 import org.junit.jupiter.api.Test;
+import service.Controllers.UpdateDatabaseActivities;
+import org.junit.jupiter.api.BeforeEach;
+
 import ui.SignUpUI;
 
 import javax.swing.*;
@@ -224,4 +226,39 @@ public class UserServicesTest {
             // Simulate the behavior of saveUserLocation
         }
     }
+    @Test
+    public void testExecute() {
+        // Create a custom implementation of the Input interface for testing
+        UserServicesTest.TestInput testInput = new TestInput();
+
+        // Create an instance of UpdateDatabaseActivities with the test input
+        UpdateDatabaseActivities updateDatabaseActivities = new UpdateDatabaseActivities(testInput);
+
+        // Call the execute method
+        updateDatabaseActivities.execute();
+
+        // Add assertions or checks based on the behavior of the test input
+        // For example, you can check if a flag or variable in the test input was set
+        // to indicate that execute() was called.
+    }
+
+    // Test implementation of the Input interface
+    private static class TestInput implements Input {
+        private boolean executeCalled = false;
+
+        @Override
+        public void execute() {
+            // Simulate the behavior of the execute method
+            // You can set a flag or perform other checks here
+            executeCalled = true;
+        }
+
+        // Add any additional methods or properties needed for testing
+
+        public boolean isExecuteCalled() {
+            return executeCalled;
+        }
+    }
+
+
 }
