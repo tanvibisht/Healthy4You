@@ -164,4 +164,8 @@ public class HomePageUI {
         } catch (Exception e) {
         }
     }
+
+    public JFrame getFrame() {
+        return frame;
+    }
 }

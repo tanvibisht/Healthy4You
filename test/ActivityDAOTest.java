@@ -32,13 +32,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ActivityDAOTest {
 
     private ActivitiesDAO activitiesDAO;
-    private CreateDefaultActivityTest.FakeCreateActivityInput fakeInput;
 
     @BeforeEach
     public void setUp() {
         activitiesDAO = new ActivitiesDAO();
-        fakeInput = new CreateDefaultActivityTest.FakeCreateActivityInput();
-        CreateDefaultActivity createDefaultActivity = new CreateDefaultActivity(fakeInput);
+
     }
 
     @Test
