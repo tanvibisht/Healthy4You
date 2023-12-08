@@ -249,7 +249,7 @@ public class LoginUI {
         signupbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                SignUpUI signUpUI = new SignUpUI();
+                SignUpUI signUpUI = new SignUpUI(frame);
             }
         });
 

@@ -1,12 +1,9 @@
 package ui;
 
-import org.json.JSONException;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.ActionListener;
-import java.net.MalformedURLException;
 
 public class HomePageUI {
     private JFrame frame;
@@ -119,7 +116,7 @@ public class HomePageUI {
         signupbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                SignUpUI signUpUI = new SignUpUI();
+                SignUpUI signUpUI = new SignUpUI(frame);
             }
         });
 

@@ -4,13 +4,10 @@ import DAOs.ActivitiesDAO.ActivitySaver;
 import Usecase.Hydration.Hydration;
 import Usecase.Sleep.Sleep;
 import Usecase.Activites.ShowActivityList.Interactor;
-import Usecase.UpdateGPTcomment.GPTUpdateInteractor;
-import Usecase.UpdateGPTcomment.GPTupdateDAI;
 import service.Controllers.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ui.ActivityPresenter.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -505,4 +502,6 @@ public class DashboardUI implements ActionListener {
     public String getName() {
         return this.username;
     }
+
+
 }

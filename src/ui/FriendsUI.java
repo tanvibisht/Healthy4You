@@ -11,11 +11,12 @@ import java.util.List;
 
 public class FriendsUI extends JPanel implements ActionListener {
     private DashboardUI dashboardUI;
-    private JPanel friendsPanel;
-    private JButton toggleButton, addButton;
+    public JPanel friendsPanel;
+    public JButton toggleButton;
+    public JButton addButton;
     private boolean isVisible;
     private JScrollPane scrollPane;
-    private List<String> friendsList;
+    public List<String> friendsList;
     private UserService userService;
 
     // UI styling similar to SignUpUI

@@ -14,6 +14,11 @@ public class GPTUpdateInteractor implements GPTUpdateInput{
         dai = da;
     }
 
+    @Override
+    public void execute() {
+
+    }
+
     public void excute(){
         if (LoggedUser.getUser() == null){
             output.prepareFailView("User not found");

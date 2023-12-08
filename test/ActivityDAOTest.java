@@ -15,6 +15,8 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+
 public class ActivityDAOTest {
 
     private ActivitiesDAO activitiesDAO;
@@ -72,5 +74,4 @@ class ActivityDAOFacadeTest {
         // Assertions...
     }
 
-    // Additional tests...
 }

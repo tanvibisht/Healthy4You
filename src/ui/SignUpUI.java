@@ -22,12 +22,12 @@ public class SignUpUI {
     private JLabel passwordlabel;
     private JButton backbutton;
     private JLabel headinglabel;
-    private JTextField usernameField;
-    private JPasswordField passwordField;
+    public JTextField usernameField;
+    public JPasswordField passwordField;
     private JPanel locationpanel;
     private JLabel locationlabel;
-    private JTextField locationField;
-    private JButton signupbutton;
+    public JTextField locationField;
+    public JButton signupbutton;
     private Font largefont = new Font("Monospaced", Font.BOLD, 30);
     private Font mediumfont = new Font("Monospaced", Font.BOLD, 16);
     private Font smallfont = new Font("Monospaced", Font.BOLD, 12);
@@ -38,13 +38,13 @@ public class SignUpUI {
     private Border line = BorderFactory.createLineBorder(textcolor);
     private Border margin = new EmptyBorder(5, 10, 5, 5);
 
-    public SignUpUI() {
+    public SignUpUI(JFrame frame) {
         //frame setup
-        frame = new JFrame();
-        frame.setTitle("Healthy4You Sign Up");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(530, 1100);
-        frame.setBackground(bgcolor);
+        this.frame = new JFrame();
+        this.frame.setTitle("Healthy4You Sign Up");
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.setSize(530, 1100);
+        this.frame.setBackground(bgcolor);
 
         //-----------------------------main panel-----------------------------
         //mainpanel setup
@@ -74,7 +74,7 @@ public class SignUpUI {
         backbutton.setFocusPainted(true);
         backbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                SignUpUI.this.frame.dispose();
                 HomePageUI homePageUI = new HomePageUI();
             }
         });
@@ -219,12 +219,12 @@ public class SignUpUI {
         mainpanel.add(signupbutton);
 
         //frame component and display
-        frame.setContentPane(mainpanel);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        this.frame.setContentPane(mainpanel);
+        this.frame.setLocationRelativeTo(null);
+        this.frame.setVisible(true);
     }
 
-    private void createAccount() {
+    public void createAccount() {
         String username = new String(usernameField.getText());
         String password = new String(passwordField.getPassword());
         String location = new String(locationField.getText());

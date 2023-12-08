@@ -1,6 +1,6 @@
 import static org.junit.Assert.*;
 
-import DAOs.UserService;
+import DAOs.*;
 import Usecase.Activites.CreateActivity.CreatActivityInputData;
 import Usecase.Activites.CreateActivity.CreatActivityInteractor;
 import Usecase.Activites.CreateActivity.CreatActivityOutput;
@@ -8,6 +8,9 @@ import Usecase.Activites.CreateActivity.CreatActivityOutputData;
 import Usecase.Activites.TrackActivity.Input;
 import Usecase.Hydration.Hydration;
 import Usecase.Sleep.Sleep;
+import Usecase.UpdateGPTcomment.GPTUpdateOutput;
+import Usecase.UpdateGPTcomment.GPTupdateDAI;
+import domain.Activity;
 import domain.LoggedUser;
 import domain.User;
 import org.junit.Before;
@@ -16,7 +19,7 @@ import service.Controllers.TrackActivity;
 import service.Controllers.TrackActivityFactory;
 import ui.ActivityUI;
 import ui.DashboardUI;
-import DAOs.RecipeGenerator;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
@@ -30,6 +33,7 @@ public class ActivityUseCaseTest {
     private CreatActivityInputData inputData;
     private TrackActivity trackActivity;
 
+    private UpdateGPTDAO gptUpdateDAO;
     private UserService userService;
 
     private static class TestCreatActivityOutput implements CreatActivityOutput {
@@ -60,6 +64,7 @@ public class ActivityUseCaseTest {
         userService = new UserService();
         hydration = new Hydration();
         sleep = new Sleep();
+        gptUpdateDAO = new UpdateGPTDAO();
 
         // Prepare test data
         inputData = new CreatActivityInputData("Jogging", 30, LocalDateTime.now());
@@ -225,6 +230,64 @@ public class ActivityUseCaseTest {
         assertTrue(userSleepData.containsKey("Day 1"));
         assertEquals(7.5, userSleepData.get("Day 1"), 0.01);
 
+    }
+
+
+
+
+}
+
+// Stub for GPTUpdateOutput
+class GPTUpdateOutputStub implements GPTUpdateOutput {
+    private String preparedComment;
+    private String preparedFailView;
+
+    @Override
+    public void prepareSuccessView(String comment) {
+        preparedComment = comment;
+    }
+
+    @Override
+    public void prepareFailView(String errorMessage) {
+        preparedFailView = errorMessage;
+    }
+
+    public String getPreparedComment() {
+        return preparedComment;
+    }
+
+    public String getPreparedFailView() {
+        return preparedFailView;
+    }
+}
+
+// Stub for GPTupdateDAI
+class GPTupdateDAIStub implements GPTupdateDAI {
+    @Override
+    public String getComment(User user, String weather) {
+        return "TestComment";
+    }
+}
+
+// Stub for GeoLocationService
+class GeoLocationServiceStub extends GeoLocationService {
+    @Override
+    public String getCity() {
+        return "TestCity";
+    }
+}
+
+// Stub for WeatherService
+class WeatherServiceStub extends WeatherService {
+    private String weatherData;
+
+    public void setWeatherData(String weatherData) {
+        this.weatherData = weatherData;
+    }
+
+    @Override
+    public String getWeather(String city) {
+        return weatherData;
     }
 
 
