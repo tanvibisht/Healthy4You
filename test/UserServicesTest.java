@@ -2,17 +2,22 @@ import DAOs.FileIO;
 import DAOs.UserService;
 import DAOs.WeatherService;
 import Usecase.Activites.UpdateDatabaseActivities.Input;
+import Usecase.Sleep.Sleep;
 import org.junit.jupiter.api.Test;
 import service.Controllers.UpdateDatabaseActivities;
 import org.junit.jupiter.api.BeforeEach;
 
+import ui.DashboardUI;
+import ui.RecipeUI;
 import ui.SignUpUI;
+import ui.SleepUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.*;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.*;
@@ -260,5 +265,29 @@ public class UserServicesTest {
         }
     }
 
+    @Test
+    public void testRecipeUI() {
+        // Create an instance of RecipeUI with sample recipe text and a null DashboardUI reference (for testing)
+        RecipeUI recipeUI = new RecipeUI("Sample Recipe Text", null);
 
-}
+        // The RecipeUI window will be displayed for manual inspection and interaction
+        // You can close it manually after testing.
+    }
+
+
+        @Test
+        public void testSleepUI() throws MalformedURLException {
+            // Create a DashboardUI instance (or a mock) if needed
+            DashboardUI dashboardUI = new DashboardUI("test", userService);
+
+            // Create a SleepUI instance with a SleepService and the DashboardUI reference
+            SleepUI sleepUI = new SleepUI(new Sleep(), dashboardUI);
+
+            // The SleepUI window will be displayed for manual inspection and interaction
+            // You can close it manually after testing.
+        }
+    }
+
+
+
+

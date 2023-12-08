@@ -2,12 +2,24 @@ import DAOs.ActivitiesDAO.ActivitiesDAO;
 import DAOs.ActivitiesDAO.ActivityDAOFacade;
 import DAOs.ActivitiesDAO.ActivityReader;
 import DAOs.ActivitiesDAO.ActivitySaver;
+import Usecase.Activites.CreateActivity.CreatActivityInput;
+import Usecase.Activites.CreateActivity.CreatActivityInputData;
 import domain.Activity;
 import domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import service.Controllers.CreateDefaultActivity.CreateDefaultActivity;
+import Usecase.Activites.CreateActivity.CreatActivityInput;
+import Usecase.Activites.CreateActivity.CreatActivityInputData;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import service.Controllers.CreateDefaultActivity.CreateDefaultActivity;
 
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,10 +32,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ActivityDAOTest {
 
     private ActivitiesDAO activitiesDAO;
+    private CreateDefaultActivityTest.FakeCreateActivityInput fakeInput;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         activitiesDAO = new ActivitiesDAO();
+        fakeInput = new CreateDefaultActivityTest.FakeCreateActivityInput();
+        CreateDefaultActivity createDefaultActivity = new CreateDefaultActivity(fakeInput);
     }
 
     @Test
@@ -73,5 +88,7 @@ class ActivityDAOFacadeTest {
         List<Activity> activities = facade.getActivities(testUser);
         // Assertions...
     }
+
+
 
 }
